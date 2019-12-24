@@ -1,0 +1,22 @@
+#ifndef _JFACTORYGENERATOR_DAQ_H_
+#define _JFACTORYGENERATOR_DAQ_H_
+
+#include <JANA/JFactoryGenerator.h>
+#include <JANA/JFactoryT.h>
+//#include "MyCluster.h"
+//#include "MyHit.h"
+
+#include "DAQ/faWaveboardHit_factory.h"
+
+class JFactoryGenerator_DAQ:public JFactoryGenerator{
+	public:
+
+	void GenerateFactories(JFactorySet *factory_set){
+		factory_set->Add(new faWaveboardHit_factory());
+		//factory_set->Add( new JFactoryT<MyHit>()     );
+		//factory_set->Add( new JFactoryT<MyCluster>() );
+
+	}
+};
+
+#endif   // _JFACTORYGENERATOR_EXAMPLE2_H_
