@@ -20,14 +20,7 @@
 //fa250 hit - mode 7
 class faHit : public JObject{
 public:
-
-
 	TranslationTable::csc_t m_channel;
-	//int trigger;
-	//uint64_t timestamp;
-
-
-
 };
 
 #endif /* FA250HIT_H_ */

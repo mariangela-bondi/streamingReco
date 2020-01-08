@@ -5,27 +5,27 @@
  *      Author: celentan
  */
 
-#include "faWaveboardHit_factory.h"
 #include "TridasEvent.h"
 
 #include "JANA/JEvent.h"
+#include "fa250VTPMode7Hit_factory.h"
 
-faWaveboardHit_factory::faWaveboardHit_factory() {
+fa250VTPMode7Hit_factory::fa250VTPMode7Hit_factory() {
 	// TODO Auto-generated constructor stub
 
 }
 
-faWaveboardHit_factory::~faWaveboardHit_factory() {
+fa250VTPMode7Hit_factory::~fa250VTPMode7Hit_factory() {
 	// TODO Auto-generated destructor stub
 }
 
-void faWaveboardHit_factory::Init() {
+void fa250VTPMode7Hit_factory::Init() {
 
 }
-void faWaveboardHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
+void fa250VTPMode7Hit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 }
-void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
+void fa250VTPMode7Hit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	auto tridas_event = aEvent->GetSingle<TridasEvent>();
 	//loop over the hits in the tridas event
@@ -43,9 +43,9 @@ void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent
 
 	*/
 	for (auto hit : tridas_event->hits) {
-		if (hit.data.size() > 0) {
+		if (hit.data.size() == 0) {
 			// Create a faWaveboardHit object;
-			auto faHit = new faWaveboardHit;
+			auto faHit = new fa250VTPMode7Hit;
 
 			faHit->m_charge = hit.charge;
 			faHit->m_time = hit.time;
@@ -54,11 +54,6 @@ void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent
 			faHit->m_channel.slot = hit.slot;
 			faHit->m_channel.channel = hit.channel;
 
-			//Assign the samples
-			faHit->samples = hit.data;
-
-			//Assign the dT
-			faHit->m_dT = 4; //Todo: read from dB
 
 			//Add to the framework
 			mData.push_back(faHit);

@@ -8,15 +8,9 @@
 #ifndef _TranslationTable_
 #define _TranslationTable_
 
-#include <JANA/JObject.h>
-#include <JANA/JFactory.h>
-//#include <JANA/JEventLoop.h>
-//#include <JANA/JCalibration.h>
-#include <JANA/JException.h>
-#include <JANA/JEventSource.h>
-
+#include <map>
 #include <iostream>
-
+#include "JANA/JObject.h"
 class TranslationTable: public JObject {
 
 public:
@@ -72,16 +66,16 @@ public:
 	};
 
 	enum Detector_t {
-		UNKNOWN_DETECTOR, CALORIMETER, HODOSCOPE, NUM_DETECTOR_TYPES
+		UNKNOWN_DETECTOR, FTCAL, FTHODO, NUM_DETECTOR_TYPES
 	};
 
 	std::string DetectorName(Detector_t type) const {
 		switch (type) {
-		case CALORIMETER:
-			return "Calorimeter";
+		case FTCAL:
+			return "FTCAL";
 			break;
-		case HODOSCOPE:
-			return "Hodoscope";
+		case FTHODO:
+			return "FTHODO";
 			break;
 		case UNKNOWN_DETECTOR:
 		default:
@@ -101,7 +95,7 @@ public:
 	 * readout = 1 ... Nreadouts when dealing with the sensors
 	 * */
 
-	class HODOSCOPE_Index_t: public JObject {
+	class FTHODO_Index_t: public JObject {
 	public:
 		int8_t sector;
 		int8_t layer;
@@ -125,13 +119,13 @@ public:
 		static const int nIDs() {
 			return 3;
 		}
-		inline bool isSameActive(const HODOSCOPE_Index_t &rhs) const {
+		inline bool isSameActive(const FTHODO_Index_t &rhs) const {
 			return (sector == rhs.sector) && (layer == rhs.layer) && (component == rhs.component);
 		}
-		inline bool operator==(const HODOSCOPE_Index_t &rhs) const {
+		inline bool operator==(const FTHODO_Index_t &rhs) const {
 			return isSameActive(rhs);
 		}
-		inline bool operator<(const HODOSCOPE_Index_t &rhs) const { //A.C. for the maps
+		inline bool operator<(const FTHODO_Index_t &rhs) const { //A.C. for the maps
 			if (sector > rhs.sector)
 				return true;
 			if (sector < rhs.sector)
@@ -147,16 +141,16 @@ public:
 			return false;
 		}
 		std::string name() const {
-			return "INT_Veto";
+			return "FTHODO";
 		}
 		std::string print() const {
 			char buf[50];
-			sprintf(buf, "Hodoscope sector: %i layer: %i component: %i", sector, layer, component);
+			sprintf(buf, "FTHODO sector: %i layer: %i component: %i", sector, layer, component);
 			return std::string(buf);
 		}
 	};
 
-	class CALO_Index_t: public JObject {
+	class FTCAL_Index_t: public JObject {
 	public:
 		int8_t sector;
 		int8_t x, y;
@@ -180,13 +174,13 @@ public:
 			return 3;
 		}
 
-		inline bool isSameActive(const CALO_Index_t &rhs) const {
+		inline bool isSameActive(const FTCAL_Index_t &rhs) const {
 			return (sector == rhs.sector) && (x == rhs.x) && (y == rhs.y);
 		}
-		inline bool operator==(const CALO_Index_t &rhs) const {
+		inline bool operator==(const FTCAL_Index_t &rhs) const {
 			return isSameActive(rhs);
 		}
-		inline bool operator<(const CALO_Index_t &rhs) const { //A.C. for the maps
+		inline bool operator<(const FTCAL_Index_t &rhs) const { //A.C. for the maps
 			if (sector > rhs.sector)
 				return true;
 			if (sector < rhs.sector)
@@ -202,11 +196,11 @@ public:
 			return false;
 		}
 		std::string name() const {
-			return "CALO";
+			return "FTCAL";
 		}
 		std::string print() const {
 			char buf[50];
-			sprintf(buf, "Calo sector: %i x: %i y: %i", sector, x, y);
+			sprintf(buf, "FTCAL sector: %i x: %i y: %i", sector, x, y);
 			return std::string(buf);
 		}
 	};
@@ -218,8 +212,8 @@ public:
 		//DModuleType::type_id_t module_type;
 		Detector_t det_sys;
 		union {
-			HODOSCOPE_Index_t *hodoscope;
-			CALO_Index_t *calorimeter;
+			FTHODO_Index_t *FTHODO;
+			FTCAL_Index_t *FTCAL;
 		};
 	};
 
@@ -267,9 +261,9 @@ private:
 	//Access is only available via the private member functions, thus access is fully controlled.
 	//They are shared amongst threads, so locks are necessary, but since they are private this class can handle it internally
 	/*pthread_mutex_t& Get_TT_Mutex(void) const;
-	 bool& Get_TT_Initialized(void) const;
-	 map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& Get_TT(
-	 void) const;*/
+	 bool& Get_TT_Initialized(void) const;*/
+
+	std::map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& Get_TT(void) const;
 
 };
 

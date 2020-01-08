@@ -5,32 +5,27 @@
 // Creator: celentan (on Linux apcx4 2.6.32-504.30.3.el6.x86_64 x86_64)
 //
 
-#ifndef _fa250WaveboardHit_
-#define _fa250WaveboardHit_
+#ifndef _fa250VTPMode7Hit_
+#define _fa250VTPMode7Hit_
 
 #include <JANA/JObject.h>
 #include <JANA/JFactory.h>
 #include "faHit.h"
+
 #include "chronoTypeDef.h"
 
 #include <vector>
 
 
-
-
-class faWaveboardHit: public faHit {
+class fa250VTPMode7Hit: public faHit {
 public:
 
 
-	faWaveboardHit(){};
-	virtual ~faWaveboardHit(){};
-	std::vector<uint16_t> samples; //these are the raw samples
-	float m_dT; //sampling time (ns)
+	fa250VTPMode7Hit(){};
+	virtual ~fa250VTPMode7Hit(){};
 
 	T4nsec m_time; //in ns
-
 	float m_charge; //as reported from the waveboard
-
 
 	virtual void Summarize(JObjectSummary& summary) const {
 		summary.add(m_channel.crate,"CRATE","%f","The crate id of this board");
