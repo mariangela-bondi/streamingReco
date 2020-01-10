@@ -43,7 +43,7 @@ void fa250VTPMode7Hit_factory::Process(const std::shared_ptr<const JEvent> &aEve
 
 	*/
 	for (auto hit : tridas_event->hits) {
-		if (hit.data.size() == 0) {
+		if (hit.type == fadcHit_TYPE::FA250VTPMODE7){
 			// Create a faWaveboardHit object;
 			auto faHit = new fa250VTPMode7Hit;
 

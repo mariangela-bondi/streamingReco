@@ -28,6 +28,7 @@ else:
 if os.environ.get('JANA_HOME') is not None:
     env['JANA_HOME'] = os.environ.get('JANA_HOME')
     env.Append(CPPPATH=["$JANA_HOME/src/lib"])
+    env.Append(LIBPATH=["$JANA_HOME/lib"])
 else:
     print("ERROR, JANA_HOME NOT DEFINED")
     exit
@@ -50,6 +51,8 @@ if (platform.system()=="Darwin"):
 	env.AppendUnique(LINKFLAGS='-flat_namespace')
 	env.AppendUnique(SHLINKFLAGS=['-undefined', 'suppress'])
  
+ 
+env.Append(CPPPATH=Dir('#/src/external').srcnode().abspath)
 env.Append(CPPPATH=Dir('#/src/libraries').srcnode().abspath)
 env.Append(CPPPATH=Dir('#/src/plugins').srcnode().abspath)
 env.Append(CPPPATH=Dir('#/.').srcnode().abspath)
@@ -62,10 +65,10 @@ env.Append(LINKFLAGS = '-rdynamic')
 
 Export('env debug mc_enable')
 
-
+libExt=SConscript('src/external/SConstruct')
 lib=SConscript('src/libraries/SConstruct')
-#progs=SConscript('src/programs/SConstruct')
-#plugins=SConscript('src/plugins/SConstruct')
+progs=SConscript('src/programs/SConstruct')
+plugins=SConscript('src/plugins/SConstruct')
 #users=SConscript('src/users/SConstruct')
 
 

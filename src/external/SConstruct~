@@ -1,0 +1,12 @@
+import glob
+Import('env debug et_enable')
+
+
+# Loop over libraries, building each
+#libs=['evioReader','TRIDAS']
+libs = ['TRIDAS']
+src=[]
+for lib in libs:
+    src=src+Glob(lib+'/*.cc')
+   
+env.SharedLibrary(source=src,target='#/lib/streamingRecoExt') 

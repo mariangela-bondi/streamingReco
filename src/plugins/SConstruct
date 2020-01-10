@@ -1,0 +1,29 @@
+from utils import *
+Import('env debug')
+
+plugins = getSubdirs('./')
+env_plugins=env.Clone()
+
+for plugin in plugins:
+    print  bcolors.OKBLUE,"Found plugin ",plugin,bcolors.ENDC
+    if (("rootspy" in plugin) and (et_enable == 0)):
+        print bcolors.RED,"Ignoring this since no ET support ",bcolors.ENDC
+        continue
+    #save the relative dir and the absolute dir
+    reldir = str(plugin)
+    absdir = Dir('#/src/plugins/'+reldir).srcnode().abspath   
+    #We do not want to increment "at libitum" CPPPATH
+    tmp_cpppath=env_plugins['CPPPATH'];    
+    env_plugins.Append(CPPPATH=absdir)
+    
+        #Add root dictionaries if necessary
+        #AddROOTdict(env,reldir,absdir)
+        
+        #Compile macros
+        #AddROOTSpyMacros(env_plugins,reldir,absdir)
+        
+        
+    plugin_src  = Glob(reldir+'/*.cc')
+    env_plugins.SharedLibrary(source=plugin_src,target='#/lib/plugins/'+plugin,SHLIBPREFIX='',SHLIBSUFFIX='.so')
+    env_plugins.Replace(CPPPATH = tmp_cpppath)        
+    

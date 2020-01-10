@@ -1,0 +1,13 @@
+import glob
+Import('env')
+
+# Loop over libraries, building each
+this_env=env.Clone()
+this_env.Prepend(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread"]) 
+
+
+progs=['streamingReco']
+for prog in progs:
+    src =Glob(prog+'/*.cc')
+    this_env.Program(source=src,target='#/bin/'+prog)	
+

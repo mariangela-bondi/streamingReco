@@ -27,7 +27,7 @@ void FTCalHit_factory::Init() {
 void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	jout<< "FTCalHit_factory::ChangeRun run number: ";
+	jout<< "FTCalHit_factory::ChangeRun run number: "<<aEvent->GetRunNumber()<<std::endl;
 	m_tt = 0;
 
 }
@@ -41,13 +41,13 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 	auto faHits_fa250VTPMode7 = aEvent->Get<fa250VTPMode7Hit>();
 
 	for (auto faHit : faHits_waveboard) {
-		m_channel = m_tt->getChannelInfo(faHit->m_channel);
-		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
+		//m_channel = m_tt->getChannelInfo(faHit->m_channel);
+		///if ((m_channel.det_sys == TranslationTable::FTCAL)) {
 
-		}
+		//}
 	}
 
-	for (auto faHit : faHits_fa250VTPMode7) {
+	/*for (auto faHit : faHits_fa250VTPMode7) {
 		m_channel = m_tt->getChannelInfo(faHit->m_channel);
 		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
 
@@ -66,7 +66,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 			mData.push_back(ftCalHit);
 		}
-	}
+	}*/
 
 
 }
