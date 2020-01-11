@@ -40,7 +40,8 @@
 #include "JEventProcessor_HallB_FT.h"
 
 #include "FT/FTCalHit.h"
-
+#include "DAQ/TridasEvent.h"
+#include "DAQ/faWaveboardHit.h"
 //---------------------------------
 // JEventProcessor_HallB_FT    (Constructor)
 //---------------------------------
@@ -86,8 +87,10 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 
 	auto hits = aEvent->Get<FTCalHit>();
 	for (auto hit : hits){
-		std::cout<<hit->m_channel.sector<<std::endl;
+		std::cout<<1.*hit->m_channel.sector<<std::endl;
 	}
+
+	//auto TridasEvents = aEvent->Get<TridasEvent>();
 
 }
 

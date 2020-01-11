@@ -3,7 +3,7 @@ Import('env')
 
 # Loop over libraries, building each
 this_env=env.Clone()
-this_env.Prepend(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread"]) 
+this_env.Prepend(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread","ccdb"]) 
 
 
 progs=['streamingReco']

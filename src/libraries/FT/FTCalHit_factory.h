@@ -10,7 +10,7 @@
 
 #include "JANA/JFactoryT.h"
 #include "FTCalHit.h"
-
+#include "TT/TranslationTable.h"
 class TranslationTable;
 
 class FTCalHit_factory: public JFactoryT<FTCalHit> {
@@ -28,7 +28,7 @@ public:
 private:
 
 
-	TranslationTable *m_tt;
+	TranslationTable const *m_tt;
 };
 
 #endif /* SRC_LIBRARIES_FT_FTCALHIT_FACTORY_H_ */

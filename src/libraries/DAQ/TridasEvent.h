@@ -13,7 +13,7 @@
  * This is supposed to not change during time.
  */
 
-typedef enum fadcHit_TYPE {
+enum fadcHit_TYPE {
 	WAVEBOARD = 0x00, FA250VTPMODE7 = 0x01
 };
 

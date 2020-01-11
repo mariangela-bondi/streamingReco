@@ -40,6 +40,14 @@ else:
     print("ERROR, BOOSTROOT NOT DEFINED")
     exit    
 
+if os.environ.get('CCDB_HOME') is not None:
+    env['CCDB_HOME'] = os.environ.get('CCDB_HOME')
+    env.Append(CPPPATH=["$CCDB_HOME/include"])
+    env.Append(LIBPATH=["$CCDB_HOME/lib"])
+else:
+    print("ERROR, CCDB_HOME NOT DEFINED")
+    exit    
+
 debug = ARGUMENTS.get('debug', 0)
 if int(debug):
    print "DEBUG IS ON"

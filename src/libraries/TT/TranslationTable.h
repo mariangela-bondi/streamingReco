@@ -11,11 +11,15 @@
 #include <map>
 #include <iostream>
 #include "JANA/JObject.h"
+
+
+class JApplication;
+class JCalibrationManager;
 class TranslationTable: public JObject {
 
 public:
 
-	TranslationTable();
+	TranslationTable(JApplication *app,int runN);
 	~TranslationTable();
 
 	// Each detector system has its own native indexing scheme.
@@ -97,10 +101,10 @@ public:
 
 	class FTHODO_Index_t: public JObject {
 	public:
-		int8_t sector;
-		int8_t layer;
-		int8_t component;
-		int8_t& ID(int n) {
+		int sector;
+		int layer;
+		int component;
+		int& ID(int n) {
 			switch (n) {
 			case 0:
 				return sector;
@@ -152,18 +156,19 @@ public:
 
 	class FTCAL_Index_t: public JObject {
 	public:
-		int8_t sector;
-		int8_t x, y;
-		int8_t& ID(int n) {
+		int sector;
+		int layer;
+		int component;
+		int& ID(int n) {
 			switch (n) {
 			case 0:
 				return sector;
 				break;
 			case 1:
-				return x;
+				return layer;
 				break;
 			case 2:
-				return y;
+				return component;
 				break;
 			default:
 				std::cerr << "Wrong id" << std::endl;
@@ -175,7 +180,7 @@ public:
 		}
 
 		inline bool isSameActive(const FTCAL_Index_t &rhs) const {
-			return (sector == rhs.sector) && (x == rhs.x) && (y == rhs.y);
+			return (sector == rhs.sector) && (layer == rhs.layer) && (component == rhs.component);
 		}
 		inline bool operator==(const FTCAL_Index_t &rhs) const {
 			return isSameActive(rhs);
@@ -185,13 +190,13 @@ public:
 				return true;
 			if (sector < rhs.sector)
 				return false;
-			if (x > rhs.x)
+			if (layer > rhs.layer)
 				return true;
-			if (x < rhs.x)
+			if (layer < rhs.layer)
 				return false;
-			if (y > rhs.y)
+			if (component > rhs.component)
 				return true;
-			if (y < rhs.y)
+			if (component < rhs.component)
 				return false;
 			return false;
 		}
@@ -200,7 +205,7 @@ public:
 		}
 		std::string print() const {
 			char buf[50];
-			sprintf(buf, "FTCAL sector: %i x: %i y: %i", sector, x, y);
+			sprintf(buf, "FTCAL sector: %i x: %i y: %i", sector, layer, component);
 			return std::string(buf);
 		}
 	};
@@ -223,19 +228,23 @@ public:
 
 	}
 
-	//void ReadTranslationTable(JCalibration *jcalib = NULL);
+	void ReadTranslationTableHALLB();
 
 	/*Here goes the methods to return the channel info (detector name / detector-specific id) given the csc*/
 	TranslationTable::ChannelInfo getChannelInfo(const csc_t &csc) const;
 	TranslationTable::ChannelInfo getChannelInfo(int crate, int slot, int channel) const;
 
 protected:
-	std::string XML_FILENAME;
+/*	std::string XML_FILENAME;
 	bool NO_CCDB;
 	std::set<std::string> supplied_data_types;
 	int VERBOSE;
 	std::string SYSTEMS_TO_PARSE;
-	std::string ROCID_MAP_FILENAME;
+	std::string ROCID_MAP_FILENAME;*/
+
+	int VERBOSE;
+	int m_runN;
+	JApplication* m_japp;
 
 	//mutable JStreamLog ttout;
 
@@ -260,8 +269,8 @@ private:
 	//Thus the static variables themselves only have function scope.
 	//Access is only available via the private member functions, thus access is fully controlled.
 	//They are shared amongst threads, so locks are necessary, but since they are private this class can handle it internally
-	/*pthread_mutex_t& Get_TT_Mutex(void) const;
-	 bool& Get_TT_Initialized(void) const;*/
+	pthread_mutex_t& Get_TT_Mutex(void) const;
+	 bool& Get_TT_Initialized(void) const;
 
 	std::map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& Get_TT(void) const;
 

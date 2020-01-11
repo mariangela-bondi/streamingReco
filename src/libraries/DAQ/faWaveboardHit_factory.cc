@@ -28,7 +28,7 @@ void faWaveboardHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEve
 void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	auto tridas_event = aEvent->GetSingle<TridasEvent>();
-	//loop over the hits in the tridas event
+
 
 	for (auto hit : tridas_event->hits) {
 		if (hit.type == fadcHit_TYPE::WAVEBOARD) {

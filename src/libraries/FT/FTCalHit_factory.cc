@@ -27,8 +27,9 @@ void FTCalHit_factory::Init() {
 void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	jout<< "FTCalHit_factory::ChangeRun run number: "<<aEvent->GetRunNumber()<<std::endl;
-	m_tt = 0;
+	std::cout<< "FTCalHit_factory::ChangeRun run number: "<<aEvent->GetRunNumber()<<" "<<aEvent->GetEventNumber()<<std::endl;
+	m_tt = aEvent->GetSingle<TranslationTable>();
+
 
 }
 void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
@@ -41,20 +42,20 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 	auto faHits_fa250VTPMode7 = aEvent->Get<fa250VTPMode7Hit>();
 
 	for (auto faHit : faHits_waveboard) {
-		//m_channel = m_tt->getChannelInfo(faHit->m_channel);
-		///if ((m_channel.det_sys == TranslationTable::FTCAL)) {
-
-		//}
+		m_channel = m_tt->getChannelInfo(faHit->m_channel);
+		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
+			//Convert the waveboard hit. Probably will never be used, unless we will perform FT tests with waveboard.
+		}
 	}
 
-	/*for (auto faHit : faHits_fa250VTPMode7) {
+	for (auto faHit : faHits_fa250VTPMode7) {
 		m_channel = m_tt->getChannelInfo(faHit->m_channel);
 		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
 
 			//Create a new FTCal Hit Object object
 			auto ftCalHit = new FTCalHit();
 
-			//Assign the channel
+			//Assign the channel (since this comes from the TT, it is still sector-layer-component)
 			ftCalHit->m_channel=*(m_channel.FTCAL);
 
 			//Assign the time
@@ -63,10 +64,11 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			//Assign the energy
 			ftCalHit->setEnergy(faHit->m_charge);
 
+			//Eventually add here the conversion to further indexes as iX and iY. Eventually, modify the TT.
 
 			mData.push_back(ftCalHit);
 		}
-	}*/
+	}
 
 
 }

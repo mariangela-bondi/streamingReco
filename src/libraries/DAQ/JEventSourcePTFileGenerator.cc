@@ -17,7 +17,7 @@ JEventSource* JEventSourcePTFileGenerator::MakeJEventSource(std::string source) 
 
 	int m_isMC = 0;
 	if (m_isMC == 0) {
-		jout<< "JEventSourcePTFileGenerator::MakeJEventSource for DATA " << endl;
+		std::cout<< "JEventSourcePTFileGenerator::MakeJEventSource for DATA " << std::endl;
 		return new JEventSourcePTFile(source, mApplication );
 	} else {
 		std::cerr << "MC - TRIDAS format not yet supported!!" << std::endl;
@@ -35,10 +35,10 @@ double JEventSourcePTFileGenerator::CheckOpenable(string source) {
 	// Typically, this will just check the file suffix.
 
 	if (source.find("pt") != std::string::npos) {
-		std::cout << "JEventSourcePTFileGenerator: source name " << source << " contains \"pt\" substring. Open it" << endl;
+		std::cout << "JEventSourcePTFileGenerator: source name " << source << " contains \"pt\" substring. Open it" << std::endl;
 		return 1.0;
 	} else {
-		std::cout << "JEventSourcePTFileGenerator failed on source " << source << endl;
+		std::cout << "JEventSourcePTFileGenerator failed on source " << source << std::endl;
 		return 0.0;
 	}
 }

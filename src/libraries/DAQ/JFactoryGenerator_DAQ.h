@@ -6,7 +6,7 @@
 
 #include "DAQ/faWaveboardHit_factory.h"
 #include "DAQ/fa250VTPMode7Hit_factory.h"
-
+#include "DAQ/TridasEvent.h"
 
 class JFactoryGenerator_DAQ:public JFactoryGenerator{
 	public:
@@ -14,6 +14,7 @@ class JFactoryGenerator_DAQ:public JFactoryGenerator{
 	void GenerateFactories(JFactorySet *factory_set){
 		factory_set->Add(new faWaveboardHit_factory());
 		factory_set->Add(new fa250VTPMode7Hit_factory());
+	//	factory_set->Add(new JFactoryT<TridasEvent>());
 	}
 };
 

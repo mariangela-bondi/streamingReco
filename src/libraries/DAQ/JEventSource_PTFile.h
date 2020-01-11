@@ -40,7 +40,7 @@ public:
 
 	void Open(void);
 	void GetEvent(std::shared_ptr<JEvent>);
-	bool GetObjects(const std::shared_ptr<const JEvent>& aEvent, JFactory* aFactory);
+	//bool GetObjects(const std::shared_ptr<const JEvent>& aEvent, JFactory* aFactory);
 
 
 };
