@@ -159,6 +159,7 @@ public:
 		int sector;
 		int layer;
 		int component;
+		int8_t iX,iY; //these two are not used to in the == and < operators, but are here for convenience.
 		int& ID(int n) {
 			switch (n) {
 			case 0:

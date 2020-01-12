@@ -55,16 +55,24 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			//Create a new FTCal Hit Object object
 			auto ftCalHit = new FTCalHit();
 
-			//Assign the channel (since this comes from the TT, it is still sector-layer-component)
+			//Assign the channel
+			//Since this comes from the TT, it is still sector-layer-component)
 			ftCalHit->m_channel=*(m_channel.FTCAL);
+
+			//Here set iX and iY
+			//(see https://github.com/JeffersonLab/clas12-offline-software/blob/development/reconstruction/ft/src/main/java/org/jlab/rec/ft/cal/FTCALHit.java#L40-L41)
+			ftCalHit->m_channel.iY = (ftCalHit->m_channel.component/22) + 1;
+			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component+1) - (ftCalHit->m_channel.iY-1)*22;
+
+
 
 			//Assign the time
 			ftCalHit->setTime(faHit->m_time);
 
 			//Assign the energy
+			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
 			ftCalHit->setEnergy(faHit->m_charge);
 
-			//Eventually add here the conversion to further indexes as iX and iY. Eventually, modify the TT.
 
 			mData.push_back(ftCalHit);
 		}
