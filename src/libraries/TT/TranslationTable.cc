@@ -26,9 +26,7 @@ map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& TranslationTable::G
 }
 
 TranslationTable::TranslationTable(JApplication *app, int runN) :
-		m_japp(app), m_runN(runN) {
-
-	VERBOSE=0;
+		m_japp(app), m_runN(runN),m_verbose(0) {
 	/*In preparation for multiple runs, in different configurations, we foresee diffeent ways to read in the translation table.
 	 * We use the parameter RUNTYPE to do this (RUNTYPE may be used also somewhere else)
 	 *
@@ -57,6 +55,8 @@ TranslationTable::TranslationTable(JApplication *app, int runN) :
 	} else {
 		throw JException("RUNTYPE PARAMETER NOT SUPPORTED BY TranslationTable");
 	}
+
+
 }
 
 void TranslationTable::ReadTranslationTableHALLB() {
@@ -84,8 +84,8 @@ void TranslationTable::ReadTranslationTableHALLB() {
 	for (auto line : ttdata) {
 		TranslationTable::csc_t csc;
 		csc.crate = line["crate"];
-		csc.crate = line["slot"];
-		csc.channel = line["channel"];
+		csc.slot = line["slot"];
+		csc.channel = line["chan"];
 
 		TranslationTable::ChannelInfo ch;
 		ch.det_sys = TranslationTable::FTCAL;
@@ -108,15 +108,15 @@ void TranslationTable::ReadTranslationTableHALLB() {
 	for (auto line : ttdata) {
 		TranslationTable::csc_t csc;
 		csc.crate = line["crate"];
-		csc.crate = line["slot"];
-		csc.channel = line["channel"];
+		csc.slot = line["slot"];
+		csc.channel = line["chan"];
 
 		TranslationTable::ChannelInfo ch;
 		ch.det_sys = TranslationTable::FTHODO;
-		ch.FTCAL = new TranslationTable::FTCAL_Index_t;
-		ch.FTCAL->sector = line["sector"];
-		ch.FTCAL->layer = line["layer"];
-		ch.FTCAL->component = line["component"];
+		ch.FTHODO = new TranslationTable::FTHODO_Index_t;
+		ch.FTHODO->sector = line["sector"];
+		ch.FTHODO->layer = line["layer"];
+		ch.FTHODO->component = line["component"];
 
 		//insert into TT data - [] operator creates a new entry in map
 		Get_TT()[csc] = ch;
@@ -278,8 +278,9 @@ TranslationTable::ChannelInfo TranslationTable::getChannelInfo(const csc_t &csc)
 	TranslationTable::ChannelInfo m_channel;
 	/*Get the map, search for csc, return an iterator*/
 	map<csc_t, ChannelInfo>::const_iterator iter = Get_TT().find(csc);
+
 	if (iter == Get_TT().end()) {
-		if (VERBOSE > 6) {
+		if (m_verbose > 6) {
 			std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
 			std::cout << "    - Didn't find it" << std::endl;
 		}
@@ -287,10 +288,10 @@ TranslationTable::ChannelInfo TranslationTable::getChannelInfo(const csc_t &csc)
 		return m_channel;
 	}
 	const ChannelInfo &chaninfo = iter->second;
-	if (VERBOSE > 6) {
+	/*if (m_verbose > 6) { //TODO!!
 		std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
-		std::cout << "     - Found entry for: " << DetectorName(chaninfo.det_sys) << std::endl;
-	}
+		std::cout <<"     - Found entry for: " << DetectorName(chaninfo.det_sys) <<" "<<this<<" "<<m_verbose<<std::endl;
+	}*/
 	m_channel = chaninfo;
 	return m_channel;
 }
@@ -300,7 +301,6 @@ TranslationTable::ChannelInfo TranslationTable::getChannelInfo(int crate, int sl
 	csc.setCrateSlotChannel(crate, slot, channel);
 	return this->getChannelInfo(csc);
 }
-
 //---------------------------------
 // DetectorStr2DetID
 //---------------------------------

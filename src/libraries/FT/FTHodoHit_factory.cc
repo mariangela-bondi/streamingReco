@@ -5,33 +5,33 @@
  *      Author: celentan
  */
 
-#include "FTCalHit_factory.h"
+#include "FTHodoHit_factory.h"
 #include "JANA/JEvent.h"
 
 #include "DAQ/faWaveboardHit.h"
 #include "DAQ/fa250VTPMode7Hit.h"
 #include "TT/TranslationTable.h"
 
-FTCalHit_factory::FTCalHit_factory() {
+FTHodoHit_factory::FTHodoHit_factory() {
 	// TODO Auto-generated constructor stub
 	m_tt = 0;
 }
 
-FTCalHit_factory::~FTCalHit_factory() {
+FTHodoHit_factory::~FTHodoHit_factory() {
 	// TODO Auto-generated destructor stub
 }
 
-void FTCalHit_factory::Init() {
+void FTHodoHit_factory::Init() {
 
 }
-void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
+void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << aEvent->GetEventNumber() << std::endl;
+	std::cout << "FTHodoHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << aEvent->GetEventNumber() << std::endl;
 	m_tt = aEvent->GetSingle<TranslationTable>();
 
 }
-void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
+void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	TranslationTable::ChannelInfo m_channel;
 	TranslationTable::csc_t m_csc;
@@ -42,7 +42,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	for (auto faHit : faHits_waveboard) {
 		//Add here temporary code to change from the crate-slot-channel in the file I provided to Cristiano to
-		//something that is realistic according to the real FT-CAL geometry
+		//something that is realistic according to the real FT-Hodo geometry
 
 #define TEST_CODE
 		//Crate - slot - channel - id - x - y - hodo_sector - hodo_component - hodo_l1_slot - hodo_l1_channel - hodo_l2_slot - hodo_l2_channel
@@ -74,63 +74,59 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 		} else {
 			m_csc.crate = 72; // hodo crate to not have the TT library reporting errors
 			m_csc.slot = 6;
-			m_csc.channel = 1;
+			if (faHit->m_channel.channel==10){
+				m_csc.channel = 1;
+			}else{
+				m_csc.channel = 14;
+			}
 		}
 #endif
 		m_channel = m_tt->getChannelInfo(m_csc);
 
-		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
+		if ((m_channel.det_sys == TranslationTable::FTHODO)) {
 			//Convert the waveboard hit. Probably will never be used, unless we will perform FT tests with waveboard.
 			//It is used to test the system with data from a waveboard
 
-			//Create a new FTCal Hit Object object
-			auto ftCalHit = new FTCalHit();
+			//Create a new FTHodo Hit Object object
+			auto ftHodoHit = new FTHodoHit();
 
 			//Assign the channel
 			//Since this comes from the TT, it is still sector-layer-component)
-			ftCalHit->m_channel = *(m_channel.FTCAL);
+			ftHodoHit->m_channel = *(m_channel.FTHODO);
 
-			//Here set iX and iY
-			//(see https://github.com/JeffersonLab/clas12-offline-software/blob/development/reconstruction/ft/src/main/java/org/jlab/rec/ft/cal/FTCALHit.java#L40-L41)
-			ftCalHit->m_channel.iY = (ftCalHit->m_channel.component / 22) + 1;
-			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setTime(faHit->m_time);
+			ftHodoHit->setTime(faHit->m_time);
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
-			ftCalHit->setEnergy(faHit->m_charge);
+			ftHodoHit->setEnergy(faHit->m_charge);
 
-			mData.push_back(ftCalHit);
+			mData.push_back(ftHodoHit);
 		}
 	}
 
-	//Here is the important part - converting the faHit from VTPMode7 to ftCalHit
+	//Here is the important part - converting the faHit from VTPMode7 to ftHodoHit
 	for (auto faHit : faHits_fa250VTPMode7) {
 		m_channel = m_tt->getChannelInfo(faHit->m_channel);
-		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
+		if ((m_channel.det_sys == TranslationTable::FTHODO)) {
 
-			//Create a new FTCal Hit Object object
-			auto ftCalHit = new FTCalHit();
+			//Create a new FTHodo Hit Object object
+			auto ftHodoHit = new FTHodoHit();
 
 			//Assign the channel
 			//Since this comes from the TT, it is still sector-layer-component)
-			ftCalHit->m_channel = *(m_channel.FTCAL);
+			ftHodoHit->m_channel = *(m_channel.FTHODO);
 
-			//Here set iX and iY
-			//(see https://github.com/JeffersonLab/clas12-offline-software/blob/development/reconstruction/ft/src/main/java/org/jlab/rec/ft/cal/FTCALHit.java#L40-L41)
-			ftCalHit->m_channel.iY = (ftCalHit->m_channel.component / 22) + 1;
-			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setTime(faHit->m_time);
+			ftHodoHit->setTime(faHit->m_time);
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
-			ftCalHit->setEnergy(faHit->m_charge);
+			ftHodoHit->setEnergy(faHit->m_charge);
 
-			mData.push_back(ftCalHit);
+			mData.push_back(ftHodoHit);
 		}
 	}
 

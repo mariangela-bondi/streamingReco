@@ -40,8 +40,7 @@
 #include "JEventProcessor_HallB_FT.h"
 
 #include "FT/FTCalHit.h"
-#include "DAQ/TridasEvent.h"
-#include "DAQ/faWaveboardHit.h"
+#include "FT/FTHodoHit.h"
 //---------------------------------
 // JEventProcessor_HallB_FT    (Constructor)
 //---------------------------------
@@ -85,13 +84,16 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 	//  ... fill histograms or trees ...
 	// }
 
-	auto hits = aEvent->Get<FTCalHit>();
-	for (auto hit : hits){
-		std::cout<<1.*hit->m_channel.sector<<std::endl;
+	std::cout<<"event start"<<std::endl;
+	auto calhits = aEvent->Get<FTCalHit>();
+	for (auto calhit : calhits){
+		std::cout<<1.*calhit->m_channel.sector<<" "<<1.*calhit->m_channel.iX<<" "<<1.*calhit->m_channel.iY<<std::endl;
 	}
-
-	//auto TridasEvents = aEvent->Get<TridasEvent>();
-
+	auto hodohits = aEvent->Get<FTHodoHit>();
+	for (auto hodohit : hodohits){
+		std::cout<<1.*hodohit->m_channel.sector<<" "<<1.*hodohit->m_channel.layer<<" "<<1.*hodohit->m_channel.component<<std::endl;
+	}
+	std::cout<<"OK"<<std::endl;
 }
 
 //------------------

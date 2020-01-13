@@ -12,14 +12,12 @@
 #include <iostream>
 #include "JANA/JObject.h"
 
-
 class JApplication;
 class JCalibrationManager;
 class TranslationTable: public JObject {
 
 public:
-
-	TranslationTable(JApplication *app,int runN);
+	TranslationTable(JApplication *app, int runN);
 	~TranslationTable();
 
 	// Each detector system has its own native indexing scheme.
@@ -159,7 +157,7 @@ public:
 		int sector;
 		int layer;
 		int component;
-		int8_t iX,iY; //these two are not used to in the == and < operators, but are here for convenience.
+		int8_t iX, iY; //these two are not used to in the == and < operators, but are here for convenience.
 		int& ID(int n) {
 			switch (n) {
 			case 0:
@@ -206,7 +204,7 @@ public:
 		}
 		std::string print() const {
 			char buf[50];
-			sprintf(buf, "FTCAL sector: %i x: %i y: %i", sector, layer, component);
+			sprintf(buf, "FTCAL sector: %i x: %i y: %i", sector, iX, iY);
 			return std::string(buf);
 		}
 	};
@@ -235,21 +233,12 @@ public:
 	TranslationTable::ChannelInfo getChannelInfo(const csc_t &csc) const;
 	TranslationTable::ChannelInfo getChannelInfo(int crate, int slot, int channel) const;
 
-protected:
-/*	std::string XML_FILENAME;
-	bool NO_CCDB;
-	std::set<std::string> supplied_data_types;
-	int VERBOSE;
-	std::string SYSTEMS_TO_PARSE;
-	std::string ROCID_MAP_FILENAME;*/
-
-	int VERBOSE;
-	int m_runN;
-	JApplication* m_japp;
-
-	//mutable JStreamLog ttout;
+	int GetVerbose() const{return m_verbose;};
 
 private:
+	int m_verbose;
+	int m_runN;
+	JApplication* m_japp;
 
 	/****************************************** STATIC-VARIABLE-ACCESSING PRIVATE MEMBER FUNCTIONS ******************************************/
 
@@ -270,9 +259,9 @@ private:
 	//Thus the static variables themselves only have function scope.
 	//Access is only available via the private member functions, thus access is fully controlled.
 	//They are shared amongst threads, so locks are necessary, but since they are private this class can handle it internally
-	pthread_mutex_t& Get_TT_Mutex(void) const;
-	 bool& Get_TT_Initialized(void) const;
 
+	pthread_mutex_t& Get_TT_Mutex(void) const;
+	bool& Get_TT_Initialized(void) const;
 	std::map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& Get_TT(void) const;
 
 };
