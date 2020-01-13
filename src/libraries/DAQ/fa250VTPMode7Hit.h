@@ -31,7 +31,6 @@ public:
 		summary.add(m_channel.crate,"CRATE","%f","The crate id of this board");
 		summary.add(m_channel.slot,"SLOT","%f","The slot of this board");
 		summary.add(m_channel.channel,"CHANNEL","%f","The channel");
-
 };
 
 //void toHisto(TH1D *h) const;

@@ -37,28 +37,36 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-
-#ifndef _FTCalCluster_h_
-#define _FTCalCluster_h_
+#ifndef _TriggerDecision_h_
+#define _TriggerDecision_h_
 
 #include <JANA/JObject.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /// Brief class description.
+/// This holds the result of a certain Trigger Decision, that is here implemented as a (tagged) factory.
+/// In this way, I can design the code jtridas to get ALL trigger decisions (ideally, one per tagged factory),
+/// and then determine what to do, without having to know how many trigger decisions will be implemented.
 ///
 /// Detailed class description.
 //////////////////////////////////////////////////////////////////////////////////////////////////
-class FTCalCluster : public JObject{
-	public:
-		FTCalCluster();
-		virtual ~FTCalCluster();
-		
-	protected:
-	
-	
-	private:
+class TriggerDecision: public JObject {
+public:
+	TriggerDecision();
+	virtual ~TriggerDecision();
 
+	bool GetDecision() const{return decision;};
+	void SetDecision(bool val=true){decision=val;};
+
+	std::string GetDescription()const{return description;};
+	void SetDescription(std::string val){description=val;};
+
+protected:
+
+private:
+	bool decision;
+	std::string description;
 };
 
-#endif // _FTCalCluster_h_
+#endif // _TriggerDecision_h_
 

@@ -24,6 +24,8 @@ for plugin in plugins:
         
         
     plugin_src  = Glob(reldir+'/*.cc')
+   
+    env_plugins.Prepend(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread","ccdb"]) 
     env_plugins.SharedLibrary(source=plugin_src,target='#/lib/plugins/'+plugin,SHLIBPREFIX='',SHLIBSUFFIX='.so')
     env_plugins.Replace(CPPPATH = tmp_cpppath)        
     

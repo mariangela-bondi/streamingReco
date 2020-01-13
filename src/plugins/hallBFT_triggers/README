@@ -1,0 +1,4 @@
+#This plugin is supposed to create ALL the factories for hallB tests with FT triggers
+#The idea behind using a plugin is the following:
+## The main reconstruction code can stay inside the reconstruction framework, in the "FT" folder. Eventually, it won't get called
+## Here we place only the TriggerDecision factories
