@@ -85,10 +85,12 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 	// }
 
 	std::cout<<"event start"<<std::endl;
+	std::cout<<"CAL"<<std::endl;
 	auto calhits = aEvent->Get<FTCalHit>();
 	for (auto calhit : calhits){
 		std::cout<<1.*calhit->m_channel.sector<<" "<<1.*calhit->m_channel.iX<<" "<<1.*calhit->m_channel.iY<<std::endl;
 	}
+	std::cout<<"HODO"<<std::endl;
 	auto hodohits = aEvent->Get<FTHodoHit>();
 	for (auto hodohit : hodohits){
 		std::cout<<1.*hodohit->m_channel.sector<<" "<<1.*hodohit->m_channel.layer<<" "<<1.*hodohit->m_channel.component<<std::endl;
