@@ -1,6 +1,7 @@
 // Do NOT change. Changes will be lost next time file is generated
 
 #define R__DICTIONARY_FILENAME srcdIpluginsdIrootspymIclientdIRScint_Dict
+#define R__NO_DEPRECATION
 
 /*******************************************************************/
 #include <stddef.h>
@@ -33,7 +34,7 @@
 
 #include "TDataMember.h"
 
-// Since CINT ignores the std namespace, we need to do so in this file.
+// The generated code does not explicitly qualifies STL entities
 namespace std {} using namespace std;
 
 // Header files passed as explicit arguments
@@ -161,22 +162,21 @@ namespace {
 0
     };
     static const char* includePaths[] = {
-"/project/Gruppo3/fiber6/streaming/JANA2/src/lib",
-"/project/Gruppo3/fiber6/streaming/boost/include",
-"/project/Gruppo3/fiber6/apps/jlab_software_20160107/2.0/Linux_CentOS7.6.1810-x86_64-gcc8.2.0/ccdb/ccdb-1.06.00/include",
-"/project/Gruppo3/fiber6/apps/jlab_software_20160107/2.0/Linux_CentOS7.6.1810-x86_64-gcc8.2.0/root/6.14.04/include",
-"/auto_data/fiber6/streaming/streamingReco/src/external",
-"/auto_data/fiber6/streaming/streamingReco/src/libraries",
-"/auto_data/fiber6/streaming/streamingReco/src/plugins",
-"/auto_data/fiber6/streaming/streamingReco",
-"/auto_data/fiber6/streaming/streamingReco/src/external/cMsg-3.6/src/regexp",
-"/auto_data/fiber6/streaming/streamingReco/src/external/cMsg-3.6/src/libsrc",
-"/auto_data/fiber6/streaming/streamingReco/src/external/cMsg-3.6/src/libsrc++",
-"/auto_data/fiber6/streaming/streamingReco/src/external/RootSpy/src/libRootSpy",
-"/auto_data/fiber6/streaming/streamingReco/src/external/RootSpy/src/libRootSpy-client",
-"/auto_data/fiber6/streaming/streamingReco/src/plugins/rootspy-client",
-"/auto_data/fiber6/apps/jlab_software_20160107/2.0/Linux_CentOS7.3.1611-x86_64-gcc8.2.0/root/6.14.04/include",
-"/auto_data/fiber6/streaming/streamingReco/",
+"/Users/celentan/work/streaming/JANA2//src/lib",
+"/System/Volumes/Data/work/jlab_software/2.0/Darwin_macosx10.15-x86_64-clang11.0.0/ccdb/ccdb-1.06.00/include",
+"/System/Volumes/Data/work/jlab_software/2.0/Darwin_macosx10.15-x86_64-clang11.0.0/root/6.18.04/include",
+"/System/Volumes/Data/work/streaming/streamingReco/src/external",
+"/System/Volumes/Data/work/streaming/streamingReco/src/libraries",
+"/System/Volumes/Data/work/streaming/streamingReco/src/plugins",
+"/System/Volumes/Data/work/streaming/streamingReco",
+"/System/Volumes/Data/work/streaming/streamingReco/src/external/cMsg-3.6/src/regexp",
+"/System/Volumes/Data/work/streaming/streamingReco/src/external/cMsg-3.6/src/libsrc",
+"/System/Volumes/Data/work/streaming/streamingReco/src/external/cMsg-3.6/src/libsrc++",
+"/System/Volumes/Data/work/streaming/streamingReco/src/external/RootSpy/src/libRootSpy",
+"/System/Volumes/Data/work/streaming/streamingReco/src/external/RootSpy/src/libRootSpy-client",
+"/System/Volumes/Data/work/streaming/streamingReco/src/plugins/rootspy-client",
+"/System/Volumes/Data/work/jlab_software/2.0/Darwin_macosx10.14-x86_64-clang10.0.0/root/6.18.04/include",
+"/System/Volumes/Data/work/streaming/streamingReco/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(
@@ -190,11 +190,9 @@ class __attribute__((annotate("$clingAutoload$src/plugins/rootspy-client/RScint.
     static const char* payloadCode = R"DICTPAYLOAD(
 #line 1 "RScint_Dict dictionary payload"
 
-#ifndef G__VECTOR_HAS_CLASS_ITERATOR
-  #define G__VECTOR_HAS_CLASS_ITERATOR 1
-#endif
 
 #define _BACKWARD_BACKWARD_WARNING_H
+// Inline headers
 #include "src/plugins/rootspy-client/RScint.h"
 
 #undef  _BACKWARD_BACKWARD_WARNING_H

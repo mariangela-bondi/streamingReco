@@ -30,7 +30,9 @@ for plugin in plugins:
         
         
     plugin_src  = Glob(reldir+'/*.cc')
-    env_plugins.AppendUnique(LINKFLAGS='-Wl,-z,defs') #Very important to make sure we won't get errors at run time
+    if (platform.system()!="Darwin"):
+    	env_plugins.AppendUnique(LINKFLAGS='-Wl,-z,defs') #Very important to make sure we won't get errors at run time
+    
     env_plugins.Append(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread","ccdb"]) 
     env_plugins.SharedLibrary(source=plugin_src,target='#/lib/plugins/'+plugin,SHLIBPREFIX='',SHLIBSUFFIX='.so')
     env_plugins.Replace(CPPPATH = tmp_cpppath)        
