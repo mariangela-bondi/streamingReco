@@ -69,9 +69,4 @@ void FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) 
 				mData.push_back(clusters[i]);
 			}
 	}
-
-
-//	std::cout <<"mData.size()= " <<mData.size() <<std::endl;
-//	std::cout <<"Event end "<<std::endl<<std::endl<<std::endl;
-
 }

@@ -71,36 +71,34 @@ public:
 		this->time = time;
 	}
 
-	int getHitX() const{
-		return this->m_channel.iX;
+	double getHitX() const{
+		return  _X;
 	}
 
-	int getHitY() const{
-		return this->m_channel.iY;
+	double getHitY() const{
+		return _Y;
 	}
 
-	double getHitDx() const{
-		return Dx;
+
+	int getHitIX() const{
+		return m_channel.iX;
 	}
 
-	double getHitDy() const{
-		return Dy;
-	}
-	double getHitDz() const{
-		return Dz;
+	int getHitIY() const{
+		return m_channel.iY;
 	}
 
-	void setHitDx(double value){
-		Dx=value;
+
+	double getHitZ() const{
+		return _Z;
 	}
 
-	void setHitDy(double value){
-		Dy=value;
-	}
+	void setHitX(double x){_X=x;}
+	void setHitY(double y){_Y=y;}
+	void setHitZ(double z){_Z=z;}
 
-	void setHitDz(double value){
-		Dz=value;
-	}
+
+
 
 	TranslationTable::FTCAL_Index_t m_channel;
 
@@ -109,9 +107,12 @@ protected:
 private:
 	T4nsec time;
 	float energy;
-	double Dx;
-	double Dy;
-	double Dz;
+
+	double _X,_Y,_Z;
+
+
+
+
 };
 
 #endif // _FTCalHit_h_

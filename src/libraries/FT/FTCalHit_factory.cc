@@ -15,6 +15,13 @@
 FTCalHit_factory::FTCalHit_factory() {
 	// TODO Auto-generated constructor stub
 	m_tt = 0;
+
+	//These parameters are hard-coded in java recon
+	// GEOMETRY PARAMETERS
+	CRYS_DELTA = 11.5;
+	CRYS_WIDTH = 15.3;													  // crystal width in mm
+	CRYS_LENGTH = 200.;													  // crystal length in mm
+	CRYS_ZPOS = 1898.;
 }
 
 FTCalHit_factory::~FTCalHit_factory() {
@@ -42,7 +49,6 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	for (auto faHit : faHits_waveboard) {
 
-
 		m_channel = m_tt->getChannelInfo(m_csc);
 
 		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
@@ -67,6 +73,14 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
 			ftCalHit->setHitEnergy(faHit->m_charge);
+
+			//Assign the position
+			ftCalHit->setHitX((ftCalHit->m_channel.iX-CRYS_DELTA)*CRYS_WIDTH);
+			ftCalHit->setHitY((ftCalHit->m_channel.iY-CRYS_DELTA)*CRYS_WIDTH);
+			ftCalHit->setHitZ(CRYS_ZPOS);
+
+
+
 
 			mData.push_back(ftCalHit);
 		}

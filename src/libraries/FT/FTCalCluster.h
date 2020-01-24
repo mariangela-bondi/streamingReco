@@ -44,6 +44,7 @@
 #include <JANA/JObject.h>
 #include <vector>
 #include "FTCalHit.h"
+#include "TVector3.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /// Brief class description.
@@ -79,7 +80,7 @@ class FTCalCluster : public JObject {
 		double getClusterTime() const;
 
 		//Return center of cluster.
-		std::vector<double> getCentroid() const;
+		TVector3 getCentroid() const;
 
 		double getX() const;
 
@@ -123,16 +124,16 @@ class FTCalCluster : public JObject {
 		float _clusEnergy;
 		float _clusRecEnergy;
 		double _clusTime;
-		double _clusX, _clusY, _clusZ;
 		double _clusXX, _clusYY;
 		double _clusSigmaX, _clusSigmaY;
 		double _clusRadius;
 		float _clusSeedEnergy;
 		double _clusTheta, _clusPhi;
 		bool _goodCluster;
-		std::vector<double> _clusCenter;
+		TVector3 _clusCenter;
 		std::vector<const FTCalHit*> hits;
 
+		double CRYS_ZPOS,depth_z;
 
 
 

@@ -29,6 +29,12 @@ private:
 
 
 	TranslationTable const *m_tt;
+
+	// GEOMETRY PARAMETERS
+	double CRYS_DELTA;
+	double CRYS_WIDTH;													  // crystal width in mm
+	double CRYS_LENGTH;													  // crystal length in mm
+	double CRYS_ZPOS;
 };
 
 #endif /* SRC_LIBRARIES_FT_FTCALHIT_FACTORY_H_ */
