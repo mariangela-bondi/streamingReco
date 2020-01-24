@@ -131,4 +131,3 @@ void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 	}
 
 }
-

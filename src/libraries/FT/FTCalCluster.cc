@@ -42,7 +42,7 @@
 
 #include <cmath>
 
-
+//Need file of constant!!!!!!!!!!
 int minClusterSize = 3; //Need size > to min for accept cluster. Not >=.
 double minClusterEnergy = 1; //Need size > to min for accept cluster. Not >=.
 int time_window = 50;
