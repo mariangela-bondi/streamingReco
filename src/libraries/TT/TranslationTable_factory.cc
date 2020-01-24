@@ -24,7 +24,7 @@ void TranslationTable_factory::Init() {
 	SetFactoryFlag (PERSISTENT);
 }
 void TranslationTable_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
-	std::cout << "TranslationTable_factory::ChangeRun() " << this << " insert new TT into event" << std::endl;
+	//std::cout << "TranslationTable_factory::ChangeRun() " << this << " insert new TT into event" << std::endl;
 
 	if (m_tt == 0) {
 		m_tt = new TranslationTable(aEvent->GetJApplication(), aEvent->GetRunNumber());
@@ -35,9 +35,9 @@ void TranslationTable_factory::ChangeRun(const std::shared_ptr<const JEvent> &aE
 
 	aEvent->Insert(m_tt);
 
-	//aEvent->Insert(new TranslationTable(aEvent->GetJApplication(),aEvent->GetRunNumber()));
+
 
 }
 void TranslationTable_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
-
+	//aEvent->Insert(new TranslationTable(aEvent->GetJApplication(),aEvent->GetRunNumber()));
 }

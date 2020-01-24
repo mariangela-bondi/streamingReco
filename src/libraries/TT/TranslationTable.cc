@@ -43,17 +43,23 @@ TranslationTable::TranslationTable(JApplication *app, int runN) :
 	 *
 	 */
 
-	if (app->GetJParameterManager()->Exists("RUNTYPE") == false) {
+
+
+	if (m_japp->GetJParameterManager()->Exists("RUNTYPE") == false) {
 		throw JException("RUNTYPE PARAMETER NOT SPECIFIED");
 	}
 
 	string tttype;
-	app->GetJParameterManager()->GetParameter("RUNTYPE", tttype);
-	std::cout << "TranslationTable ttype is: " << tttype << std::endl;
+	m_japp->GetJParameterManager()->GetParameter("RUNTYPE",tttype);
+	std::cout << "TranslationTable ttype is: -->" << tttype << " <--- "<< std::endl;fflush(stdout);
+
+
 	if (tttype == "HALLB") {
 		ReadTranslationTableHALLB();
 	} else {
-		throw JException("RUNTYPE PARAMETER NOT SUPPORTED BY TranslationTable");
+		ostringstream strm;
+		strm<<"RUNTYPE PARAMETER NOT SUPPORTED BY TranslationTable: " << tttype;
+		throw JException(strm.str());
 	}
 
 
@@ -70,7 +76,10 @@ void TranslationTable::ReadTranslationTableHALLB() {
 		return;
 	}
 
+
+
 	//Try to read from CCDB
+
 	auto jcalib_manager = m_japp->GetService<JCalibrationManager>();
 	auto jcalib = jcalib_manager->GetJCalibration(m_runN);
 
