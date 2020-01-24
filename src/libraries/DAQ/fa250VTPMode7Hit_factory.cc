@@ -6,7 +6,7 @@
  */
 
 #include "TridasEvent.h"
-
+#include "DAQ/chronoTypeDef.h"
 #include "JANA/JEvent.h"
 #include "fa250VTPMode7Hit_factory.h"
 
@@ -42,13 +42,23 @@ void fa250VTPMode7Hit_factory::Process(const std::shared_ptr<const JEvent> &aEve
 	For the moment, this is not supported. Hence, for the moment I differentiate between waveboard and fa250 by considering that the fa250 has no samples, only time and charge.
 
 	*/
+
+	/*The Hit Time is, probably, an absolute time, and we don't want this, we just care about the relative time in the event.
+	 *Hence, I take the earliest hit time and remove it from the all hits.
+	 *Note that I loop on all hits in tridas_event, hence even if I mix fa250VTPMode7Hit and waveveboardHit, that is ok.
+	 */
+	T4nsec firstTime=tridas_event->hits[0];
+	for (auto hit : tridas_event->hits){
+		if (hit.time < firstTime) firstTime=hit.time;
+	}
+
 	for (auto hit : tridas_event->hits) {
 		if (hit.type == fadcHit_TYPE::FA250VTPMODE7){
 			// Create a faWaveboardHit object;
 			auto faHit = new fa250VTPMode7Hit;
 
 			faHit->m_charge = hit.charge;
-			faHit->m_time = hit.time;
+			faHit->m_time = hit.time-firstTime;
 
 			faHit->m_channel.crate = hit.crate;
 			faHit->m_channel.slot = hit.slot;

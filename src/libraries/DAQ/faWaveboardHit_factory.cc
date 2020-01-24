@@ -29,6 +29,14 @@ void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent
 
 	auto tridas_event = aEvent->GetSingle<TridasEvent>();
 
+	/*The Hit Time is, probably, an absolute time, and we don't want this, we just care about the relative time in the event.
+	 *Hence, I take the earliest hit time and remove it from the all hits.
+	 *Note that I loop on all hits in tridas_event, hence even if I mix fa250VTPMode7Hit and waveveboardHit, that is ok, since the faWaveboardHit factory has the same code.
+	 */
+	T4nsec firstTime = tridas_event->hits[0];
+	for (auto hit : tridas_event->hits) {
+		if (hit.time < firstTime) firstTime = hit.time;
+	}
 
 	for (auto hit : tridas_event->hits) {
 		if (hit.type == fadcHit_TYPE::WAVEBOARD) {
