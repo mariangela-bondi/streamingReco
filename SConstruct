@@ -24,7 +24,9 @@ else:
 #    loadccdb(env)
 #    from loadclhep import loadclhep
 #    loadclhep(env)
-  
+
+#A.C. necessary on older g++ versions
+env.Append(CXXFLAGS = '-std=c++11')
 if os.environ.get('JANA_HOME') is not None:
     env['JANA_HOME'] = os.environ.get('JANA_HOME')
     env.Append(CPPPATH=["$JANA_HOME/src/lib"])

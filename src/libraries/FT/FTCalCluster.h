@@ -9,22 +9,22 @@
 // [ Source ]
 // [ Revision ]
 //
-//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// Jefferson Science Associates LLC Copyright Notice:  
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Jefferson Science Associates LLC Copyright Notice:
 // Copyright 251 2014 Jefferson Science Associates LLC All Rights Reserved. Redistribution
 // and use in source and binary forms, with or without modification, are permitted as a
-// licensed user provided that the following conditions are met:  
+// licensed user provided that the following conditions are met:
 // 1. Redistributions of source code must retain the above copyright notice, this
-//    list of conditions and the following disclaimer. 
+//    list of conditions and the following disclaimer.
 // 2. Redistributions in binary form must reproduce the above copyright notice, this
 //    list of conditions and the following disclaimer in the documentation and/or other
-//    materials provided with the distribution.  
+//    materials provided with the distribution.
 // 3. The name of the author may not be used to endorse or promote products derived
-//    from this software without specific prior written permission.  
+//    from this software without specific prior written permission.
 // This material resulted from work developed under a United States Government Contract.
 // The Government retains a paid-up, nonexclusive, irrevocable worldwide license in such
 // copyrighted data to reproduce, distribute copies to the public, prepare derivative works,
-// perform publicly and display publicly and to permit others to do so.   
+// perform publicly and display publicly and to permit others to do so.
 // THIS SOFTWARE IS PROVIDED BY JEFFERSON SCIENCE ASSOCIATES LLC "AS IS" AND ANY EXPRESS
 // OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
@@ -35,30 +35,107 @@
 // LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 #ifndef _FTCalCluster_h_
 #define _FTCalCluster_h_
 
 #include <JANA/JObject.h>
+#include <vector>
+#include "FTCalHit.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /// Brief class description.
 ///
 /// Detailed class description.
 //////////////////////////////////////////////////////////////////////////////////////////////////
-class FTCalCluster : public JObject{
+class FTCalCluster : public JObject {
 	public:
+
 		FTCalCluster();
+
+		FTCalCluster(int clusid);
+
 		virtual ~FTCalCluster();
 		
+		void setClusterID(int clusid);
+
+		void computeCluster();
+
+		int getClusterId() const;
+
+		//Return number of crystal in a cluster. Why _clusID isn't a parameter?
+		int getClusterSize() const;
+
+		//Return energy of a cluster. Why _clusID isn't a parameter?
+		float getClusterEnergy() const;
+
+		//Return energy of a cluster with correction.
+		float getClusterFullEnergy() const;
+
+		float getClusterSeedEnergy() const;
+
+		double getClusterTime() const;
+
+		//Return center of cluster.
+		std::vector<double> getCentroid() const;
+
+		double getX() const;
+
+		double getY() const;
+
+		double getZ() const;
+
+		double getXX() const;
+
+		double getYY() const;
+
+		double getWidthX() const;
+
+		double getWidthY() const;
+
+		double getRadius() const;
+
+		double getTheta() const;
+
+		double getPhi() const;
+
+		bool isGoodCluster() const;
+
+
+		//Controlla se l'hit analizzato e' contenuto nel cluster.
+		bool containsHit(const FTCalHit *hit) const;
+
+		void push_hit(const FTCalHit *hit);
+
+
+		//Need
+		void showCluster();
+
+
 	protected:
-	
-	
+
 	private:
+
+		int _clusID;
+		int _clusSize;
+		float _clusEnergy;
+		float _clusRecEnergy;
+		double _clusTime;
+		double _clusX, _clusY, _clusZ;
+		double _clusXX, _clusYY;
+		double _clusSigmaX, _clusSigmaY;
+		double _clusRadius;
+		float _clusSeedEnergy;
+		double _clusTheta, _clusPhi;
+		bool _goodCluster;
+		std::vector<double> _clusCenter;
+		std::vector<const FTCalHit*> hits;
+
+
+
 
 };
 
 #endif // _FTCalCluster_h_
-
