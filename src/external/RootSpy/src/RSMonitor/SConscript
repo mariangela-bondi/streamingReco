@@ -3,7 +3,7 @@ Import('env','execLibs','debugSuffix')
 
 thisEnv = env.Clone()
 thisEnv.AppendUnique(CPPPATH = ['.'])
-thisEnv.AppendUnique(LIBS = ['RootSpy-client'+debugSuffix,'cmsgRegex'+debugSuffix,'cmsgxx'+debugSuffix,'cmsg'+debugSuffix,'curl'] + execLibs)
+thisEnv.AppendUnique(LIBS = ['RootSpy-client'+debugSuffix,'cmsg'+debugSuffix,'cmsgRegex'+debugSuffix,'cmsgxx'+debugSuffix,'curl'] + execLibs)
 fileList  = Glob('*.cc');
 
 
