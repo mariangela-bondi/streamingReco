@@ -2,13 +2,12 @@ from utils import *
 Import('env debug')
 
 plugins = getSubdirs('./')
-env_plugins=env.Clone()
+
 
 for plugin in plugins:
+    env_plugins=env.Clone()
     print  bcolors.OKBLUE,"Found plugin ",plugin,bcolors.ENDC
-    if (("rootspy" in plugin) and (et_enable == 0)):
-        print bcolors.RED,"Ignoring this since no ET support ",bcolors.ENDC
-        continue
+    
     #save the relative dir and the absolute dir
     reldir = str(plugin)
     absdir = Dir('#/src/plugins/'+reldir).srcnode().abspath   
@@ -16,16 +15,23 @@ for plugin in plugins:
     tmp_cpppath=env_plugins['CPPPATH'];    
     env_plugins.Append(CPPPATH=absdir)
     
-        #Add root dictionaries if necessary
-        #AddROOTdict(env,reldir,absdir)
+    if ("rootspy" in plugin):
+        print bcolors.OKBLUE,"Adding rootspy libs + cmsg libs ",bcolors.ENDC
+        env_plugins.Append(LIBS=["RootSpy-client","RootSpy","cmsgRegex","cmsgxx","cmsg"])
+       
+
+  
+    
+    #Add root dictionaries if necessary
+    AddROOTdict(env_plugins,reldir,absdir)
         
-        #Compile macros
-        #AddROOTSpyMacros(env_plugins,reldir,absdir)
+    #Compile macros
+    AddROOTSpyMacros(env_plugins,reldir,absdir)
         
         
     plugin_src  = Glob(reldir+'/*.cc')
-   
-    env_plugins.Prepend(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread","ccdb"]) 
+    env_plugins.AppendUnique(LINKFLAGS='-Wl,-z,defs') #Very important to make sure we won't get errors at run time
+    env_plugins.Append(LIBS=["libstreamingRecoExt","libstreamingReco","JANA","dl","pthread","ccdb"]) 
     env_plugins.SharedLibrary(source=plugin_src,target='#/lib/plugins/'+plugin,SHLIBPREFIX='',SHLIBSUFFIX='.so')
     env_plugins.Replace(CPPPATH = tmp_cpppath)        
     

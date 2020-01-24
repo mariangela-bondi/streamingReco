@@ -53,13 +53,31 @@ if int(debug):
    print "DEBUG IS ON"
    env.Append(CCFLAGS = '-g')
 
+#A.C. need root for rootspy
+if os.environ.get('ROOTSYS') is not None:
+    env['ROOTSYS'] = os.environ.get('ROOTSYS')
+    env.Append(CPPPATH=["$ROOTSYS/include"])
+    env.Append(LIBPATH=["$ROOTSYS/lib"])
+    
+    rootlibs = []
+    root_config_libs = []
+    root_config_libs = os.popen('$ROOTSYS/bin/root-config --glibs').readline()[:-1].split()
+    for l in root_config_libs:
+        if l[:2] == '-l':
+            rootlibs += [l[2:]]
+    env.Append(LIBS = rootlibs)    
+else:
+    print("ERROR, ROOTSYS NOT DEFINED")
+    exit  
+
 #A.C. probably do this better
 if (platform.system()=="Darwin"):
 	print "We are on MAC"
 	env.AppendUnique(LINKFLAGS='-flat_namespace')
 	env.AppendUnique(SHLINKFLAGS=['-undefined', 'suppress'])
  
- 
+
+
 env.Append(CPPPATH=Dir('#/src/external').srcnode().abspath)
 env.Append(CPPPATH=Dir('#/src/libraries').srcnode().abspath)
 env.Append(CPPPATH=Dir('#/src/plugins').srcnode().abspath)
@@ -69,7 +87,9 @@ env.Append(LIBPATH = ['#/lib'])
 env.Replace(RPATH=Dir('#/lib').srcnode().abspath)
 
 #This drove me crazy! jlab_software jana was including this, and we need it for sophisticated rootspy features..
+#This is basically related to loading symbols in shared libraries
 env.Append(LINKFLAGS = '-rdynamic')
+env.Append(LINKFLAGS = '-fPIC')
 
 Export('env debug mc_enable')
 
