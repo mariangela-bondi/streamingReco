@@ -1,0 +1,132 @@
+//
+//    File: FTHodoCluster.h
+// Created:
+// Creator: valla
+//
+// ------ Last repository commit info -----
+// [ Date ]
+// [ Author ]
+// [ Source ]
+// [ Revision ]
+//
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Jefferson Science Associates LLC Copyright Notice:
+// Copyright 251 2014 Jefferson Science Associates LLC All Rights Reserved. Redistribution
+// and use in source and binary forms, with or without modification, are permitted as a
+// licensed user provided that the following conditions are met:
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright notice, this
+//    list of conditions and the following disclaimer in the documentation and/or other
+//    materials provided with the distribution.
+// 3. The name of the author may not be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+// This material resulted from work developed under a United States Government Contract.
+// The Government retains a paid-up, nonexclusive, irrevocable worldwide license in such
+// copyrighted data to reproduce, distribute copies to the public, prepare derivative works,
+// perform publicly and display publicly and to permit others to do so.
+// THIS SOFTWARE IS PROVIDED BY JEFFERSON SCIENCE ASSOCIATES LLC "AS IS" AND ANY EXPRESS
+// OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+// JEFFERSON SCIENCE ASSOCIATES, LLC OR THE U.S. GOVERNMENT BE LIABLE TO LICENSEE OR ANY
+// THIRD PARTES FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+// OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+// LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+#ifndef _FTHodoCluster_h_
+#define _FTHodoCluster_h_
+
+#include <JANA/JObject.h>
+#include <vector>
+#include "FTHodoHit.h"
+
+
+class FTHodoCluster : public JObject {
+  public:
+
+    FTHodoCluster();
+
+    FTHodoCluster(int clusid);
+
+    virtual ~FTHodoCluster();
+
+    void setClusterID(int clusid);
+
+
+    int getClusterId() const;
+
+    void computeCluster();
+
+    //Return number of crystal in a cluster. Why _clusID isn't a parameter?
+		int getClusterSize() const;
+
+		//Return energy of a cluster. Why _clusID isn't a parameter?
+		float getClusterEnergy() const;
+
+		//Return energy of a cluster with correction.
+		float getClusterFullEnergy() const;
+
+		float getClusterSeedEnergy() const;
+
+		double getClusterTime() const;
+
+		//Return center of cluster.
+		std::vector<double> getCentroid() const;
+
+		double getX() const;
+
+		double getY() const;
+
+		double getZ() const;
+
+		double getXX() const;
+
+		double getYY() const;
+
+		double getWidthX() const;
+
+		double getWidthY() const;
+
+		double getRadius() const;
+
+		double getTheta() const;
+
+		double getPhi() const;
+
+		bool isGoodCluster() const;
+
+		//Controlla se l'hit analizzato e' contenuto nel cluster.
+		bool containsHit(const FTHodoHit *hit) const;
+
+		void push_hit(const FTHodoHit *hit);
+
+
+  protected:
+
+  private:
+
+    int _clusID;
+		int _clusSize;
+		float _clusEnergy;
+		float _clusRecEnergy;
+		double _clusTime;
+		double _clusX, _clusY, _clusZ;
+		double _clusXX, _clusYY;
+		double _clusSigmaX, _clusSigmaY;
+		double _clusRadius;
+		float _clusSeedEnergy;
+		double _clusTheta, _clusPhi;
+		bool _goodCluster;
+		std::vector<double> _clusCenter;
+		std::vector<const FTHodoHit*> hits;
+
+
+
+};
+
+#endif //_FTHodoCluster_h_
