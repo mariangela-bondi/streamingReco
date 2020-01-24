@@ -78,6 +78,30 @@ public:
 	int getHitY() const{
 		return this->m_channel.iY;
 	}
+
+	double getHitDx() const{
+		return Dx;
+	}
+
+	double getHitDy() const{
+		return Dy;
+	}
+	double getHitDz() const{
+		return Dz;
+	}
+
+	void setHitDx(double value){
+		Dx=value;
+	}
+
+	void setHitDy(double value){
+		Dy=value;
+	}
+
+	void setHitDz(double value){
+		Dz=value;
+	}
+
 	TranslationTable::FTCAL_Index_t m_channel;
 
 protected:
@@ -85,7 +109,9 @@ protected:
 private:
 	T4nsec time;
 	float energy;
-
+	double Dx;
+	double Dy;
+	double Dz;
 };
 
 #endif // _FTCalHit_h_

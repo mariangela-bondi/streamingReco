@@ -1,7 +1,7 @@
 //
-//    File: FTCalHit.cc
-// Created: Wed Jan  8 12:49:28 CET 2020
-// Creator: celentan (on Linux apcx4 3.10.0-957.el7.x86_64 x86_64)
+//    File: FTHodoCluster.h
+// Created:
+// Creator: valla
 //
 // ------ Last repository commit info -----
 // [ Date ]
@@ -37,22 +37,96 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#include "FTCalHit.h"
+
+#ifndef _FTHodoCluster_h_
+#define _FTHodoCluster_h_
+
+#include <JANA/JObject.h>
+#include <vector>
+#include "FTHodoHit.h"
 
 
-//---------------------------------
-// FTCalHit    (Constructor)
-//---------------------------------
-FTCalHit::FTCalHit(){
-  Dx=1;
-  Dy=1;
-  Dz=1;
-}
+class FTHodoCluster : public JObject {
+  public:
 
-//---------------------------------
-// ~FTCalHit    (Destructor)
-//---------------------------------
-FTCalHit::~FTCalHit()
-{
+    FTHodoCluster();
 
-}
+    FTHodoCluster(int clusid);
+
+    virtual ~FTHodoCluster();
+
+    void setClusterID(int clusid);
+
+
+    int getClusterId() const;
+
+    void computeCluster();
+
+    //Return number of crystal in a cluster. Why _clusID isn't a parameter?
+		int getClusterSize() const;
+
+		//Return energy of a cluster. Why _clusID isn't a parameter?
+		float getClusterEnergy() const;
+
+		//Return energy of a cluster with correction.
+		float getClusterFullEnergy() const;
+
+		float getClusterSeedEnergy() const;
+
+		double getClusterTime() const;
+
+		//Return center of cluster.
+		std::vector<double> getCentroid() const;
+
+		double getX() const;
+
+		double getY() const;
+
+		double getZ() const;
+
+		double getXX() const;
+
+		double getYY() const;
+
+		double getWidthX() const;
+
+		double getWidthY() const;
+
+		double getRadius() const;
+
+		double getTheta() const;
+
+		double getPhi() const;
+
+		bool isGoodCluster() const;
+
+		//Controlla se l'hit analizzato e' contenuto nel cluster.
+		bool containsHit(const FTHodoHit *hit) const;
+
+		void push_hit(const FTHodoHit *hit);
+
+
+  protected:
+
+  private:
+
+    int _clusID;
+		int _clusSize;
+		float _clusEnergy;
+		float _clusRecEnergy;
+		double _clusTime;
+		double _clusX, _clusY, _clusZ;
+		double _clusXX, _clusYY;
+		double _clusSigmaX, _clusSigmaY;
+		double _clusRadius;
+		float _clusSeedEnergy;
+		double _clusTheta, _clusPhi;
+		bool _goodCluster;
+		std::vector<double> _clusCenter;
+		std::vector<const FTHodoHit*> hits;
+
+
+
+};
+
+#endif //_FTHodoCluster_h_

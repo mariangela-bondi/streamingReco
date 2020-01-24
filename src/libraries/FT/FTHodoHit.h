@@ -14,23 +14,47 @@
 
 class FTHodoHit: public JObject {
 public:
-	FTHodoHit();
+	FTHodoHit();    ///////ATTENTION!!!! in FTHodoHit.h Dx,Dy,Dz are inizializated at 1. Need setting geometry
 	virtual ~FTHodoHit();
 
-	float getEnergy() const {
+	float getHitEnergy() const {
 		return energy;
 	}
 
 	void setEnergy(float charge) {
-		this->energy = energy;
+		this->energy = charge;
 	}
 
-	T4nsec getTime() const {
+	T4nsec getHitTime() const {
 		return time;
 	}
 
 	void setTime(T4nsec time) {
 		this->time = time;
+	}
+
+	double getHitDx()const{
+		return Dx;
+	}
+
+	double getHitDy()const{
+		return Dy;
+	}
+
+	double getHitDz()const{
+		return Dz;
+	}
+
+	void setDx(double value){
+		this->Dx=value;
+	}
+
+	void setDy(double value){
+		this->Dy=value;
+	}
+
+	void setDz(double value){
+		this->Dz=value;
 	}
 
 	TranslationTable::FTHODO_Index_t m_channel;
@@ -40,6 +64,9 @@ protected:
 private:
 	T4nsec time;
 	float energy;
+	double Dx;
+	double Dy;
+	double Dz;
 };
 
 #endif /* SRC_LIBRARIES_FT_FTHODOHIT_H_ */

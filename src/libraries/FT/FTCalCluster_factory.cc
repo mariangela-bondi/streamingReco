@@ -10,15 +10,11 @@
 #include "FT/FTCalHit.h"
 #include "FT/FTCalCluster.h"
 #include <vector>
-#include <map>
 #include <iostream>
 #include <functional>
 
 //this will set the hits in DESCENDING order wrt energy
 bool compareHits(const FTCalHit* a, const FTCalHit* b) { return (a->getHitEnergy() > b->getHitEnergy()); }
-
-
-
 
 FTCalCluster_factory::FTCalCluster_factory() {
 	// TODO Auto-generated constructor stub
@@ -75,7 +71,7 @@ void FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) 
 	}
 
 
-	std::cout <<"mData.size()= " <<mData.size() <<std::endl;
-	std::cout <<"Event end "<<std::endl<<std::endl<<std::endl;
+//	std::cout <<"mData.size()= " <<mData.size() <<std::endl;
+//	std::cout <<"Event end "<<std::endl<<std::endl<<std::endl;
 
 }
