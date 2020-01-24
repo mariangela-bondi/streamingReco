@@ -48,7 +48,7 @@ archDir = '.' + platform + "_" + machine+ debugSuffix
 # Apply any platform/architecture specific settings
 # Platform dependent quantities.
 # Default to standard Linux libs.
-execLibs = ['m', 'pthread', 'dl', 'rt','cmsgRegex','cmsg']
+execLibs = ['m', 'pthread', 'dl', 'rt','cmsgxx','cmsg','cmsgRegex]
     
 
 if platform == 'Darwin':
