@@ -49,6 +49,7 @@ FTCalHit::FTCalHit(){
 	_Y=0;
 	_Z=0;
 	energy=0;
+	time=0;
 
 }
 

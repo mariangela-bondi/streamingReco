@@ -68,7 +68,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setHitTime(faHit->m_time);
+			ftCalHit->setHitTime(4*faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
@@ -104,7 +104,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setHitTime(faHit->m_time);
+			ftCalHit->setHitTime(4*faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP

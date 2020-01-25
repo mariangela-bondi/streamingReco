@@ -90,11 +90,11 @@ void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftHodoHit->m_channel = *(m_channel.FTHODO);
 
 			//Assign the time
-			ftHodoHit->setTime(faHit->m_time);
+			ftHodoHit->setHitTime(4*faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
-			ftHodoHit->setEnergy(faHit->m_charge);
+			ftHodoHit->setHitEnergy(faHit->m_charge);
 
 			//Set the hit position
 			ftHodoHit->setDx(px[ftHodoHit->m_channel.sector - 1][ftHodoHit->m_channel.layer - 1][ftHodoHit->m_channel.component - 1]);
@@ -118,11 +118,11 @@ void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftHodoHit->m_channel = *(m_channel.FTHODO);
 
 			//Assign the time
-			ftHodoHit->setTime(faHit->m_time);
+			ftHodoHit->setHitTime(4*faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
-			ftHodoHit->setEnergy(faHit->m_charge);
+			ftHodoHit->setHitEnergy(faHit->m_charge);
 
 			//Set the hit position
 			ftHodoHit->setDx(px[ftHodoHit->m_channel.sector - 1][ftHodoHit->m_channel.layer - 1][ftHodoHit->m_channel.component - 1]);
