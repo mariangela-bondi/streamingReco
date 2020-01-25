@@ -13,6 +13,7 @@ FTHodoHit::FTHodoHit() {
 	Dy=0;
 	Dz=0;
 	energy=0;
+	time=0;
 }
 
 FTHodoHit::~FTHodoHit() {

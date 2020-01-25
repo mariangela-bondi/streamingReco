@@ -21,7 +21,7 @@ public:
 		return energy;
 	}
 
-	void setEnergy(float charge) {
+	void setHitEnergy(float charge) {
 		this->energy = charge;
 	}
 
@@ -29,7 +29,7 @@ public:
 		return time;
 	}
 
-	void setTime(float time) {
+	void setHitTime(float time) {
 		this->time = time;
 	}
 

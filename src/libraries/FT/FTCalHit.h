@@ -63,11 +63,11 @@ public:
 		this->energy = charge;
 	}
 
-	T4nsec getHitTime() const {
+	float getHitTime() const {
 		return time;
 	}
 
-	void setHitTime(T4nsec time) {
+	void setHitTime(float time) {
 		this->time = time;
 	}
 
@@ -105,7 +105,7 @@ public:
 protected:
 
 private:
-	T4nsec time;
+	float time;
 	float energy;
 
 	double _X,_Y,_Z;

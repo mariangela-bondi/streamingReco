@@ -130,7 +130,7 @@ void FTCalCluster::computeCluster() {
 	_clusTime = 0;
 	for (int i = 0; i < _clusSize; i++) {
 		const FTCalHit *hit = hits[i];
-		_clusTime += 4 * hit->getHitTime().count() * hit->getHitEnergy();
+		_clusTime += hit->getHitTime()* hit->getHitEnergy();
 	}
 	_clusTime /= _clusEnergy;
 
@@ -263,7 +263,7 @@ bool FTCalCluster::containsHit(const FTCalHit* hit) const {
 	bool flag = false;
 	for (int i = 0; i < hits.size(); i++) {
 		const FTCalHit *hit_conf = hits[i];
-		double tDiff = std::fabs(4 * (hit->getHitTime().count() - hit_conf->getHitTime().count())); //ns
+		double tDiff = std::fabs((hit->getHitTime() - hit_conf->getHitTime())); //ns
 		auto xDiff = std::fabs(hit->getHitIX() - hit_conf->getHitIX());
 		auto yDiff = std::fabs(hit->getHitIY() - hit_conf->getHitIY());
 		if (tDiff < time_window && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0) flag = true;
