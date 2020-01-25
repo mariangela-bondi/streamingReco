@@ -14,7 +14,7 @@
 
 class FTHodoHit: public JObject {
 public:
-	FTHodoHit();    ///////ATTENTION!!!! in FTHodoHit.h Dx,Dy,Dz are inizializated at 1. Need setting geometry
+	FTHodoHit();
 	virtual ~FTHodoHit();
 
 	float getHitEnergy() const {

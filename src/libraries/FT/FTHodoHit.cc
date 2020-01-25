@@ -9,9 +9,10 @@
 
 FTHodoHit::FTHodoHit() {
 	// TODO Auto-generated constructor stub
-	Dx=1;
-	Dy=1;
-	Dz=1;
+	Dx=0;
+	Dy=0;
+	Dz=0;
+	energy=0;
 }
 
 FTHodoHit::~FTHodoHit() {

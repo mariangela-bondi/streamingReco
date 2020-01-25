@@ -42,248 +42,232 @@
 
 #include <cmath>
 
-
 int minClusterSize_hodo = 1; //Need size > to min for accept cluster. Not >=.
 double minClusterEnergy_hodo = 1; //Need size > to min for accept cluster. Not >=.
 double time_window_hodo = 50;
-double x_window_hodo=1; //Need to set it
-double y_window_hodo=1; //Need to set it
+double x_window_hodo = 1; //Need to set it
+double y_window_hodo = 1; //Need to set it
 //double tabledHitZ = 1;
 
 //---------------------------------
 // FTHodoCluster    (Constructor)
 //---------------------------------
-FTHodoCluster::FTHodoCluster(){
-  _clusID=0;
-  _clusSize=0;
-  _clusEnergy=0;
-  _clusRecEnergy=0;
-  _clusTime=0;
-  _clusX=0;
-  _clusY=0;
-  _clusZ=0;
-  _clusXX=0;
-  _clusYY=0;
-  _clusSigmaX=0;
-  _clusSigmaY=0;
-  _clusRadius=0;
-  _clusSeedEnergy=0;
-  _clusTheta=0;
-  _clusPhi=0;
-  _goodCluster=false;
+FTHodoCluster::FTHodoCluster() {
+	_clusID = 0;
+	_clusSize = 0;
+	_clusEnergy = 0;
+	_clusRecEnergy = 0;
+	_clusTime = 0;
+	_clusXX = 0;
+	_clusYY = 0;
+	_clusSigmaX = 0;
+	_clusSigmaY = 0;
+	_clusRadius = 0;
+	_clusSeedEnergy = 0;
+	_clusTheta = 0;
+	_clusPhi = 0;
+	_goodCluster = false;
+	_clusCenter.SetXYZ(0, 0, 0);
 }
 
-FTHodoCluster::FTHodoCluster(int clusid){
-  _clusID=clusid;
-  _clusSize=0;
-  _clusEnergy=0;
-  _clusRecEnergy=0;
-  _clusTime=0;
-  _clusX=0;
-  _clusY=0;
-  _clusZ=0;
-  _clusXX=0;
-  _clusYY=0;
-  _clusSigmaX=0;
-  _clusSigmaY=0;
-  _clusRadius=0;
-  _clusSeedEnergy=0;
-  _clusTheta=0;
-  _clusPhi=0;
-  _goodCluster=false;
+FTHodoCluster::FTHodoCluster(int clusid) {
+	_clusID = clusid;
+	_clusSize = 0;
+	_clusEnergy = 0;
+	_clusRecEnergy = 0;
+	_clusTime = 0;
+	_clusXX = 0;
+	_clusYY = 0;
+	_clusSigmaX = 0;
+	_clusSigmaY = 0;
+	_clusRadius = 0;
+	_clusSeedEnergy = 0;
+	_clusTheta = 0;
+	_clusPhi = 0;
+	_goodCluster = false;
+	_clusCenter.SetXYZ(0, 0, 0);
 }
 
 //---------------------------------
 // ~FTHodoCluster    (Destructor)
 //---------------------------------
-FTHodoCluster::~FTHodoCluster(){}
-
-int FTHodoCluster::getClusterId() const{
-  return _clusID;
+FTHodoCluster::~FTHodoCluster() {
 }
 
-void FTHodoCluster::setClusterID(int clusid){
-  _clusID=clusid;
+int FTHodoCluster::getClusterId() const {
+	return _clusID;
 }
 
-void FTHodoCluster::computeCluster(){
-  //Cluster size
-  _clusSize=hits.size();
-
-  //Compute energy
-  _clusEnergy=0;
-  for(int i=0; i<_clusSize; i++)
-    _clusEnergy+=hits[i]->getHitEnergy();
-
-  //Compute corrected energy;
-  //Need to known correction.
-  _clusRecEnergy = _clusEnergy;
-
-  //Seed Energy
-  _clusSeedEnergy=hits[0]->getHitEnergy();
-
-
-  //Cluster time
-  _clusTime=0;
-  for(int i=0; i<_clusSize; i++){
-    const FTHodoHit *hit=hits[i];
-    _clusTime+=4*hit->getHitTime().count()*hit->getHitEnergy();
-  }
-  _clusTime/=_clusEnergy;
-
-  //Cluster center
-  double w_tot=0;
-  for(int i=0; i<_clusSize; i++){
-    const FTHodoHit *hit = hits[i];
-    _clusX=hit->getHitEnergy()*hit->getHitDx();
-    _clusX=hit->getHitEnergy()*hit->getHitDy();
-    _clusX=hit->getHitEnergy()*hit->getHitDz();
-    _clusXX=hit->getHitEnergy()*hit->getHitDx()*hit->getHitDx();
-    _clusYY=hit->getHitEnergy()*hit->getHitDy()*hit->getHitDy();
-  }
-  _clusX /= _clusEnergy;
-  _clusY /=  _clusEnergy;
-  _clusZ /=  _clusEnergy;
-  std::vector<double> _clusCenter;
-  _clusCenter.push_back(_clusX);
-  _clusCenter.push_back(_clusY);
-  _clusCenter.push_back(_clusZ);
-  _clusXX/=_clusEnergy;
-  _clusYY/=_clusEnergy;
-
-  //Cluster sigmaX
-  double sigmax2=_clusXX-std::pow(_clusX,2.);
-  if (sigmax2<0) sigmax2=0;
-  _clusSigmaX=std::sqrt(sigmax2);
-
-  //Cluster sigmaY
-  double sigmay2=_clusYY-std::pow(_clusY,2.);
-  if (sigmay2<0) sigmay2=0;
-  _clusSigmaY=std::sqrt(sigmay2);
-
-  //Cluster radius
-  double radius2 = ( sigmax2 + sigmay2);
-  if(radius2<0)
-    radius2=0;
-  _clusRadius=std::sqrt(radius2);
-
-  //Cluster theta (Z is the depth in the crystal starting from entrance as z=0 along the beam direction)
-  _clusTheta=(std::atan((std::sqrt(std::pow(_clusX,2.)+std::pow(_clusY,2.)))/_clusZ))*(180./M_PI);
-
-  //Cluster phi
-  _clusPhi=std::atan2(_clusY,_clusX)*(180./M_PI); //
-
-  bool layer1=false;
-  bool layer2=false;
-  //Cluster contain layer 1 and layer 2 hit?
-  for (auto hit : hits){
-    if(hit->m_channel.layer==1)
-      layer1=true;
-    if(hit->m_channel.layer==2)
-      layer2=true;
-  }
-
-  if(_clusSize > minClusterSize_hodo && _clusEnergy>minClusterEnergy_hodo && layer1==true && layer2==true)
-    _goodCluster=true;
-  else
-    _goodCluster=false;
-
+void FTHodoCluster::setClusterID(int clusid) {
+	_clusID = clusid;
 }
 
+void FTHodoCluster::computeCluster() {
+	//Cluster size
+	_clusSize = hits.size();
+
+	//Compute energy
+	_clusEnergy = 0;
+	for (int i = 0; i < _clusSize; i++)
+		_clusEnergy += hits[i]->getHitEnergy();
+
+	//Compute corrected energy;
+	//Need to known correction.
+	_clusRecEnergy = _clusEnergy;
+
+	//Seed Energy
+	_clusSeedEnergy = hits[0]->getHitEnergy();
+
+	//Cluster time
+	_clusTime = 0;
+	for (int i = 0; i < _clusSize; i++) {
+		const FTHodoHit *hit = hits[i];
+		_clusTime += 4 * hit->getHitTime().count() * hit->getHitEnergy();
+	}
+	_clusTime /= _clusEnergy;
+
+	//Cluster center
+	double w_tot = 0;
+	double x = 0;
+	double y = 0;
+	double z = 0;
+	for (int i = 0; i < _clusSize; i++) {
+		const FTHodoHit *hit = hits[i];
+		x += hit->getHitEnergy() * hit->getHitDx();
+		y += hit->getHitEnergy() * hit->getHitDy();
+		z += hit->getHitEnergy() * hit->getHitDz();
+		_clusXX = hit->getHitEnergy() * hit->getHitDx() * hit->getHitDx();
+		_clusYY = hit->getHitEnergy() * hit->getHitDy() * hit->getHitDy();
+	}
+	x /= _clusEnergy;
+	y /= _clusEnergy;
+	z /= _clusEnergy;
+
+	_clusCenter.SetXYZ(x, y, z);
+	_clusXX /= _clusEnergy;
+	_clusYY /= _clusEnergy;
+
+	//Cluster sigmaX
+	double sigmax2 = _clusXX - std::pow(_clusCenter.X(), 2.);
+	if (sigmax2 < 0) sigmax2 = 0;
+	_clusSigmaX = std::sqrt(sigmax2);
+
+	//Cluster sigmaY
+	double sigmay2 = _clusYY - std::pow(_clusCenter.Y(), 2.);
+	if (sigmay2 < 0) sigmay2 = 0;
+	_clusSigmaY = std::sqrt(sigmay2);
+
+	//Cluster radius
+	double radius2 = (sigmax2 + sigmay2);
+	if (radius2 < 0) radius2 = 0;
+	_clusRadius = std::sqrt(radius2);
+
+	//Cluster theta (Z is the depth in the crystal starting from entrance as z=0 along the beam direction)
+	_clusTheta = (std::atan((std::sqrt(std::pow(_clusCenter.X(), 2.) + std::pow(_clusCenter.Y(), 2.))) / _clusCenter.Z())) * (180. / M_PI);
+
+	//Cluster phi
+	_clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.X()) * (180. / M_PI); //
+
+	bool layer1 = false;
+	bool layer2 = false;
+	//Cluster contain layer 1 and layer 2 hit?
+	for (auto hit : hits) {
+		if (hit->m_channel.layer == 1) layer1 = true;
+		if (hit->m_channel.layer == 2) layer2 = true;
+	}
+
+	if (_clusSize > minClusterSize_hodo && _clusEnergy > minClusterEnergy_hodo && layer1 == true && layer2 == true)
+		_goodCluster = true;
+	else
+		_goodCluster = false;
+
+}
 
 //Why _clusID isn't a parameter? _clusID and a loop inside this is inefficent?
-int FTHodoCluster::getClusterSize() const{
-  return _clusSize;
+int FTHodoCluster::getClusterSize() const {
+	return _clusSize;
 }
 
 //Why _clusID isn't a parameter? Same question above. Perche' utilizzo "this", che riferisce in automatico al cluster?. Predisposizione per il calcolo dell'energia del cluster.
-float FTHodoCluster::getClusterEnergy() const{
-  return _clusEnergy;
+float FTHodoCluster::getClusterEnergy() const {
+	return _clusEnergy;
 }
 
 //Return energy of a cluster with correction.
-float FTHodoCluster::getClusterFullEnergy() const{
-  return _clusRecEnergy;
+float FTHodoCluster::getClusterFullEnergy() const {
+	return _clusRecEnergy;
 }
 
-float FTHodoCluster::getClusterSeedEnergy() const{
-  //Restituisce l'energia del cristallo [0] del cluster, che essendo i cluster costruiti dai cristalli ordinati in energia e' sempre il max del cluster.
-  return _clusSeedEnergy;
+float FTHodoCluster::getClusterSeedEnergy() const {
+	//Restituisce l'energia del cristallo [0] del cluster, che essendo i cluster costruiti dai cristalli ordinati in energia e' sempre il max del cluster.
+	return _clusSeedEnergy;
 }
 
-double FTHodoCluster::getClusterTime() const{
-  return _clusTime;
-};
+double FTHodoCluster::getClusterTime() const {
+	return _clusTime;
+}
 
 //Return center of cluster.
-std::vector<double> FTHodoCluster::getCentroid() const{
-  return _clusCenter;
+TVector3 FTHodoCluster::getCentroid() const {
+	return _clusCenter;
 }
 
-double FTHodoCluster::getX() const{
-  return _clusX;
+double FTHodoCluster::getX() const {
+	return _clusCenter.X();
 }
 
-double FTHodoCluster::getY() const{
-  return _clusY;
+double FTHodoCluster::getY() const {
+	return _clusCenter.Y();
 }
 
-double FTHodoCluster::getZ() const{
-  return _clusZ;
+double FTHodoCluster::getZ() const {
+	return _clusCenter.Z();
 }
 
-double FTHodoCluster::getXX() const{
-  return _clusXX;
+double FTHodoCluster::getXX() const {
+	return _clusXX;
 }
 
-double FTHodoCluster::getYY() const{
-  return _clusYY;
+double FTHodoCluster::getYY() const {
+	return _clusYY;
 }
 
-
-double FTHodoCluster::getWidthX() const{
-  return _clusSigmaX;
+double FTHodoCluster::getWidthX() const {
+	return _clusSigmaX;
 }
 
-double FTHodoCluster::getWidthY() const{
-  return _clusSigmaY;
+double FTHodoCluster::getWidthY() const {
+	return _clusSigmaY;
 }
 
-double FTHodoCluster::getRadius() const{
-  return _clusRadius;
+double FTHodoCluster::getRadius() const {
+	return _clusRadius;
 }
 
-double FTHodoCluster::getTheta() const{
-  return _clusTheta;
+double FTHodoCluster::getTheta() const {
+	return _clusTheta;
 }
 
-double FTHodoCluster::getPhi() const{
-  return _clusPhi;
+double FTHodoCluster::getPhi() const {
+	return _clusPhi;
 }
 
-
-bool FTHodoCluster::isGoodCluster() const{
-  return _goodCluster;
+bool FTHodoCluster::isGoodCluster() const {
+	return _goodCluster;
 }
 
-//Analogo a FTCalCluster, ma getHitX e getHitY vengono sostituiti da getHitDx e getHitDz.
-//Perche' la geometria dell'hodoscopio e' piu' complicata, non riconducibile (? credo)
-//ad una matrice quadrata 22*22, a differenza del calorimetro.
-
-bool FTHodoCluster::containsHit(const FTHodoHit* hit) const{
-  bool flag=false;
-  for(int i=0; i<hits.size(); i++){
-    const FTHodoHit *hit_conf=hits[i];
-    double tDiff=std::fabs(4*(hit->getHitTime().count()-hit_conf->getHitTime().count()));//ns
-    auto xDiff=std::fabs(hit->getHitDx()-hit_conf->getHitDx());
-    auto yDiff=std::fabs(hit->getHitDy()-hit_conf->getHitDy());
-    if(tDiff<time_window_hodo && xDiff<=x_window_hodo && yDiff<=y_window_hodo && (xDiff+yDiff)>0)
-      flag=true;
-  }
-  return flag;
+bool FTHodoCluster::containsHit(const FTHodoHit* hit) const {
+	bool flag = false;
+	for (int i = 0; i < hits.size(); i++) {
+		const FTHodoHit *hit_conf = hits[i];
+		double tDiff = std::fabs(4 * (hit->getHitTime().count() - hit_conf->getHitTime().count())); //ns
+		auto xDiff = std::fabs(hit->getHitDx() - hit_conf->getHitDx());
+		auto yDiff = std::fabs(hit->getHitDy() - hit_conf->getHitDy());
+		if (tDiff < time_window_hodo && xDiff <= x_window_hodo && yDiff <= y_window_hodo && (xDiff + yDiff) > 0) flag = true;
+	}
+	return flag;
 }
 
-
-void FTHodoCluster::push_hit(const FTHodoHit* hit){
-      hits.push_back(hit);
+void FTHodoCluster::push_hit(const FTHodoHit* hit) {
+	hits.push_back(hit);
 }

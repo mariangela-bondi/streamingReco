@@ -37,7 +37,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 #ifndef _FTHodoCluster_h_
 #define _FTHodoCluster_h_
 
@@ -45,87 +44,83 @@
 #include <vector>
 #include "FTHodoHit.h"
 
+#include "TVector3.h"
 
-class FTHodoCluster : public JObject {
-  public:
+class FTHodoCluster: public JObject {
+public:
 
-    FTHodoCluster();
+	FTHodoCluster();
 
-    FTHodoCluster(int clusid);
+	FTHodoCluster(int clusid);
 
-    virtual ~FTHodoCluster();
+	virtual ~FTHodoCluster();
 
-    void setClusterID(int clusid);
+	void setClusterID(int clusid);
 
+	int getClusterId() const;
 
-    int getClusterId() const;
+	void computeCluster();
 
-    void computeCluster();
+	//Return number of crystal in a cluster. Why _clusID isn't a parameter?
+	int getClusterSize() const;
 
-    //Return number of crystal in a cluster. Why _clusID isn't a parameter?
-		int getClusterSize() const;
+	//Return energy of a cluster. Why _clusID isn't a parameter?
+	float getClusterEnergy() const;
 
-		//Return energy of a cluster. Why _clusID isn't a parameter?
-		float getClusterEnergy() const;
+	//Return energy of a cluster with correction.
+	float getClusterFullEnergy() const;
 
-		//Return energy of a cluster with correction.
-		float getClusterFullEnergy() const;
+	float getClusterSeedEnergy() const;
 
-		float getClusterSeedEnergy() const;
+	double getClusterTime() const;
 
-		double getClusterTime() const;
+	//Return center of cluster.
+	TVector3 getCentroid() const;
 
-		//Return center of cluster.
-		std::vector<double> getCentroid() const;
+	double getX() const;
 
-		double getX() const;
+	double getY() const;
 
-		double getY() const;
+	double getZ() const;
 
-		double getZ() const;
+	double getXX() const;
 
-		double getXX() const;
+	double getYY() const;
 
-		double getYY() const;
+	double getWidthX() const;
 
-		double getWidthX() const;
+	double getWidthY() const;
 
-		double getWidthY() const;
+	double getRadius() const;
 
-		double getRadius() const;
+	double getTheta() const;
 
-		double getTheta() const;
+	double getPhi() const;
 
-		double getPhi() const;
+	bool isGoodCluster() const;
 
-		bool isGoodCluster() const;
+	//Controlla se l'hit analizzato e' contenuto nel cluster.
+	bool containsHit(const FTHodoHit *hit) const;
 
-		//Controlla se l'hit analizzato e' contenuto nel cluster.
-		bool containsHit(const FTHodoHit *hit) const;
+	void push_hit(const FTHodoHit *hit);
 
-		void push_hit(const FTHodoHit *hit);
+protected:
 
+private:
 
-  protected:
-
-  private:
-
-    int _clusID;
-		int _clusSize;
-		float _clusEnergy;
-		float _clusRecEnergy;
-		double _clusTime;
-		double _clusX, _clusY, _clusZ;
-		double _clusXX, _clusYY;
-		double _clusSigmaX, _clusSigmaY;
-		double _clusRadius;
-		float _clusSeedEnergy;
-		double _clusTheta, _clusPhi;
-		bool _goodCluster;
-		std::vector<double> _clusCenter;
-		std::vector<const FTHodoHit*> hits;
-
-
+	int _clusID;
+	int _clusSize;
+	float _clusEnergy;
+	float _clusRecEnergy;
+	double _clusTime;
+	double _clusXX, _clusYY;
+	double _clusSigmaX, _clusSigmaY;
+	double _clusRadius;
+	float _clusSeedEnergy;
+	double _clusTheta, _clusPhi;
+	bool _goodCluster;
+	TVector3 _clusCenter;
+	std::vector<const FTHodoHit*> hits;
 
 };
 
