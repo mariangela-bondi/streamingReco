@@ -27,8 +27,16 @@ void faWaveboardHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEve
 }
 void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
-	auto tridas_event = aEvent->GetSingle<TridasEvent>();
-
+	vector<const TridasEvent*> tridas_events;
+	try {
+		tridas_events = aEvent->Get<TridasEvent>();
+	} catch (JException &e) {
+		return;
+	}
+	if (tridas_events.size() != 1) {
+		return;
+	}
+	auto tridas_event = tridas_events[0];
 	/*The Hit Time is, probably, an absolute time, and we don't want this, we just care about the relative time in the event.
 	 *Hence, I take the earliest hit time and remove it from the all hits.
 	 *Note that I loop on all hits in tridas_event, hence even if I mix fa250VTPMode7Hit and waveveboardHit, that is ok, since the faWaveboardHit factory has the same code.

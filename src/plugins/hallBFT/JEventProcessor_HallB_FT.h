@@ -48,6 +48,9 @@
 ///
 /// Detailed class description.
 //////////////////////////////////////////////////////////////////////////////////////////////////
+class TFile;
+class TH1D;
+class TH2D;
 class JEventProcessor_HallB_FT : public JEventProcessor{
 	public:
 		JEventProcessor_HallB_FT();
@@ -61,6 +64,11 @@ class JEventProcessor_HallB_FT : public JEventProcessor{
 
 
 	private:
+
+		TFile *f;
+		TH1D *hClusE;
+		TH1D *hClus2M;
+		TH2D *hClusXY;
 
 };
 
