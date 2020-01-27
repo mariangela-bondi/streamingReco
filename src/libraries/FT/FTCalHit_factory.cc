@@ -34,8 +34,8 @@ void FTCalHit_factory::Init() {
 void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << aEvent->GetEventNumber() << std::endl;
-	m_tt = aEvent->GetSingle<TranslationTable>();
+	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " <<this<<" "<< std::endl;
+	if (m_tt!=0) m_tt = aEvent->GetSingle<TranslationTable>();
 
 }
 void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {

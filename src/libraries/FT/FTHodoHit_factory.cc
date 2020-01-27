@@ -39,9 +39,9 @@ void FTHodoHit_factory::Init() {
 void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	std::cout << "FTHodoHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << aEvent->GetEventNumber() << std::endl;
-	m_tt = aEvent->GetSingle<TranslationTable>();
+	std::cout << "FTHodoHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << aEvent->GetEventNumber() <<" "<< this<<std::endl;
 
+	if (m_tt!=0) m_tt = aEvent->GetSingle<TranslationTable>();
 	if (hasLoaded == 0) {
 		auto jcalib_manager = japp->GetService<JCalibrationManager>();
 		auto jcalib = jcalib_manager->GetJCalibration(aEvent->GetEventNumber());
