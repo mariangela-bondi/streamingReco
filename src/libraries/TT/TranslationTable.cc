@@ -53,6 +53,10 @@ TranslationTable::TranslationTable(JApplication *app, int runN) :
 	m_japp->GetJParameterManager()->GetParameter("RUNTYPE",tttype);
 	std::cout << "TranslationTable ttype is: -->" << tttype << " <--- "<< std::endl;fflush(stdout);
 
+#define WORK_AROUND
+#ifdef WORK_AROUND
+	tttype="HALLB";
+#endif
 
 	if (tttype == "HALLB") {
 		ReadTranslationTableHALLB();
