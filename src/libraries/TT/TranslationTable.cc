@@ -42,18 +42,18 @@ TranslationTable::TranslationTable(JApplication *app, int runN) :
 	 *
 	 *
 	 */
-
-
-
+	string tttype;
+#define WORK_AROUND
+/*
 	if (m_japp->GetJParameterManager()->Exists("RUNTYPE") == false) {
 		throw JException("RUNTYPE PARAMETER NOT SPECIFIED");
 	}
 
-	string tttype;
+
 	m_japp->GetJParameterManager()->GetParameter("RUNTYPE",tttype);
 	std::cout << "TranslationTable ttype is: -->" << tttype << " <--- "<< std::endl;fflush(stdout);
 
-#define WORK_AROUND
+*/
 #ifdef WORK_AROUND
 	tttype="HALLB";
 #endif
