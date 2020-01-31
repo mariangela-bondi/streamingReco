@@ -50,9 +50,8 @@
 #include "TROOT.h"
 
 #include "DAQ/faWaveboardHit.h"
-
+#include "Trigger/TriggerDecision.h"
 /*Here goes the histograms*/
-
 static TH1D *hTest = 0;
 
 //---------------------------------
@@ -68,6 +67,8 @@ JEventProcessor_HallB_FT_monitoring::JEventProcessor_HallB_FT_monitoring() {
 JEventProcessor_HallB_FT_monitoring::~JEventProcessor_HallB_FT_monitoring() {
 
 }
+
+
 
 //------------------
 // Init
@@ -107,10 +108,18 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 	//  ... fill histograms or trees ...
 	// }
 
-
-
-	auto calhits=aEvent->Get<FTCalHit>();
+	auto calhits = aEvent->Get<FTCalHit>();
 	auto hits = aEvent->Get<faWaveboardHit>();
+	auto triggerDecisions = aEvent->Get<TriggerDecision>();
+
+	bool isSet = false;
+	for (auto triggerDecision : triggerDecisions) {
+		if (triggerDecision->GetDecision()) {
+			isSet = true;
+			break;
+		}
+	}
+
 	for (auto hit : hits) {
 		std::cout << 1. * hit->m_channel.crate << " " << 1. * hit->m_channel.slot << " " << 1. * hit->m_channel.channel << std::endl;
 	}

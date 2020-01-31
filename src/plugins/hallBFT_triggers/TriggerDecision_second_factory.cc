@@ -27,7 +27,7 @@ void TriggerDecision_second_factory::Process(const std::shared_ptr<const JEvent>
 
 	auto mTriggerDecision = new TriggerDecision();
 
-	mTriggerDecision->SetDecision(); //mark all to True
+	//mTriggerDecision->SetDecision(); //mark all to True
 	mTriggerDecision->SetDescription("second trigger doing nothing - only existings to test the GetAll method in JANA");
 
 	mData.push_back(mTriggerDecision);
