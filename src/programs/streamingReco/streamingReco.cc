@@ -43,7 +43,7 @@
 #include "JBenchmarker.h"
 #include "JSignalHandler.h"
 
-#include "DAQ/JEventSourcePTFileGenerator.h"
+#include "DAQ/JEventSourceTxtFileGenerator.h"
 #include "addRecoFactoriesGenerators.h"
 
 void PrintUsage() {
@@ -138,7 +138,7 @@ int Execute(UserOptions& options) {
 
 		//A.C.
 		addRecoFactoriesGenerators(japp);
-		japp->Add(new JEventSourcePTFileGenerator());
+		japp->Add(new JEventSourceTxtFileGenerator());
 
 
 		auto calib_manager = std::make_shared<JCalibrationManager>();
