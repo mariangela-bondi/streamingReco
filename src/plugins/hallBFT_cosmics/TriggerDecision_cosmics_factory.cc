@@ -54,6 +54,7 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 	bool hasCosmics = false;
 	int nHitsInColumn = 0;
 	for (auto hit : hits) {
+		nHitsInColumn = 0;
 		if (hit->getHitEnergy() > singleChThr) {
 			int iX = hit->getHitIX();
 			nHitsInColumn++;
