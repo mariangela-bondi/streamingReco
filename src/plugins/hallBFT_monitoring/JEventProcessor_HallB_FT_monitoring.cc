@@ -103,7 +103,8 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 
 
 	bool isSet = false;
-	/*for (auto triggerDecision : triggerDecisions) {
+	/*
+	 * for (auto triggerDecision : triggerDecisions) {
 		if (triggerDecision->GetDecision()) {
 			isSet = true;
 			break;
