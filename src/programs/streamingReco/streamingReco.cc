@@ -37,6 +37,8 @@
 #include <JANA/Calibrations/JCalibrationFile.h>
 #include <JANA/Calibrations/JCalibrationManager.h>
 
+#include <JANA/Services/JGlobalRootLock.h>
+
 #define HAVE_CCDB 1
 #include <JANA/Calibrations/JCalibrationGeneratorCCDB.h>
 
@@ -141,11 +143,11 @@ int Execute(UserOptions& options) {
 		addRecoFactoriesGenerators(japp);
 		japp->Add(new JEventSourcePTFileGenerator());
 
-
-
 		auto calib_manager = std::make_shared<JCalibrationManager>();
 		calib_manager->AddCalibrationGenerator(new JCalibrationGeneratorCCDB);
 		japp->ProvideService(calib_manager);
+
+		japp->ProvideService(std::make_shared<JGlobalRootLock>());
 
 		if (options.flags[ShowConfigs]) {
 			// Load all plugins, collect all parameters, exit without running anything
