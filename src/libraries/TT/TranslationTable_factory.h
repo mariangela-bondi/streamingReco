@@ -23,7 +23,7 @@ public:
 	virtual void Process(const std::shared_ptr<const JEvent> &aEvent);
 
 private:
-	TranslationTable *m_tt;
+
 };
 
 #endif /* SRC_LIBRARIES_TT_TRANSLATIONTABLE_FACTORY_H_ */
