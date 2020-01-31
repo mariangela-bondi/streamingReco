@@ -34,8 +34,12 @@ void FTCalHit_factory::Init() {
 void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " <<this<<" "<< std::endl;
-	if (m_tt==0) m_tt = aEvent->GetSingle<TranslationTable>();
+	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << this << " " << m_tt << " " << std::endl;
+	if (m_tt == 0) {
+		std::cout << "FTCalHit_factory::get TT" << std::endl;
+		m_tt = aEvent->GetSingle<TranslationTable>();
+		std::cout << "FTCalHit_factory: got TT" << std::endl;
+	}
 
 }
 void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
@@ -68,19 +72,16 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setHitTime(4*faHit->m_time.count());
+			ftCalHit->setHitTime(4 * faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
 			ftCalHit->setHitEnergy(faHit->m_charge);
 
 			//Assign the position
-			ftCalHit->setHitX((ftCalHit->m_channel.iX-CRYS_DELTA)*CRYS_WIDTH);
-			ftCalHit->setHitY((ftCalHit->m_channel.iY-CRYS_DELTA)*CRYS_WIDTH);
+			ftCalHit->setHitX((ftCalHit->m_channel.iX - CRYS_DELTA) * CRYS_WIDTH);
+			ftCalHit->setHitY((ftCalHit->m_channel.iY - CRYS_DELTA) * CRYS_WIDTH);
 			ftCalHit->setHitZ(CRYS_ZPOS);
-
-
-
 
 			mData.push_back(ftCalHit);
 		}
@@ -104,7 +105,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setHitTime(4*faHit->m_time.count());
+			ftCalHit->setHitTime(4 * faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP

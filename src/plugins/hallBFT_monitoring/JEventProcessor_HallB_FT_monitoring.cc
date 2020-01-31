@@ -41,6 +41,10 @@
 
 #include "FT/FTCalHit.h"
 #include "FT/FTHodoHit.h"
+#include "FT/FTCalCluster.h"
+
+#include "JANA/Services/JGlobalRootLock.h"
+#include "JANA/JApplication.h"
 
 #include <TDirectory.h>
 #include <TH2.h>
@@ -49,8 +53,6 @@
 #include <TStyle.h>
 #include "TROOT.h"
 
-#include "DAQ/faWaveboardHit.h"
-#include "Trigger/TriggerDecision.h"
 /*Here goes the histograms*/
 static TH1D *hTest = 0;
 
@@ -68,25 +70,25 @@ JEventProcessor_HallB_FT_monitoring::~JEventProcessor_HallB_FT_monitoring() {
 
 }
 
-
-
 //------------------
 // Init
 //------------------
 void JEventProcessor_HallB_FT_monitoring::Init(void) {
 	// This is called once at program startup.
+	m_root_lock = japp->GetService<JGlobalRootLock>();
 
-	//japp->RootWriteLock();
+	m_root_lock->acquire_write_lock();
 	if (hTest != NULL) {
-		//japp->RootUnLock();
+		m_root_lock->release_lock();
 		return;
 	}
+
 	gROOT->cd();
 	TDirectory *main = gDirectory;
 	gDirectory->mkdir("HallB_FT_monitoring")->cd();
 
 	hTest = new TH1D("hTest", "hTest", 100, 0, 10);
-	//japp->RootUnLock();
+	m_root_lock->release_lock();
 
 }
 
@@ -94,40 +96,28 @@ void JEventProcessor_HallB_FT_monitoring::Init(void) {
 // Process
 //------------------
 void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JEvent>& aEvent) {
-	// This is called for every event. Use of common resources like writing
-	// to a file or filling a histogram should be mutex protected. Using
-	// aEvent->Get<type>() to get reconstructed objects (and thereby activating the
-	// reconstruction algorithm) should be done outside of any mutex lock
-	// since multiple threads may call this method at the same time.
-	// Here's an example:
-	//
-	// auto myTracks = aEvent->Get*<MyTrack>();
-	//
-	// lock_guard<mutex> lck( mymutex );
-	// for( auto t : myTracks ){
-	//  ... fill histograms or trees ...
-	// }
+
 
 	auto calhits = aEvent->Get<FTCalHit>();
-	auto hits = aEvent->Get<faWaveboardHit>();
-	auto triggerDecisions = aEvent->Get<TriggerDecision>();
+	auto calclusters = aEvent->Get<FTCalCluster>();
+
 
 	bool isSet = false;
-	for (auto triggerDecision : triggerDecisions) {
+	/*for (auto triggerDecision : triggerDecisions) {
 		if (triggerDecision->GetDecision()) {
 			isSet = true;
 			break;
 		}
-	}
+	}*/
 
-	for (auto hit : hits) {
-		std::cout << 1. * hit->m_channel.crate << " " << 1. * hit->m_channel.slot << " " << 1. * hit->m_channel.channel << std::endl;
+	for (auto cluster : calclusters) {
+
 	}
 
 	//lock
-	hTest->Fill(hits.size());
-	hTest->Fill(calhits.size());
-
+	m_root_lock->acquire_write_lock();
+	hTest->Fill(calclusters.size());
+	m_root_lock->release_lock();
 	//unlock
 
 }
