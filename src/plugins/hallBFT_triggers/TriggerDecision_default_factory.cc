@@ -13,10 +13,7 @@
 #include "DAQ/faWaveboardHit.h"
 #include "JANA/JEvent.h"
 
-double minSeed = 100;
-double minEnergy = 300;
-double minSize = 3;
-int nCluster_th = 1;  // number of clusters required to do trigger
+
 
 TriggerDecision_default_factory::TriggerDecision_default_factory(){
 	mTag="default";//A.C. is this the right way to set the tag?
@@ -35,7 +32,14 @@ void TriggerDecision_default_factory::ChangeRun(const std::shared_ptr<const JEve
 
 }
 void TriggerDecision_default_factory::Process(const std::shared_ptr<const JEvent> &aEvent){
-
+	
+	//clustering parameters - to be tuned later 
+	double minSeed = 100;
+	double minEnergy = 300;
+	double minSize = 3;
+	int nCluster_th = 1;  // number of clusters required to do trigger
+	//end clustering parameters
+	
 	int nCluster=0;
 	auto mTriggerDecision = new TriggerDecision();
 
