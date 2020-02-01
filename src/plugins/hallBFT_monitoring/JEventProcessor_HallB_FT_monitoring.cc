@@ -55,6 +55,8 @@
 
 /*Here goes the histograms*/
 static TH1D *hTest = 0;
+static TH1D * hnClusters = 0;
+static TH1D * hnHitsFT = 0;
 
 //---------------------------------
 // JEventProcessor_HallB_FT_monitoring    (Constructor)
@@ -87,8 +89,9 @@ void JEventProcessor_HallB_FT_monitoring::Init(void) {
 	TDirectory *main = gDirectory;
 	gDirectory->mkdir("HallB_FT_monitoring")->cd();
 
-	hTest = new TH1D("hTest", "hTest", 100, 0, 10);
-	m_root_lock->release_lock();
+	 hnClusters = new TH1D(" hnClusters", " hnClusters", 100, 0, 10);
+	 hnHitsFT = new TH1D(" hnHitsFT", " hnHitsFT", 400, 0, 400);
+	 m_root_lock->release_lock();
 
 }
 
@@ -117,7 +120,9 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 
 	//lock
 	m_root_lock->acquire_write_lock();
-	hTest->Fill(calclusters.size());
+	 hnClusters->Fill(calclusters.size());
+	 hnHitsFT->Fill(calhits.size());
+
 	m_root_lock->release_lock();
 	//unlock
 
