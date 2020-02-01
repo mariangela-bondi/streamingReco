@@ -70,7 +70,7 @@ TranslationTable::TranslationTable(JApplication *app, int runN) :
 }
 
 void TranslationTable::ReadTranslationTableHALLB() {
-	std::cout << "ReadTranslationTableHALLB() start" << std::endl;
+	//std::cout << "ReadTranslationTableHALLB() start" << std::endl;
 
 	// It seems expat is not thread safe so we lock a mutex here and
 	// read in the translation table just once
