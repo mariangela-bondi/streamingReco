@@ -11,6 +11,10 @@
 #include "Trigger/TriggerDecision.h"
 #include "JANA/JFactoryT.h"
 
+#include <memory>
+
+class JGlobalRootLock;
+
 class TriggerDecision_cosmics_factory: public JFactoryT<TriggerDecision> {
 public:
 	TriggerDecision_cosmics_factory();
@@ -20,6 +24,12 @@ public:
 	virtual void Init();
 	virtual void ChangeRun(const std::shared_ptr<const JEvent> &aEvent);
 	virtual void Process(const std::shared_ptr<const JEvent> &aEvent);
+
+    protected:
+
+
+    private:
+    std::shared_ptr<JGlobalRootLock> m_root_lock;
 };
 
 #endif /* SRC_PLUGINS_HALLBFT_TRIGGERS_TRIGGERDECISION_COSMICS_FACTORY_H_ */

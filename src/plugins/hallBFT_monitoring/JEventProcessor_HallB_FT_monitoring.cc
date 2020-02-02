@@ -55,8 +55,9 @@
 
 /*Here goes the histograms*/
 static TH1D *hTest = 0;
-static TH1D * hnClusters = 0;
-static TH1D * hnHitsFT = 0;
+static TH1D *hnClusters = 0;
+static TH1D *hnHitsFT = 0;
+static TH1D *hnHitsComponentFT=0;   // histo number of counts for each FT components
 
 //---------------------------------
 // JEventProcessor_HallB_FT_monitoring    (Constructor)
@@ -91,6 +92,8 @@ void JEventProcessor_HallB_FT_monitoring::Init(void) {
 
 	 hnClusters = new TH1D(" hnClusters", " hnClusters", 100, 0, 10);
 	 hnHitsFT = new TH1D(" hnHitsFT", " hnHitsFT", 400, 0, 400);
+	 hnHitsComponentFT = new TH1D(" hnHitsComponentFT", " hnHitsComponentFT", 400, 0, 400);
+
 	 m_root_lock->release_lock();
 
 }
@@ -113,15 +116,22 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 			break;
 		}
 	}*/
-
+	//lock
+	m_root_lock->acquire_write_lock();
 	for (auto cluster : calclusters) {
 
 	}
+	for (auto calhit : calhits) {
 
-	//lock
-	m_root_lock->acquire_write_lock();
+    hnHitsComponentFT->Fill(calhit->m_channel.component);
+
+	}
+
+
+
 	 hnClusters->Fill(calclusters.size());
 	 hnHitsFT->Fill(calhits.size());
+
 
 	m_root_lock->release_lock();
 	//unlock
