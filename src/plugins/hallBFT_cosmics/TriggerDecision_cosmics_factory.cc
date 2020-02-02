@@ -21,11 +21,12 @@
 #include <TStyle.h>
 #include "TROOT.h"
 
+/*
 static TH1D *hTest = 0;
 static TH1D *hCrystal_energy_cosmicTrigger=0;
 static TH1D *hnHitsInColumn_cosmicTrigger=0;
 static TH1D *hColumn_cosmicTrigger=0;
-
+*/
 
 
 TriggerDecision_cosmics_factory::TriggerDecision_cosmics_factory() {
@@ -38,6 +39,7 @@ TriggerDecision_cosmics_factory::~TriggerDecision_cosmics_factory() {
 
 // Overloaded by user Factories
 void TriggerDecision_cosmics_factory::Init() {
+	/*
 	m_root_lock = japp->GetService<JGlobalRootLock>();
 	m_root_lock->acquire_write_lock();
 	if (hTest != NULL) {
@@ -54,8 +56,10 @@ void TriggerDecision_cosmics_factory::Init() {
 	hnHitsInColumn_cosmicTrigger = new TH1D("hnHitsInColumn_cosmicTrigger","hnHitsInColumn_cosmicTrigger", 20,0,20);
 	hColumn_cosmicTrigger = new TH1D("hColumn_cosmicTrigger", "hColumn_cosmicTrigger", 22, -11, 11);
 
-	m_root_lock->release_lock();
 
+
+	m_root_lock->release_lock();
+*/
 
 }
 void TriggerDecision_cosmics_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
@@ -135,6 +139,7 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 	//a cosmic has been found
 	if (hasCosmics){
 		mTriggerDecision->SetDecision();
+
 	}
 
 	mData.push_back(mTriggerDecision);
@@ -142,7 +147,7 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 
 	// from here monitoring histogram
 	//lock
-
+/*
 	m_root_lock->acquire_write_lock();
 	if (hasCosmics){
 
@@ -169,6 +174,6 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 //	hTest->Fill(calclusters.size());
 	m_root_lock->release_lock();
 	//unlock
-
+*/
 
 }
