@@ -42,7 +42,7 @@ void TriggerDecision_cosmics_factory::Init() {
 
 	m_root_lock = japp->GetService<JGlobalRootLock>();
 	m_root_lock->acquire_write_lock();
-	if (hTest != NULL) {
+	if (hCrystal_energy_cosmicTrigger != NULL) {
 		m_root_lock->release_lock();
 		return;
 	}
@@ -147,13 +147,13 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 
 	// from here monitoring histogram
 	//lock
-/*
+
 	m_root_lock->acquire_write_lock();
 	if (hasCosmics){
 
 		hnHitsInColumn_cosmicTrigger->Fill(nHitsInColumn);
 		hColumn_cosmicTrigger->Fill(iXX);
-
+/*
 		for (auto hit : hits) {
 			int hiX = hit->getHitIX();
 			if(hiX==iXX){
@@ -168,12 +168,12 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 			}
 
 		}
-
+*/
 	}
 
 //	hTest->Fill(calclusters.size());
 	m_root_lock->release_lock();
 	//unlock
-*/
+
 
 }
