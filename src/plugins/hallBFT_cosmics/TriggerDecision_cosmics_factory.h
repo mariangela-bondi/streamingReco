@@ -13,7 +13,7 @@
 
 #include <memory>
 
-class JGlobalRootLock;
+//class JGlobalRootLock;
 
 class TriggerDecision_cosmics_factory: public JFactoryT<TriggerDecision> {
 public:
@@ -27,8 +27,8 @@ public:
 
     protected:
 
-    private:
-    std::shared_ptr<JGlobalRootLock> m_root_lock;
+  //  private:
+   // std::shared_ptr<JGlobalRootLock> m_root_lock;
 };
 
 #endif /* SRC_PLUGINS_HALLBFT_TRIGGERS_TRIGGERDECISION_COSMICS_FACTORY_H_ */

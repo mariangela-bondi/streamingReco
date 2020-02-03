@@ -21,12 +21,12 @@
 #include <TStyle.h>
 #include "TROOT.h"
 
-
+/*
 static TH1D *hTest = 0;
 static TH1D *hCrystal_energy_cosmicTrigger=0;
 static TH1D *hnHitsInColumn_cosmicTrigger=0;
 static TH1D *hColumn_cosmicTrigger=0;
-
+*/
 
 
 TriggerDecision_cosmics_factory::TriggerDecision_cosmics_factory() {
@@ -39,7 +39,7 @@ TriggerDecision_cosmics_factory::~TriggerDecision_cosmics_factory() {
 
 // Overloaded by user Factories
 void TriggerDecision_cosmics_factory::Init() {
-
+/*
 	m_root_lock = japp->GetService<JGlobalRootLock>();
 	m_root_lock->acquire_write_lock();
 	if (hCrystal_energy_cosmicTrigger != NULL) {
@@ -59,7 +59,7 @@ void TriggerDecision_cosmics_factory::Init() {
 
 
 	m_root_lock->release_lock();
-
+*/
 
 }
 void TriggerDecision_cosmics_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
