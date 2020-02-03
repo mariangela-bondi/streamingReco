@@ -137,27 +137,27 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 	}
 
 	//a cosmic has been found
-	if (hasCosmics){
-		mTriggerDecision->SetDecision();
+	//	if (hasCosmics){
+	//	mTriggerDecision->SetDecision();
 
-	}
-
-	mData.push_back(mTriggerDecision);
+	//}
+ 
+	//	mData.push_back(mTriggerDecision);
 
 
 	// from here monitoring histogram
 	//lock
 
-	m_root_lock->acquire_write_lock();
-	if (hasCosmics){
+	//	m_root_lock->acquire_write_lock();
+	//	if (hasCosmics){
 
-		hnHitsInColumn_cosmicTrigger->Fill(nHitsInColumn);
-		hColumn_cosmicTrigger->Fill(iXX);
+	  //		hnHitsInColumn_cosmicTrigger->Fill(nHitsInColumn);
+		//		hColumn_cosmicTrigger->Fill(iXX);
 /*
 		for (auto hit : hits) {
 			int hiX = hit->getHitIX();
 			if(hiX==iXX){
-				for (int hiY = 1; hiY <= 23; hiY++) {
+				for (int hiY = 1; hiY <= 4 ; hiY++) {
 					auto it = data.find(std::make_pair(hiX, hit->getHitIY() + hiY));
 					if (it != data.end()) {
 						hCrystal_energy_cosmicTrigger->Fill(it->second) ;
@@ -169,11 +169,18 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 
 		}
 */
-	}
+//	}
 
 //	hTest->Fill(calclusters.size());
-	m_root_lock->release_lock();
+//	m_root_lock->release_lock();
 	//unlock
 
+	//a cosmic has been found
+	if (hasCosmics){
+		mTriggerDecision->SetDecision();
+
+	}
+
+	mData.push_back(mTriggerDecision);
 
 }
