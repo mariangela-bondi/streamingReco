@@ -136,26 +136,24 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 		}
 	}
 
-	//a cosmic has been found
-	//	if (hasCosmics){
-	//	mTriggerDecision->SetDecision();
 
-	//}
- 
-	//	mData.push_back(mTriggerDecision);
 
 
 	// from here monitoring histogram
 	//lock
+                
+	/*
+  	
+       	m_root_lock->acquire_write_lock(); 
+	//	std::cout<<"after acquire write lock"<<std::endl;
+	  	if (hasCosmics){
 
-	//	m_root_lock->acquire_write_lock();
-	//	if (hasCosmics){
+	  	  std::cout<<" a cosmic has been found -histo"<<std::endl;
+	    		hnHitsInColumn_cosmicTrigger->Fill(nHitsInColumn);
+	          	        hColumn_cosmicTrigger->Fill(iXX);
 
-	  //		hnHitsInColumn_cosmicTrigger->Fill(nHitsInColumn);
-		//		hColumn_cosmicTrigger->Fill(iXX);
-/*
-		for (auto hit : hits) {
-			int hiX = hit->getHitIX();
+	  	for (auto hit : hits) {
+	  		int hiX = hit->getHitIX();
 			if(hiX==iXX){
 				for (int hiY = 1; hiY <= 4 ; hiY++) {
 					auto it = data.find(std::make_pair(hiX, hit->getHitIY() + hiY));
@@ -168,13 +166,13 @@ void TriggerDecision_cosmics_factory::Process(const std::shared_ptr<const JEvent
 			}
 
 		}
-*/
-//	}
+
+  	}
 
 //	hTest->Fill(calclusters.size());
 //	m_root_lock->release_lock();
 	//unlock
-
+	*/
 	//a cosmic has been found
 	if (hasCosmics){
 		mTriggerDecision->SetDecision();

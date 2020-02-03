@@ -45,6 +45,7 @@ void TriggerDecision_default_factory::Process(const std::shared_ptr<const JEvent
 
 //	mTriggerDecision->SetDecision(); //mark all to True
 	mTriggerDecision->SetDescription("cluster trigger");
+      
 
 	auto calclus = aEvent->Get<FTCalCluster>();
 
@@ -54,9 +55,14 @@ void TriggerDecision_default_factory::Process(const std::shared_ptr<const JEvent
 			nCluster++;
 		         }
 	}
-
-	if (nCluster>=nCluster_th) mTriggerDecision->SetDecision();
-
+	
+	if (nCluster>=nCluster_th){
+           mTriggerDecision->SetDecision();
+	  
+          std::cout<<"trigger cluster has been founded "<<std::endl;
+	  
+    
+             }
 	mData.push_back(mTriggerDecision);
 
 }

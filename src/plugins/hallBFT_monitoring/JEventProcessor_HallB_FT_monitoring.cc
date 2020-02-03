@@ -132,7 +132,7 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 	 hnClusters->Fill(calclusters.size());
 	 hnHitsFT->Fill(calhits.size());
 
-
+	 //	 std::cout<<"histo monitoring"<<std::endl;
 	m_root_lock->release_lock();
 	//unlock
 
