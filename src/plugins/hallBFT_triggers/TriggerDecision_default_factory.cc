@@ -59,7 +59,7 @@ void TriggerDecision_default_factory::Process(const std::shared_ptr<const JEvent
 	if (nCluster>=nCluster_th){
            mTriggerDecision->SetDecision();
 	  
-          std::cout<<"trigger cluster has been founded "<<std::endl;
+      //    std::cout<<"trigger cluster has been founded "<<std::endl;
 	  
     
              }
