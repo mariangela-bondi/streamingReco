@@ -44,9 +44,10 @@
 
 
 //Need file of constant!!!!!!!!!!
-int minClusterSize = 3; //Need size > to min for accept cluster. Not >=.
-double minClusterEnergy = 1; //Need size > to min for accept cluster. Not >=.
-int time_window = 50;
+int minClusterSize = 2; //Need size > to min for accept cluster. Not >=.
+double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
+double minSeedEnergy = 10;
+int time_window = 30;
 
 
 //---------------------------------
@@ -178,7 +179,7 @@ void FTCalCluster::computeCluster() {
 	//Cluster phi
 	_clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.Y()) * (180. / M_PI); //
 
-	if (_clusSize > minClusterSize && _clusEnergy > minClusterEnergy)
+	if (_clusSize >= minClusterSize && _clusEnergy >= minClusterEnergy && _clusSeedEnergy >=minSeedEnergy)
 		_goodCluster = true;
 	else
 		_goodCluster = false;
