@@ -34,7 +34,7 @@ void FTCalHit_factory::Init() {
 void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
-	//std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << this << " " << m_tt << " " << std::endl;
+	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << this << " " << m_tt << " " << std::endl;
 	if (m_tt == 0) {
 		//std::cout << "FTCalHit_factory::get TT" << std::endl;
 		m_tt = aEvent->GetSingle<TranslationTable>();
@@ -45,7 +45,6 @@ void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	TranslationTable::ChannelInfo m_channel;
-	TranslationTable::csc_t m_csc;
 
 	//Get the hits from FADC. Support bot the waveboard hit and the fa250VTPMode7 hit
 	auto faHits_waveboard = aEvent->Get<faWaveboardHit>();
@@ -53,7 +52,9 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	for (auto faHit : faHits_waveboard) {
 
-		m_channel = m_tt->getChannelInfo(m_csc);
+		std::cout<<"TMP: "<<m_tt<<" "<<m_tt->GetVerbose()<<std::endl;
+		m_channel = m_tt->getChannelInfo(faHit->m_channel);
+
 
 		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
 			//Convert the waveboard hit. Probably will never be used, unless we will perform FT tests with waveboard.
