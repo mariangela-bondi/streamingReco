@@ -38,7 +38,7 @@ void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 	if (m_tt == 0) {
 		//std::cout << "FTCalHit_factory::get TT" << std::endl;
 		m_tt = aEvent->GetSingle<TranslationTable>();
-	//	std::cout << "FTCalHit_factory: got TT" << std::endl;
+		//	std::cout << "FTCalHit_factory: got TT" << std::endl;
 	}
 
 }
@@ -52,9 +52,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	for (auto faHit : faHits_waveboard) {
 
-		std::cout<<"TMP: "<<m_tt<<" "<<m_tt->GetVerbose()<<std::endl;
 		m_channel = m_tt->getChannelInfo(faHit->m_channel);
-
 
 		if ((m_channel.det_sys == TranslationTable::FTCAL)) {
 			//Convert the waveboard hit. Probably will never be used, unless we will perform FT tests with waveboard.
@@ -111,6 +109,11 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
 			ftCalHit->setHitEnergy(faHit->m_charge);
+
+			//Assign the position
+			ftCalHit->setHitX((ftCalHit->m_channel.iX - CRYS_DELTA) * CRYS_WIDTH);
+			ftCalHit->setHitY((ftCalHit->m_channel.iY - CRYS_DELTA) * CRYS_WIDTH);
+			ftCalHit->setHitZ(CRYS_ZPOS);
 
 			mData.push_back(ftCalHit);
 		}
