@@ -293,10 +293,10 @@ TranslationTable::ChannelInfo TranslationTable::getChannelInfo(const csc_t &csc)
 	map<csc_t, ChannelInfo>::const_iterator iter = Get_TT().find(csc);
 
 	if (iter == Get_TT().end()) {
-		if (m_verbose > 6) {
+	/*	if (m_verbose > 6) {
 			std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
-			std::cout << "    - Didn't find it" << std::endl;
-		}
+			std::cout << "    - Didn't find it " << m_verbose<<" "<<std::endl;
+		}*/
 		m_channel.det_sys = UNKNOWN_DETECTOR;
 		return m_channel;
 	}

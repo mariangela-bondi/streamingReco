@@ -84,7 +84,7 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 	//  ... fill histograms or trees ...
 	// }
 
-	std::cout<<"event start"<<std::endl;
+	/*std::cout<<"event start"<<std::endl;
 	std::cout<<"CAL"<<std::endl;
 	auto calhits = aEvent->Get<FTCalHit>();
 	for (auto calhit : calhits){
@@ -95,7 +95,7 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 	for (auto hodohit : hodohits){
 		std::cout<<1.*hodohit->m_channel.sector<<" "<<1.*hodohit->m_channel.layer<<" "<<1.*hodohit->m_channel.component<<std::endl;
 	}
-	std::cout<<"OK"<<std::endl;
+	std::cout<<"OK"<<std::endl;*/
 }
 
 //------------------

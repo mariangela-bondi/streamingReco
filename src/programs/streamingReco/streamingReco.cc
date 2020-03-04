@@ -31,19 +31,21 @@
 
 #include <iostream>
 #include <JANA/JApplication.h>
-#include <JANA/Status/JVersion.h>
+
 
 #include <JANA/Calibrations/JCalibrationCCDB.h>
 #include <JANA/Calibrations/JCalibrationFile.h>
 #include <JANA/Calibrations/JCalibrationManager.h>
 
 #include <JANA/Services/JGlobalRootLock.h>
+#include <JANA/CLI/JVersion.h>
+#include <JANA/CLI/JBenchmarker.h>
+#include <JANA/CLI/JSignalHandler.h>
 
 #define HAVE_CCDB 1
 #include <JANA/Calibrations/JCalibrationGeneratorCCDB.h>
 
-#include "JBenchmarker.h"
-#include "JSignalHandler.h"
+
 
 #include "DAQ/JEventSourcePTFileGenerator.h"
 
@@ -137,7 +139,7 @@ int Execute(UserOptions& options) {
 		for (auto event_src : options.eventSources) {
 			japp->Add(event_src);
 		}
-		AddSignalHandlers();
+		JSignalHandler::register_handlers(japp);
 
 		//A.C.
 		addRecoFactoriesGenerators(japp);
