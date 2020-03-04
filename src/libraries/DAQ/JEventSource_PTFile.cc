@@ -1,5 +1,5 @@
 #include "JEventSource_PTFile.h"
-
+#include "TRIDAS/s_dataformat_bdx.hpp"
 #include <iostream>
 
 JEventSourcePTFile::JEventSourcePTFile(std::string res_name, JApplication* app) :
@@ -64,7 +64,6 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 	curRunNumber = ptReader->runNumber();
 	ptEvent = new Event<sample::uncompressed>(*it_ptTimeSlice++);
 
-
 	//TODO: allow for a user-defined run number
 	event->SetRunNumber(curRunNumber);
 	event->SetEventNumber(ptEvent->id());
@@ -72,6 +71,21 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 //	event->Insert(ptEvent);
 
 	TridasEvent *tridasEvent = new TridasEvent();
+
+	//add the trigger word
+	tridasEvent->triggerWords.push_back(tridas::bdx::MAX_TRIGGERS_NUMBER); //currently 5
+	for (int ii = 0; ii < tridas::bdx::MAX_TRIGGERS_NUMBER; ii++) {
+		tridasEvent->triggerWords.push_back(ptEvent->nseeds(ii));
+	}
+	tridasEvent->triggerWords.push_back(tridas::bdx::MAX_PLUGINS_NUMBER); //currently 8
+	for (int ii = 0; ii < tridas::bdx::MAX_PLUGINS_NUMBER; ii++) {
+		tridasEvent->triggerWords.push_back(ptEvent->plugin_nseeds(ii));
+	}
+	for (int ii = 0; ii < tridas::bdx::MAX_PLUGINS_NUMBER; ii++) {
+		tridasEvent->triggerWords.push_back(ptEvent->plugin_trigtype(ii));
+	}
+
+
 
 	for (Event<sample::uncompressed>::iterator it = ptEvent->begin(); it != ptEvent->end(); ++it) {
 		Hit<sample::uncompressed> hit = (*it);	//This is the HIT
@@ -95,6 +109,7 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 		for (auto it_ptSample = hit.begin(); it_ptSample != hit.end(); it_ptSample++) {
 			fhit.data.push_back(*it_ptSample);
 		}
+
 		/*	At the moment (2020), TriDAS can be feed by three hardware sources:
 
 		 - Waveboard (V1)
@@ -116,18 +131,18 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 	event->Insert(tridasEvent);
 
 	delete ptEvent;
-	ptEvent=0;
+	ptEvent = 0;
 }
 
 /*
-bool JEventSourcePTFile::GetObjects(const std::shared_ptr<const JEvent>& aEvent, JFactory* aFactory) {
+ bool JEventSourcePTFile::GetObjects(const std::shared_ptr<const JEvent>& aEvent, JFactory* aFactory) {
 
-	//I organized this as follows.
-	//From the ptEvent, in principle I can extract the faWaveboardHits and have the JEventSourcePTFile providing these directly.
-	//In the online part (JEventSource_Tridas), I don't do this.
-	//The online factory, interacting with the TriDAS, provides directly the TridasEvent,
-	//and then there are different factories providing the fadc hits (faWaveboardHit_factory and fa250VTPMode7Hit_factory).
-	//
+ //I organized this as follows.
+ //From the ptEvent, in principle I can extract the faWaveboardHits and have the JEventSourcePTFile providing these directly.
+ //In the online part (JEventSource_Tridas), I don't do this.
+ //The online factory, interacting with the TriDAS, provides directly the TridasEvent,
+ //and then there are different factories providing the fadc hits (faWaveboardHit_factory and fa250VTPMode7Hit_factory).
+ //
 
-}
-*/
+ }
+ */

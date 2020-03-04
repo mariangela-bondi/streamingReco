@@ -14,7 +14,9 @@
 #include <functional>
 
 //this will set the hits in DESCENDING order wrt energy
-bool compareHits(const FTCalHit* a, const FTCalHit* b) { return (a->getHitEnergy() > b->getHitEnergy()); }
+bool compareHits(const FTCalHit* a, const FTCalHit* b) {
+	return (a->getHitEnergy() > b->getHitEnergy());
+}
 
 FTCalCluster_factory::FTCalCluster_factory() {
 	// TODO Auto-generated constructor stub
@@ -36,37 +38,38 @@ void FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) 
 	//Loop su gli hits di un evento
 	std::vector<const FTCalHit*> hits = aEvent->Get<const FTCalHit>();
 
-
-	std::sort(hits.begin(),hits.end(),compareHits);
+	std::sort(hits.begin(), hits.end(), compareHits);
 	std::vector<FTCalCluster*> clusters;
 
-	for(auto hit : hits){
+	for (auto hit : hits) {
 		bool flag = false;
-		if(flag == false){
-			for(int j=0; j<clusters.size(); j++){
+		if (flag == false) {
+			for (int j = 0; j < clusters.size(); j++) {
 				FTCalCluster* cluster = clusters[j];
-				if(cluster->containsHit(hit)){
+				if (cluster->containsHit(hit)) {
 					cluster->push_hit(hit);
-					flag =true;
+					flag = true;
 					break;
 				}
 			}
 		}
-		if (flag == false){
+		if (flag == false) {
 			FTCalCluster *cluster = new FTCalCluster(clusters.size());
 			cluster->push_hit(hit);
 			clusters.push_back(cluster);
 		}
 	}
 
-	for(int i=0; i <clusters.size(); i++){
+	for (int i = 0; i < clusters.size(); i++) {
 		//Idea: since this factory is responsible for creating the FTCalClusters,
 		//we do once the calculation of ALL quantities of interest here,
 		//then the "get" methods just return the computed values.
 		clusters[i]->computeCluster();
 		//std::cout <<"Is good cluster? " <<clusters[i]->isGoodCluster() <<" cluster size is " <<clusters[i]->getClusterSize() <<std::endl;
-		if (clusters[i]->isGoodCluster()==true){
-				mData.push_back(clusters[i]);
-			}
+		if (clusters[i]->isGoodCluster() == true) {
+			mData.push_back(clusters[i]);
+		} else {
+			delete clusters[i];
+		}
 	}
 }

@@ -115,6 +115,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->setHitY((ftCalHit->m_channel.iY - CRYS_DELTA) * CRYS_WIDTH);
 			ftCalHit->setHitZ(CRYS_ZPOS);
 
+
 			mData.push_back(ftCalHit);
 		}
 	}

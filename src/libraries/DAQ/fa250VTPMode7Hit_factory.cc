@@ -79,10 +79,6 @@ void fa250VTPMode7Hit_factory::Process(const std::shared_ptr<const JEvent> &aEve
 			if (hit.crate == 0) faHit->m_channel.crate = 70;
 			if (hit.crate == 1) faHit->m_channel.crate = 71;
 			if (hit.crate == 2) faHit->m_channel.crate = 72;
-
-	//		if (hit.crate == 0) faHit->m_channel.crate = 71;
-	//		if (hit.crate == 1) faHit->m_channel.crate = 72;
-	//		if (hit.crate == 2) faHit->m_channel.crate = 73;
 #endif
 
 			//Add to the framework
