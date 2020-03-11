@@ -40,6 +40,7 @@
 #include "JEventProcessor_HallB_FT_monitoring.h"
 
 #include "FT/FTCalHit.h"
+#include "FT/FTCalHitEneCorr.h"
 #include "FT/FTHodoHit.h"
 #include "FT/FTCalCluster.h"
 
@@ -127,7 +128,7 @@ void JEventProcessor_HallB_FT_monitoring::Init(void) {
 
 	hClusM_Trigger = new TH1D("hClusM_Trigger", "hClusM_Trigger", 500, 0, 500);
 	hClusXY_Trigger = new TH2D("hClusXY_Trigger", "hClusXY_Trigger", 200, -200, 200, 200, -200, 200);
-	hClusAngle_M_Trigger = new TH2D("hClusAngle_M_Trigger", "hClusAngle_M_Trigger", 500, 0, 500, 100, 0.9, 1);
+	hClusAngle_M_Trigger = new TH2D("hClusAngle_M_Trigger", "hClusAngle_M_Trigger", 500, 0, 500, 1000, 0.9, 1);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -151,7 +152,8 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 	int nCluster_pi0 = 3;
 
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
-	auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
+	auto clusters = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters dell'evento
+	//auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
 
 	bool isSet = false;
 
@@ -208,12 +210,13 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 				if (cluster2->getClusterEnergy() < 1.)
 					continue;
 				auto z = cos(cluster1->getCentroid().Angle(cluster2->getCentroid()));
-				auto M = sqrt(2 * cluster1->getClusterEnergy() * cluster2->getClusterEnergy() * (1 - z)) * 1000;
+				auto M = sqrt(2 * cluster1->getClusterEnergy() * cluster2->getClusterEnergy() * (1 - z));
 				hClusM_Trigger->Fill(M);
 				hClusAngle_M_Trigger->Fill(M, z);
 			}
 		}
 	}
+
 
 	m_root_lock->release_lock();
 	//unlock

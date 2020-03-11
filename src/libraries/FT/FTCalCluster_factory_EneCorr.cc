@@ -5,40 +5,40 @@
  *      Author: celentan
  */
 
-#include "FTCalCluster_factory.h"
+#include "FTCalCluster_factory_EneCorr.h"
 #include "JANA/JEvent.h"
-#include "FT/FTCalHit.h"
+#include "FT/FTCalHitEneCorr.h"
 #include "FT/FTCalCluster.h"
 #include <vector>
 #include <iostream>
 #include <functional>
 
 //this will set the hits in DESCENDING order wrt energy
-bool FTCalCluster_factory::compareHits(const FTCalHit* a, const FTCalHit* b) {
+bool FTCalCluster_factory_EneCorr::compareHits(const FTCalHit* a, const FTCalHit* b) {
 	return (a->getHitEnergy() > b->getHitEnergy());
 }
 
-FTCalCluster_factory::FTCalCluster_factory() {
+FTCalCluster_factory_EneCorr::FTCalCluster_factory_EneCorr() {
 	// TODO Auto-generated constructor stub
-
+	mTag="EneCorr";
 }
 
-FTCalCluster_factory::~FTCalCluster_factory() {
+FTCalCluster_factory_EneCorr::~FTCalCluster_factory_EneCorr() {
 	// TODO Auto-generated destructor stub
 }
 
-void FTCalCluster_factory::Init() {
+void FTCalCluster_factory_EneCorr::Init() {
 
 }
-void FTCalCluster_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
+void FTCalCluster_factory_EneCorr::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 }
-void FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
+void FTCalCluster_factory_EneCorr::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//Loop su gli hits di un evento
-	std::vector<const FTCalHit*> hits = aEvent->Get<const FTCalHit>();
+	std::vector<const FTCalHitEneCorr*> hits = aEvent->Get<const FTCalHitEneCorr>();
 
-	std::sort(hits.begin(), hits.end(), FTCalCluster_factory::compareHits);
+	std::sort(hits.begin(), hits.end(), FTCalCluster_factory_EneCorr::compareHits);
 	std::vector<FTCalCluster*> clusters;
 
 	for (auto hit : hits) {
