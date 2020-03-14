@@ -132,14 +132,10 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			}
 		}
 		if (flag == true) {
-			break;
+			delete allHits[i]
+		}else{
+			mData.push_back(allHits[i]);
 		}
-		mData.push_back(allHits[i]);
 	}
-
-	for(auto hit:allHits){
-		delete hit;
-	}
-	allHits.clear();
 }
 
