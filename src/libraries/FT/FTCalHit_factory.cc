@@ -84,6 +84,8 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->setHitZ(CRYS_ZPOS);
 
 			allHits.push_back(ftCalHit);
+
+			//mData.push_back(ftCalHit);
 		}
 	}
 
@@ -122,17 +124,18 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 		}
 	}
 
+
 	//If you want all data, you need to comment this loop and to uncomment the //mData.push_back in the previous loop.
 	for (int i = 0; i < allHits.size(); i++) {
 		bool flag = false;
 		for (int j = 0; j < allHits.size(); j++) {
-			if (i != j && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 140) {
+			if (i != j && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 160 && allHits[i]->getHitTime() - allHits[j]->getHitTime() > 0 ) {
 				flag = true;
 				break;
 			}
 		}
 		if (flag == true) {
-			delete allHits[i]
+			delete allHits[i];
 		}else{
 			mData.push_back(allHits[i]);
 		}

@@ -58,9 +58,11 @@
 #include <TFile.h>
 #include <TCollection.h>
 #include <TKey.h>
+#include <TPad.h>
+#include <THStack.h>
 
 /*Here goes the histograms*/
-static TH1D *hTest = 0;  //Cancello tutto, posso sempre recuperarli da hallBFT_monitoring. Lascio solo htest
+static TH1D *hTest = 0; //Cancello tutto, posso sempre recuperarli da hallBFT_monitoring. Lascio solo htest
 static TH2D *hHitPosition = 0;
 static TH2D *hFirstHalfHitPosition = 0;
 static TH2D *hSecondHalfHitPosition = 0;
@@ -74,6 +76,18 @@ static TH1D *hdTimeFromMaxEnergy_samechannel_2version = 0;
 static TH2D *hdEnergyVsEnergy120 = 0;
 static TH2D *hdEnergyVsEnergy120_2version = 0;
 static TH1D *hClusteringEfficiency = 0;
+static TH1D *hGoodCluster = 0;
+static TH1D *hAllCluster = 0;
+static TH1D *hGoodOverAllCluster = 0;
+
+static TH2D *hClusXY_Trigger = 0; //Position of clusters of event that verify the trigger
+static TH1D *hClusM_Trigger = 0; //pi0 mass
+static TH2D *hClusAngle_M_Trigger = 0;
+
+static TH2D *hClusXY_Trigger_noncorr = 0; //Position of corrected clusters of event that verify the trigger
+static TH1D *hClusM_Trigger_noncorr = 0; //pi0 mass corrected
+static TH2D *hClusAngle_M_Trigger_noncorr = 0;
+
 //---------------------------------
 // JEventProcessor_HallBFT_simone    (Constructor)
 //---------------------------------
@@ -106,19 +120,52 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	gDirectory->mkdir("HallBFT_simone")->cd();
 
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
-	hHitPosition = new TH2D("hHitPosition", "hHitPosition", 24, -.5, 23.5, 24, -.5, 23.5);
-	hFirstHalfHitPosition = new TH2D("hFirstHalfHitPosition", "hFirstHalfHitPosition", 24, -.5, 23.5, 24, -.5, 23.5);
-	hSecondHalfHitPosition = new TH2D("hSecondHalfHitPosition", "hSecondHalfHitPosition", 24, -.5, 23.5, 24, -.5, 23.5);
-	hClusterPosition = new TH2D("hClusterPosition", "hClusterPosition", 40, -200, 200, 40, -200, 200);
-	hdTimeFromMaxEnergy = new TH1D("hdTimeFromMaxEnergy", "hdTimeFromMaxEnergy", 800, -400, 400);
-	hdTimeFromSeed = new TH1D("hdTimeFromSeed", "hdTimeFromSeed", 800, -400, 400);
-	hdTimeFromMaxEnergy_no120 = new TH1D("hdTimeFromMaxEnergy_no120 ", "hdTimeFromMaxEnergy_no120 ", 800, -400, -400);
-	hdTimeFromMaxEnergy_samechannel = new TH1D("hdTimeFromMaxEnergy_samechannel ", "hdTimeFromMaxEnergy_samechannel", 800, -400, -400);
-	hdTimeFromMaxEnergy_samechannel_2version = new TH1D("hdTimeFromMaxEnergy_samechannel_2version ", "hdTimeFromMaxEnergy_samechannel_2version", 800, -400, -400);
-	hdTimeVsEnergy = new TH2D("hdTimeVsEnergy", "hdTimeVsEnergy", 800, -400, 400, 5000, 0, 10000);
-	hdEnergyVsEnergy120 = new TH2D("hdEnergyVsEnergy120", "hdEnergyVsEnergy120", 5000, -1000, 9000, 5000, -1000, 9000);
-	hdEnergyVsEnergy120_2version = new TH2D("hdEnergyVsEnergy120_2version", "hdEnergyVsEnergy120_version", 5000, -1000, 9000, 5000, -1000, 9000);
-	hClusteringEfficiency = new TH1D("hClusteringEfficiency", "hClusteringEfficiency", 10, -0.5, 9.5);
+	hHitPosition = new TH2D("hHitPosition", "hHitPosition", 24, -.5, 23.5, 24,
+			-.5, 23.5);
+	hFirstHalfHitPosition = new TH2D("hFirstHalfHitPosition",
+			"hFirstHalfHitPosition", 24, -.5, 23.5, 24, -.5, 23.5);
+	hSecondHalfHitPosition = new TH2D("hSecondHalfHitPosition",
+			"hSecondHalfHitPosition", 24, -.5, 23.5, 24, -.5, 23.5);
+	hClusterPosition = new TH2D("hClusterPosition", "hClusterPosition", 40,
+			-200, 200, 40, -200, 200);
+	hdTimeFromMaxEnergy = new TH1D("hdTimeFromMaxEnergy", "hdTimeFromMaxEnergy",
+			800, -400, 400);
+	hdTimeFromSeed = new TH1D("hdTimeFromSeed", "hdTimeFromSeed", 800, -400,
+			400);
+	hdTimeFromMaxEnergy_no120 = new TH1D("hdTimeFromMaxEnergy_no120 ",
+			"hdTimeFromMaxEnergy_no120 ", 800, -400, -400);
+	hdTimeFromMaxEnergy_samechannel = new TH1D(
+			"hdTimeFromMaxEnergy_samechannel ",
+			"hdTimeFromMaxEnergy_samechannel", 800, -400, -400);
+	hdTimeFromMaxEnergy_samechannel_2version = new TH1D(
+			"hdTimeFromMaxEnergy_samechannel_2version ",
+			"hdTimeFromMaxEnergy_samechannel_2version", 800, -400, -400);
+	hdTimeVsEnergy = new TH2D("hdTimeVsEnergy", "hdTimeVsEnergy", 800, -400,
+			400, 5000, 0, 10000);
+	hdEnergyVsEnergy120 = new TH2D("hdEnergyVsEnergy120", "hdEnergyVsEnergy120",
+			5000, -1000, 9000, 5000, -1000, 9000);
+	hdEnergyVsEnergy120_2version = new TH2D("hdEnergyVsEnergy120_2version",
+			"hdEnergyVsEnergy120_version", 5000, -1000, 9000, 5000, -1000,
+			9000);
+	hClusteringEfficiency = new TH1D("hClusteringEfficiency",
+			"hClusteringEfficiency", 10, -0.5, 9.5);
+	hGoodCluster = new TH1D("hGoodCluster", "hGoodCluster", 10000, -0.5,
+			9999.5);
+	hAllCluster = new TH1D("hAllCluster", "hAllCluster", 10000, -0.5, 9999.5);
+	hGoodOverAllCluster = new TH1D("hGoodOverAllCluster", "hGoodOverAllCluster",
+			10000, -0.5, 9999.5);
+
+	hClusM_Trigger = new TH1D("hClusM_Trigger", "hClusM_Trigger", 500, 0, 500);
+	hClusXY_Trigger = new TH2D("hClusXY_Trigger", "hClusXY_Trigger", 200, -200,
+			200, 200, -200, 200);
+	hClusAngle_M_Trigger = new TH2D("hClusAngle_M_Trigger",
+			"hClusAngle_M_Trigger", 500, 0, 500, 1000, 0.9, 1);
+	hClusM_Trigger_noncorr = new TH1D("hClusM_Trigger_noncorr",
+			"hClusM_Trigger_noncorr", 500, 0, 500);
+	hClusXY_Trigger_noncorr = new TH2D("hClusXY_Trigger_noncorr",
+			"hClusXY_Trigger_noncorr", 200, -200, 200, 200, -200, 200);
+	hClusAngle_M_Trigger_noncorr = new TH2D("hClusAngle_M_Trigger_noncorr",
+			"hClusAngle_M_Trigger_noncorr", 500, 0, 500, 1000, 0.9, 1);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -128,7 +175,8 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 //------------------
 // Process
 //------------------
-void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>& aEvent) {
+void JEventProcessor_HallBFT_simone::Process(
+		const std::shared_ptr<const JEvent>& aEvent) {
 
 	// conditions to be a good cluster; //Condition on clusters are implemented in FTCalCluster.cc, if there are not yet an external file reading.
 	//double minSeed = 10;
@@ -140,10 +188,11 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	auto firstSeedTime = 100000000000.;
 
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
-	auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
+	//auto clusters = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters con energia corretta
+	auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters non corretti
 
-	auto minHitTime = hits[0]->getHitTime();
-	auto maxHitTime = hits[0]->getHitTime();
+	auto minHitTime = 99999999999999;
+	auto maxHitTime = -99999999999999;
 	int maxHitEnergyX = 0;
 	int maxHitEnergyY = 0;
 
@@ -184,39 +233,53 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 
 	for (int i = 0; i < hits.size(); i++) {
 		hdTimeFromMaxEnergy->Fill(hits[i]->getHitTime() - maxHitEnergyTime);
-		hdTimeVsEnergy->Fill(hits[i]->getHitTime() - maxHitEnergyTime, hits[i]->getHitEnergy());
+		hdTimeVsEnergy->Fill(hits[i]->getHitTime() - maxHitEnergyTime,
+				hits[i]->getHitEnergy());
 		hdTimeFromSeed->Fill(hits[i]->getHitTime() - firstSeedTime);
 
-		if (hits[i]->getHitIX() == maxHitEnergyX && hits[i]->getHitIY() == maxHitEnergyY) {
+		if (hits[i]->getHitIX() == maxHitEnergyX
+				&& hits[i]->getHitIY() == maxHitEnergyY) {
 			//std::cout<<"MaxHitX " <<maxHitEnergyX <<"  MaxHitY " <<maxHitEnergyY <<std::endl;
 			//std::cout<<"ThisHitX " <<hits[i]->getHitX()) <<"  ThisHitY " <<hits[i]->getHitY() <<std::endl;
-			hdTimeFromMaxEnergy_samechannel_2version->Fill(hits[i]->getHitTime() - maxHitEnergyTime);
-			if (hits[i]->getHitEnergy() != maxHitEnergy && hits[i]->getHitTime() != maxHitEnergyTime) {
-				hdEnergyVsEnergy120_2version->Fill(maxHitEnergy, hits[i]->getHitEnergy());
+			hdTimeFromMaxEnergy_samechannel_2version->Fill(
+					hits[i]->getHitTime() - maxHitEnergyTime);
+			if (hits[i]->getHitEnergy() != maxHitEnergy
+					&& hits[i]->getHitTime() != maxHitEnergyTime) {
+				hdEnergyVsEnergy120_2version->Fill(maxHitEnergy,
+						hits[i]->getHitEnergy());
 			}
 		}
 		hdEnergyVsEnergy120_2version->SetXTitle("maxHitEnergy");
 		hdEnergyVsEnergy120_2version->SetYTitle("sameChannelHitsEnergy");
 
 		if (i < (hits.size() / 2)) {
-			hFirstHalfHitPosition->Fill(hits[i]->getHitIX(), hits[i]->getHitIY());
+			hFirstHalfHitPosition->Fill(hits[i]->getHitIX(),
+					hits[i]->getHitIY());
 		} else {
-			hSecondHalfHitPosition->Fill(hits[i]->getHitIX(), hits[i]->getHitIY());
+			hSecondHalfHitPosition->Fill(hits[i]->getHitIX(),
+					hits[i]->getHitIY());
 		}
 		bool flag = true;
 		for (int j = 0; j < hits.size(); j++) {
-			if (hits[i]->getHitX() == hits[j]->getHitX() && hits[i]->getHitY() == hits[j]->getHitY() && ((hits[i]->getHitTime() - hits[j]->getHitTime()) < 140) && i != j
+			if (hits[i]->getHitX() == hits[j]->getHitX()
+					&& hits[i]->getHitY() == hits[j]->getHitY()
+					&& ((hits[i]->getHitTime() - hits[j]->getHitTime()) < 140)
+					&& i != j
 					&& ((hits[i]->getHitTime() - hits[j]->getHitTime()) > 0)) {
 				flag = false;
-				hdTimeFromMaxEnergy_samechannel->Fill(hits[i]->getHitTime() - maxHitEnergyTime);
-				hdTimeFromMaxEnergy_samechannel->Fill(hits[j]->getHitTime() - maxHitEnergyTime);
-				hdEnergyVsEnergy120->Fill(hits[i]->getHitEnergy(), hits[j]->getHitEnergy());
+				hdTimeFromMaxEnergy_samechannel->Fill(
+						hits[i]->getHitTime() - maxHitEnergyTime);
+				hdTimeFromMaxEnergy_samechannel->Fill(
+						hits[j]->getHitTime() - maxHitEnergyTime);
+				hdEnergyVsEnergy120->Fill(hits[i]->getHitEnergy(),
+						hits[j]->getHitEnergy());
 				hdEnergyVsEnergy120->SetXTitle("Energy_hit");
 				hdEnergyVsEnergy120->SetYTitle("Energy_retarded_hit");
 			}
 		}
 		if (flag == true) {
-			hdTimeFromMaxEnergy_no120->Fill(hits[i]->getHitTime() - maxHitEnergyTime);
+			hdTimeFromMaxEnergy_no120->Fill(
+					hits[i]->getHitTime() - maxHitEnergyTime);
 		}
 
 	}
@@ -229,11 +292,19 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	int nCluster2GeV = 0;
 
 	for (auto cluster : clusters) {
-		if (cluster->getClusterEnergy() > 3000)
+		if (cluster->getClusterEnergy() > 3000) {
 			nCluster3GeV++;
-		if (cluster->getClusterEnergy() > 2000)
+		}
+		if (cluster->getClusterEnergy() > 2000) {
 			nCluster2GeV++;
+		}
+		if (clusters.size() == 1) {
+			hAllCluster->Fill(cluster->getClusterEnergy());
+		}
+
 	}
+
+	hGoodOverAllCluster->Divide(hGoodCluster, hAllCluster, 1, 1);
 
 	vector<const TridasEvent*> tridas_events;
 	try {
@@ -249,6 +320,10 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 
 	if (word[9] == 1) { //Colonna 4: triggerwords[9] attiva
 		hClusteringEfficiency->Fill(4);
+		if (clusters.size() == 1) {
+			hGoodCluster->Fill(clusters[0]->getClusterEnergy());
+		}
+
 	}
 
 	hClusteringEfficiency->Fill(0); //Colonna 0: numero di eventi
@@ -271,6 +346,55 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 			hClusteringEfficiency->Fill(7);
 		}
 	}
+
+	//Histogram to find pi0 mass.
+
+	if (clusters.size() > 1) {
+		for (int ii = 0; ii < clusters.size(); ii++) {
+			auto cluster1 = clusters[ii];
+			if (cluster1->getClusterEnergy() < 1.)
+				continue;
+			hClusXY_Trigger->Fill(cluster1->getX(), cluster1->getY());
+			for (int jj = (ii + 1); jj < clusters.size(); jj++) {
+				auto cluster2 = clusters[jj];
+				if (cluster2->getClusterEnergy() < 1.)
+					continue;
+				auto z = cos(
+						cluster1->getCentroid().Angle(cluster2->getCentroid()));
+				auto M = sqrt(
+						2 * cluster1->getClusterEnergy()
+								* cluster2->getClusterEnergy() * (1 - z));
+				hClusM_Trigger->Fill(M);
+				hClusAngle_M_Trigger->Fill(M, z);
+			}
+		}
+	}
+
+
+	auto clusters_noncorr = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters dell'evento
+//	auto clusters_noncorr = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
+
+	if (clusters_noncorr.size() > 1) {
+		for (int ii = 0; ii < clusters_noncorr.size(); ii++) {
+			auto cluster1 = clusters_noncorr[ii];
+			if (cluster1->getClusterEnergy() < 1.)
+				continue;
+			hClusXY_Trigger_noncorr->Fill(cluster1->getX(), cluster1->getY());
+			for (int jj = (ii + 1); jj < clusters_noncorr.size(); jj++) {
+				auto cluster2 = clusters_noncorr[jj];
+				if (cluster2->getClusterEnergy() < 1.)
+					continue;
+				auto z = cos(
+						cluster1->getCentroid().Angle(cluster2->getCentroid()));
+				auto M = sqrt(
+						2 * cluster1->getClusterEnergy()
+								* cluster2->getClusterEnergy() * (1 - z));
+				hClusM_Trigger_noncorr->Fill(M);
+				hClusAngle_M_Trigger_noncorr->Fill(M, z);
+			}
+		}
+	}
+
 }
 
 //------------------
@@ -282,12 +406,15 @@ void JEventProcessor_HallBFT_simone::Finish(void) {
 	auto app = japp;
 	std::string outFileName;
 	TFile *fout;
-	if (app->GetJParameterManager()->Exists("hallBFT_simone:output_file") == true) {
+	if (app->GetJParameterManager()->Exists("hallBFT_simone:output_file")
+			== true) {
 		gROOT->cd();
 		TDirectory *main = gDirectory;
 
-		app->GetJParameterManager()->GetParameter("hallBFT_simone:output_file", outFileName);
-		std::cout << "JEventProcessor_HallBFT_simone::Finish " << this << " " << outFileName << std::endl;
+		app->GetJParameterManager()->GetParameter("hallBFT_simone:output_file",
+				outFileName);
+		std::cout << "JEventProcessor_HallBFT_simone::Finish " << this << " "
+				<< outFileName << std::endl;
 		fout = new TFile(outFileName.c_str(), "recreate");
 
 		main->cd("HallBFT_simone");
@@ -299,7 +426,8 @@ void JEventProcessor_HallBFT_simone::Finish(void) {
 			if (object->InheritsFrom(TH1::Class())) {
 				fout->cd();
 				object->Write();
-				std::cout << "JEventProcessor_HallBFT_simone::wrote " << object->GetName() << std::endl;
+				std::cout << "JEventProcessor_HallBFT_simone::wrote "
+						<< object->GetName() << std::endl;
 			}
 
 		}
