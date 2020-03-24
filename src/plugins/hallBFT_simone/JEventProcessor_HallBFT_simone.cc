@@ -188,6 +188,7 @@ void JEventProcessor_HallBFT_simone::Process(
 	auto firstSeedTime = 100000000000.;
 
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
+	//Con impostazione clusters =() effettuo calcolo efficienza; perché abbiamo acquisito senza correzioni.
 	//auto clusters = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters con energia corretta
 	auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters non corretti
 
@@ -370,7 +371,7 @@ void JEventProcessor_HallBFT_simone::Process(
 		}
 	}
 
-
+	//In questa impostazione, i cluster_noncorr sono in realtà quelli con E corretta.
 	auto clusters_noncorr = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters dell'evento
 //	auto clusters_noncorr = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
 
