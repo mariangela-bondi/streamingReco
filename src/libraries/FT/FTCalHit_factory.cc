@@ -124,19 +124,19 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 		}
 	}
 
-
 	//If you want all data, you need to comment this loop and to uncomment the //mData.push_back in the previous loop.
 	for (int i = 0; i < allHits.size(); i++) {
 		bool flag = false;
 		for (int j = 0; j < allHits.size(); j++) {
-			if (i != j && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 160 && allHits[i]->getHitTime() - allHits[j]->getHitTime() > 0 ) {
+			if (i != j && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 160
+					&& allHits[i]->getHitTime() - allHits[j]->getHitTime() > 0 && allHits[i]->getHitEnergy() - allHits[j]->getHitEnergy() < 0) {
 				flag = true;
 				break;
 			}
 		}
 		if (flag == true) {
 			delete allHits[i];
-		}else{
+		} else {
 			mData.push_back(allHits[i]);
 		}
 	}
