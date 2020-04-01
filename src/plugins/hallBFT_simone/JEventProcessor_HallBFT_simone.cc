@@ -75,6 +75,7 @@ static TH1D *hdTimeFromMaxEnergy_samechannel = 0;
 static TH1D *hdTimeFromMaxEnergy_samechannel_2version = 0;
 static TH2D *hdEnergyVsEnergy120 = 0;
 static TH2D *hdEnergyVsEnergy120_2version = 0;
+
 static TH1D *hClusteringEfficiency = 0;
 static TH1D *hGoodCluster = 0;
 static TH1D *hAllCluster = 0;
@@ -91,6 +92,8 @@ static TH2D *hClusAngle_M_Trigger_noncorr = 0;
 static TH1D *hMpi0_SelectedCluster = 0;
 static TH1D *hAllDistance = 0;
 static TH1D *hSelectedDistance = 0;
+
+static TH1D *hMpi0_QSelCluster = 0;
 
 //---------------------------------
 // JEventProcessor_HallBFT_simone    (Constructor)
@@ -151,6 +154,11 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	hMpi0_SelectedCluster = new TH1D("hMpi0_SelectedCluster", "hMpi0_SelectedCluster", 500, 0, 500);
 	hAllDistance = new TH1D("hAllDistance", "hAllDistance", 1000, 0, 1000);
 	hSelectedDistance = new TH1D("hSelecetdDistance", "hSelecetdDistance", 1000, 0, 1000);
+
+
+	hMpi0_QSelCluster = new TH1D("hMpi0_QSelCluster", "hMpi0_QSelCluster", 500, 0, 500);
+
+
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -214,6 +222,9 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	bool minDist_flag = false;
 	double dphi;
 	TVector3 pi0;
+
+	//Variabili per selezione cluster usando E_q
+	double E_beam=12000;
 
 	//lock
 	m_root_lock->acquire_write_lock();
@@ -296,6 +307,7 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	}
 
 	for (auto cluster : clusters) {
+		hClusterPosition->Fill(cluster->getX(), cluster->getY());
 		if (cluster->getClusterEnergy() > 3000) {
 			nCluster3GeV++;
 		}
@@ -411,15 +423,21 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 		auto cosEl = cos(clusters[z_ele]->getCentroid().Phi());
 		auto senPi = sin(pi0.Phi());
 		auto senEl = sin(clusters[z_ele]->getCentroid().Phi());
-		if (senPi * senEl < 0 && cosPi * cosEl < 1) {
+		double E_q=E_beam-clusters[z_ele]->getClusterEnergy();
+		double E_gammagamma=clusters[i_min]->getClusterEnergy()+clusters[j_min]->getClusterEnergy();
+		if (senPi * senEl < 0 && cosPi * cosEl < 0) {
 
 			auto z = cos(clusters[i_min]->getCentroid().Angle(clusters[j_min]->getCentroid()));
 			auto M = sqrt(2 * clusters[i_min]->getClusterEnergy() * clusters[j_min]->getClusterEnergy() * (1 - z));
 			hMpi0_SelectedCluster->Fill(M);
 			hSelectedDistance->Fill(dist_min);
 
+			if(E_q>E_gammagamma)
+				hMpi0_QSelCluster->Fill(M);
 		}
+
 	}
+
 	//std::cout << std::endl << std::endl;
 	m_root_lock->release_lock();
 //unlock
