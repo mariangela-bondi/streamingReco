@@ -36,8 +36,6 @@ if debug:
     env.AppendUnique(FORTRANFLAGS = '-g')
     env.AppendUnique(PROGSUFFIX = debugSuffix)
 
-# Enable some C++11 features available in gcc4.4
-env.AppendUnique(CXXFLAGS=['-std=c++11'])
 
 
 # Hidden sub directory into which variant builds go

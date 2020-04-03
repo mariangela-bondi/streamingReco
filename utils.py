@@ -218,7 +218,7 @@ def loadoptions(env) :
     
 
     # using c++11 starting from ceInstall 1.4 version
-    env.Append(CXXFLAGS = ' -std=c++11 ')
+    env.Append(CXXFLAGS = ' -std=c++14 ')
 
 
 def cmloptions(opts) :
