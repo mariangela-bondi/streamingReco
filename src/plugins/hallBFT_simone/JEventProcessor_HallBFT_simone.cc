@@ -265,13 +265,12 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 			hClusteringEfficiency->Fill(6);
 		}
 	}
-	if (nCluster2GeV >= 3) {
+	if (nCluster3GeV >= 3) {
 		hClusteringEfficiency->Fill(3); //Colonna 5 : numero di eventi con almeno 3 cluster da 2 GeV
 		if (word[9] == 1) { //Colonna 4: triggerwords[9] attiva
 			hClusteringEfficiency->Fill(7);
 		}
 	}
-
 }
 
 //------------------
