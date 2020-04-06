@@ -10,6 +10,8 @@
 
 #include "JANA/JEvent.h"
 
+using namespace std;
+
 faWaveboardHit_factory::faWaveboardHit_factory() {
 	// TODO Auto-generated constructor stub
 
