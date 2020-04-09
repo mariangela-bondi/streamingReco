@@ -129,7 +129,7 @@ void JEventProcessor_janaview::Process(const std::shared_ptr<const JEvent>& aEve
 	GetObjectTypes(facinfo);
 	JVMF->UpdateObjectTypeList(facinfo);
 
-	MakeCallGraph();
+	//	MakeCallGraph();
 
 	pthread_cond_wait(&cond, &mutex);
 

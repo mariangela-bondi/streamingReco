@@ -186,7 +186,13 @@ void jv_mainframe::DoSelectObjectType(Int_t id) {
 
 	// Get factory and list of objects
 	JEP->Lock();
+
+	cout<<"DoSelectedObjectType() "<<tag<<" "<<name<<endl;fflush(stdout);
+
+
 	auto factories = JEP->event->GetFactorySet()->GetAllFactories(); //get ALL the factories for this event
+
+
 	bool flagFind = false;
 	for (auto factory : factories) {
 		auto fname = factory->GetName();
@@ -220,7 +226,7 @@ void jv_mainframe::DoSelectObjectType(Int_t id) {
 		lbObjects->AddEntry(str, i + 1);
 	}
 
-	JEP->MakeCallGraph();
+	//	JEP->MakeCallGraph();
 
 	JEP->Unlock();
 	Redraw(lbObjects);
@@ -328,7 +334,7 @@ Bool_t jv_mainframe::HandleConfigureNotify(Event_t *event) {
 	/// This gets called when the window is resized (but also for other things)
 	/// It is here so we can update the CallGraph tab when the window is resized.
 
-	if (JEP) JEP->MakeCallGraph();
+  //	if (JEP) JEP->MakeCallGraph();
 	return this->TGMainFrame::HandleConfigureNotify(event);
 }
 

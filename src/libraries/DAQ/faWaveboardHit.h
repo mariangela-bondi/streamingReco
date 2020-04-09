@@ -15,14 +15,15 @@
 
 #include <vector>
 
-
+#include "TH1D.h"
+#include "TCanvas.h"
 
 
 class faWaveboardHit: public faHit {
 public:
 
 
-	faWaveboardHit(){};
+	faWaveboardHit():hWave(0){m_canvas=0;};
 	virtual ~faWaveboardHit(){};
 	std::vector<uint16_t> samples; //these are the raw samples
 	float m_dT; //sampling time (ns)
@@ -33,18 +34,18 @@ public:
 
 
 	virtual void Summarize(JObjectSummary& summary) const {
-		summary.add(m_channel.crate,"CRATE","%f","The crate id of this board");
-		summary.add(m_channel.slot,"SLOT","%f","The slot of this board");
-		summary.add(m_channel.channel,"CHANNEL","%f","The channel");
+		summary.add(m_channel.crate,"CRATE","%i","The crate id of this board");
+		summary.add(m_channel.slot,"SLOT","%i","The slot of this board");
+		summary.add(m_channel.channel,"CHANNEL","%i","The channel");
 
 };
 
-//void toHisto(TH1D *h) const;
+void toHisto(TH1D *h) const;
 
-//virtual TCanvas* Draw(int id=0) const;
+virtual TCanvas* Draw(int id=0) const;
 
 protected:
-//mutable TH1D *hWave;
+mutable TH1D *hWave;
 };
 
 #endif // _fa250Mode1Hit_
