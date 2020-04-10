@@ -67,8 +67,16 @@ using namespace std;
 static TH1D *hTest = 0; //Cancello tutto, posso sempre recuperarli da hallBFT_monitoring. Lascio solo htest
 static TH1D *hdTimeHit = 0;
 static TH1D *hdTimeCluster = 0;
-static TH1D *hMinvAllPair = 0;
+static TH1D *hdTimeClusterSel1GeV = 0;
+static TH1D *hdTimeClusterSel2GeV = 0;
+static TH1D *hdTimeClusterSel3GeV = 0;
 
+static TH1D *hMinvAllPairAll = 0;
+static TH1D *hMinvAllPair1GeV = 0;
+static TH1D *hMinvAllPair2GeV = 0;
+static TH1D *hMinvAllPair3GeV = 0;
+
+static TH1D *hMinvAllPair = 0;
 static TH1D *hMinvAllPair2C2G = 0;
 static TH1D *hMinvAllPair3C2G = 0;
 static TH1D *hMinvAllPair2C3G = 0;
@@ -85,6 +93,9 @@ static TH1D *hMinvClosePairSelTime2C2G = 0;
 static TH1D *hMinvClosePairSelTime3C2G = 0;
 static TH1D *hMinvClosePairSelTime2C3G = 0;
 static TH1D *hMinvClosePairSelTime3C3G = 0;
+
+//static TH2D *hClustersVsEventNumber = 0;
+//static TH2D *hDeltaTimeClusterVeEventNumber = 0;
 
 //---------------------------------
 // JEventProcessor_HallBFT_simone    (Constructor)
@@ -120,24 +131,35 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
 	hdTimeHit = new TH1D("hdTimeHit", "hdTimeHit", 1001, -500, 500);
 	hdTimeCluster = new TH1D("hdTimeCluster", "hdTimeCluster", 1001, -500, 500);
+	hdTimeClusterSel1GeV = new TH1D("hdTimeClusterSel1GeV", "hdTimeClusterSel1GeV", 1001, -500, 500);
+	hdTimeClusterSel2GeV = new TH1D("hdTimeClusterSel2GeV", "hdTimeClusterSel2GeV", 1001, -500, 500);
+	hdTimeClusterSel3GeV = new TH1D("hdTimeClusterSel3GeV", "hdTimeClusterSel3GeV", 1001, -500, 500);
 
-	hMinvAllPair = new TH1D("hMinvAllPair", "hMinvAllPair", 1000, 0, 1000);
-	hMinvAllPair2C2G = new TH1D("hMinvAllPair2C2G", "hMinvAllPair2C2G", 1000, 0, 1000);
-	hMinvAllPair3C2G = new TH1D("hMinvAllPair3C2G", "hMinvAllPair3C2G", 1000, 0, 1000);
-	hMinvAllPair2C3G = new TH1D("hMinvAllPair2C3G", "hMinvAllPair2C3G", 1000, 0, 1000);
-	hMinvAllPair3C3G = new TH1D("hMinvAllPair3C3G", "hMinvAllPair3C3G", 1000, 0, 1000);
+	hMinvAllPairAll = new TH1D("hMinvAllPairAll", "hMinvAllPairAll", 200, 0, 1000);
+	hMinvAllPair1GeV = new TH1D("hMinvAllPair1GeV", "hMinvAllPair1GeV", 200, 0, 1000);
+	hMinvAllPair2GeV = new TH1D("hMinvAllPair2GeV", "hMinvAllPair2GeV", 200, 0, 1000);
+	hMinvAllPair3GeV = new TH1D("hMinvAllPair3GeV", "hMinvAllPair3GeV", 200, 0, 1000);
 
-	hMinvClosePair = new TH1D("hMinvClosePair", "hMinvClosePair", 1000, 0, 1000);
-	hMinvClosePair2C2G = new TH1D("hMinvClosePair2C2G", "hMinvClosePair2C2G", 1000, 0, 1000);
-	hMinvClosePair3C2G = new TH1D("hMinvClosePair3C2G", "hMinvClosePair3C2G", 1000, 0, 1000);
-	hMinvClosePair2C3G = new TH1D("hMinvClosePair2C3G", "hMinvClosePair2C3G", 1000, 0, 1000);
-	hMinvClosePair3C3G = new TH1D("hMinvClosePair3C3G", "hMinvClosePair3C3G", 1000, 0, 1000);
+	hMinvAllPair = new TH1D("hMinvAllPair", "hMinvAllPair", 200, 0, 1000);
+	hMinvAllPair2C2G = new TH1D("hMinvAllPair2C2G", "hMinvAllPair2C2G", 200, 0, 1000);
+	hMinvAllPair3C2G = new TH1D("hMinvAllPair3C2G", "hMinvAllPair3C2G", 200, 0, 1000);
+	hMinvAllPair2C3G = new TH1D("hMinvAllPair2C3G", "hMinvAllPair2C3G", 200, 0, 1000);
+	hMinvAllPair3C3G = new TH1D("hMinvAllPair3C3G", "hMinvAllPair3C3G", 200, 0, 1000);
 
-	hMinvClosePairSelTime = new TH1D("hMinvClosePairSelTime", "hMinvClosePairSelTime", 1000, 0, 1000);
-	hMinvClosePairSelTime2C2G = new TH1D("hMinvClosePairSelTime2C2G", "hMinvClosePairSelTime2C2G", 1000, 0, 1000);
-	hMinvClosePairSelTime3C2G = new TH1D("hMinvClosePairSelTime3C2G", "hMinvClosePairSelTime3C2G", 1000, 0, 1000);
-	hMinvClosePairSelTime2C3G = new TH1D("hMinvClosePairSelTime2C3G", "hMinvClosePairSelTime2C3G", 1000, 0, 1000);
-	hMinvClosePairSelTime3C3G = new TH1D("hMinvClosePairSelTime3C3G", "hMinvClosePairSelTime3C3G", 1000, 0, 1000);
+	hMinvClosePair = new TH1D("hMinvClosePair", "hMinvClosePair", 200, 0, 1000);
+	hMinvClosePair2C2G = new TH1D("hMinvClosePair2C2G", "hMinvClosePair2C2G", 200, 0, 1000);
+	hMinvClosePair3C2G = new TH1D("hMinvClosePair3C2G", "hMinvClosePair3C2G", 200, 0, 1000);
+	hMinvClosePair2C3G = new TH1D("hMinvClosePair2C3G", "hMinvClosePair2C3G", 200, 0, 1000);
+	hMinvClosePair3C3G = new TH1D("hMinvClosePair3C3G", "hMinvClosePair3C3G", 200, 0, 1000);
+
+	hMinvClosePairSelTime = new TH1D("hMinvClosePairSelTime", "hMinvClosePairSelTime", 200, 0, 1000);
+	hMinvClosePairSelTime2C2G = new TH1D("hMinvClosePairSelTime2C2G", "hMinvClosePairSelTime2C2G", 200, 0, 1000);
+	hMinvClosePairSelTime3C2G = new TH1D("hMinvClosePairSelTime3C2G", "hMinvClosePairSelTime3C2G", 200, 0, 1000);
+	hMinvClosePairSelTime2C3G = new TH1D("hMinvClosePairSelTime2C3G", "hMinvClosePairSelTime2C3G", 200, 0, 1000);
+	hMinvClosePairSelTime3C3G = new TH1D("hMinvClosePairSelTime3C3G", "hMinvClosePairSelTime3C3G", 200, 0, 1000);
+
+//	hClustersVsEventNumber = new TH2D("hClustersVsEventNumber", "hClustersVsEventNumber", 2000, 0, 2000, 20, -1.5, 18.5);
+//	hDeltaTimeClusterVeEventNumber = new TH2D("hDeltaTimeClusterVeEventNumber", "hDeltaTimeClusterVeEventNumber", 2000000, 0, 20000000, 1001, -501, 501);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -157,6 +179,7 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	//Variables declaration
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
 	auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
+//	auto eventNumber = aEvent->GetEventNumber();
 
 	//Variables
 	int nCluster3GeV = 0;
@@ -193,6 +216,17 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 					auto cluster2 = clusters[jj];
 					auto dtime = cluster2->getClusterTime() - cluster1->getClusterTime();
 					hdTimeCluster->Fill(dtime);
+					if (cluster1->getClusterEnergy() > 1000 && cluster2->getClusterEnergy() > 1000) {
+						hdTimeClusterSel1GeV->Fill(dtime);
+					}
+					if (cluster1->getClusterEnergy() > 2000 && cluster2->getClusterEnergy() > 2000) {
+						hdTimeClusterSel2GeV->Fill(dtime);
+					}
+					if (cluster1->getClusterEnergy() > 3000 && cluster2->getClusterEnergy() > 3000) {
+						hdTimeClusterSel3GeV->Fill(dtime);
+					}
+//					hClustersVsEventNumber->Fill(eventNumber * 0.0001, clusters.size());
+//					hDeltaTimeClusterVeEventNumber->Fill(eventNumber * 0.0001, dtime);
 					if (abs(dtime) > dTime_max) {
 						dTime_max = abs(dtime);
 					}
@@ -204,9 +238,10 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 			if (cluster1->getClusterEnergy() > 3000) {
 				nCluster3GeV++;
 			}
-
 		}
 	}
+
+//	Analisi ristretta ad eventi con esattamente 3 cluster!
 
 	if (clusters.size() == 3) {
 		bool flag = false;
@@ -261,8 +296,8 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 			if (nCluster3GeV >= 2) {
 				hMinvClosePair2C3G->Fill(M_close);
 			}
+			hMinvClosePair3C3G->Fill(M_close);
 			if (nCluster3GeV >= 3) {
-				hMinvClosePair3C3G->Fill(M_close);
 			}
 
 		}
@@ -281,6 +316,30 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 			}
 			if (nCluster3GeV >= 3) {
 				hMinvClosePairSelTime3C3G->Fill(M_close);
+			}
+		}
+	}
+
+	//ANALISI DI TUTTI GLI EVENTI CON ALMENO 2 CLUSTER
+	if (clusters.size() > 1) {
+		hTest->Fill(1);
+		for (int i = 0; i < clusters.size(); i++) {
+			auto cluster1 = clusters[i];
+			for (int j = i + 1; j < clusters.size(); j++) {
+				auto cluster2 = clusters[j];
+				auto z = cos(cluster1->getCentroid().Angle(cluster2->getCentroid()));
+				auto M = sqrt(2 * cluster1->getClusterEnergy() * cluster2->getClusterEnergy() * (1 - z));
+
+				hMinvAllPairAll->Fill(M);
+				if (cluster1->getClusterEnergy() > 1000 && cluster2->getClusterEnergy() > 1000) {
+					hMinvAllPair1GeV->Fill(M);
+				}
+				if (cluster1->getClusterEnergy() > 2000 && cluster2->getClusterEnergy() > 2000) {
+					hMinvAllPair2GeV->Fill(M);
+				}
+				if (cluster1->getClusterEnergy() > 3000 && cluster2->getClusterEnergy() > 3000) {
+					hMinvAllPair3GeV->Fill(M);
+				}
 			}
 		}
 	}
