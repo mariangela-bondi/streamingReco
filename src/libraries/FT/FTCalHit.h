@@ -97,7 +97,12 @@ public:
 	void setHitY(double y){_Y=y;}
 	void setHitZ(double z){_Z=z;}
 
-
+	virtual void Summarize(JObjectSummary& summary) const {
+			summary.add(_X, "X", "%f", "Y");
+			summary.add(_Y, "Y", "%f", "X");
+			summary.add(energy, "ENE", "%f", "ENERGY - MeV");
+			summary.add(time, "TIME", "%f", "TIME - ns");
+		}
 
 
 	TranslationTable::FTCAL_Index_t m_channel;

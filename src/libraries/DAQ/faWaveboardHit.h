@@ -37,6 +37,8 @@ public:
 		summary.add(m_channel.crate,"CRATE","%i","The crate id of this board");
 		summary.add(m_channel.slot,"SLOT","%i","The slot of this board");
 		summary.add(m_channel.channel,"CHANNEL","%i","The channel");
+		summary.add(m_charge,"CHARGE","%f","Charge");
+		summary.add(4 * m_time.count(),"TIME","%i","time");
 
 };
 

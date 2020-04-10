@@ -73,6 +73,8 @@ FTCalCluster::FTCalCluster() {
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
 	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
+
+	hCLUS=0;
 }
 
 FTCalCluster::FTCalCluster(int clusid) {
@@ -95,6 +97,8 @@ FTCalCluster::FTCalCluster(int clusid) {
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
 	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
+
+	hCLUS=0;
 }
 
 //---------------------------------
@@ -275,3 +279,42 @@ bool FTCalCluster::containsHit(const FTCalHit* hit) const {
 void FTCalCluster::push_hit(const FTCalHit* hit) {
 	hits.push_back(hit);
 }
+
+
+TCanvas* FTCalCluster::Draw(int id) const{
+
+
+	if (m_canvas==0){
+		if (id<0){
+			m_canvas=new TCanvas();
+		}
+		else{
+			m_canvas=new TCanvas(Form("c_%i",id),100,100,id);
+		}
+	}
+	m_canvas->cd();
+
+	if (hCLUS!=0) delete hCLUS;
+	hCLUS=new TH2D(Form("hCLUS"),Form("hCLUS"),23,-0.5,22.5,23,-0.5,22.5);
+	this->toHisto(hCLUS);
+	hCLUS->Draw("colz");
+	return m_canvas;
+}
+
+
+void FTCalCluster::toHisto(TH2D *h)const{
+	if (h==0){
+		cerr<<"fa250Mode1CalibPedSubHit::toHisto, h pointer is null. Do nothing"<<std::endl;
+	}
+	h->Reset();
+	for (auto hit : hits){
+		h->Fill(hit->getHitIX(),hit->getHitIY(),hit->getHitEnergy());
+	}
+	return;
+}
+
+
+
+
+
+

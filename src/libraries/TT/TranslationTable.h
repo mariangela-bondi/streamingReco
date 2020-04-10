@@ -68,7 +68,7 @@ public:
 	};
 
 	enum Detector_t {
-		UNKNOWN_DETECTOR, FTCAL, FTHODO, NUM_DETECTOR_TYPES
+		UNKNOWN_DETECTOR, FTCAL, FTHODO, HallDCAL, NUM_DETECTOR_TYPES
 	};
 
 	std::string DetectorName(Detector_t type) const {
@@ -78,6 +78,9 @@ public:
 			break;
 		case FTHODO:
 			return "FTHODO";
+			break;
+		case HallDCAL:
+			return "HallDCAL";
 			break;
 		case UNKNOWN_DETECTOR:
 		default:
@@ -209,6 +212,55 @@ public:
 		}
 	};
 
+	class HallDCAL_Index_t: public JObject {
+	public:
+
+		int iX, iY; //these two are not used to in the == and < operators, but are here for convenience.
+		int& ID(int n) {
+			switch (n) {
+			case 0:
+				return iX;
+				break;
+			case 1:
+				return iY;
+				break;
+			default:
+				std::cerr << "Wrong id" << std::endl;
+				break;
+			}
+		}
+		static const int nIDs() {
+			return 2;
+		}
+
+		inline bool isSameActive(const HallDCAL_Index_t &rhs) const {
+			return (iX == rhs.iX) && (iY == rhs.iY);
+		}
+		inline bool operator==(const HallDCAL_Index_t &rhs) const {
+			return isSameActive(rhs);
+		}
+		inline bool operator<(const HallDCAL_Index_t &rhs) const { //A.C. for the maps
+			if (iX > rhs.iX)
+				return true;
+			if (iX < rhs.iX)
+				return false;
+			if (iY > rhs.iY)
+				return true;
+			if (iY < rhs.iY)
+				return false;
+
+			return false;
+		}
+		std::string name() const {
+			return "HallDCAL";
+		}
+		std::string print() const {
+			char buf[50];
+			sprintf(buf, "HallDCAL x: %i y: %i", iX, iY);
+			return std::string(buf);
+		}
+	};
+
 	/*A single class that handles ALL the possible indexes trough a C++ union*/
 	class ChannelInfo: public JObject {
 	public:
@@ -218,6 +270,7 @@ public:
 		union {
 			FTHODO_Index_t *FTHODO;
 			FTCAL_Index_t *FTCAL;
+			HallDCAL_Index_t *HallDCAL;
 		};
 	};
 
@@ -228,12 +281,15 @@ public:
 	}
 
 	void ReadTranslationTableHALLB();
-
+	void ReadTranslationTableHALLD();
 	/*Here goes the methods to return the channel info (detector name / detector-specific id) given the csc*/
 	TranslationTable::ChannelInfo getChannelInfo(const csc_t &csc) const;
 	TranslationTable::ChannelInfo getChannelInfo(int crate, int slot, int channel) const;
 
-	int GetVerbose() const{return m_verbose;};
+	int GetVerbose() const {
+		return m_verbose;
+	}
+	;
 
 private:
 	int m_verbose;
@@ -259,7 +315,6 @@ private:
 	//Thus the static variables themselves only have function scope.
 	//Access is only available via the private member functions, thus access is fully controlled.
 	//They are shared amongst threads, so locks are necessary, but since they are private this class can handle it internally
-
 	pthread_mutex_t& Get_TT_Mutex(void) const;
 	bool& Get_TT_Initialized(void) const;
 	std::map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& Get_TT(void) const;

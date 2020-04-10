@@ -3,7 +3,7 @@ from utils import *
 Import('env mc_enable')
 
 # Loop over libraries, building each
-libs=['system','FT','DAQ','TT','Trigger']
+libs=['system','HallD','FT','DAQ','TT','Trigger']
 
 src = []
 for lib in libs:

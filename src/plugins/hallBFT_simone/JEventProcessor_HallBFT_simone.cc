@@ -59,6 +59,7 @@
 #include <TCollection.h>
 #include <TKey.h>
 
+using namespace std;
 /*Here goes the histograms*/
 static TH1D *hTest = 0;  //Cancello tutto, posso sempre recuperarli da hallBFT_monitoring. Lascio solo htest
 static TH2D *hHitPosition = 0;
