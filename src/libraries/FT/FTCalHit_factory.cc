@@ -128,7 +128,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 	for (int i = 0; i < allHits.size(); i++) {
 		bool flag = false;
 		for (int j = 0; j < allHits.size(); j++) {
-			if (i != j && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitX() == allHits[j]->getHitX() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 160
+			if (i != j && allHits[i]->getHitIX() == allHits[j]->getHitIX() && allHits[i]->getHitIY() == allHits[j]->getHitIY() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 160
 					&& allHits[i]->getHitTime() - allHits[j]->getHitTime() > 0 && allHits[i]->getHitEnergy() - allHits[j]->getHitEnergy() < 0) {
 				flag = true;
 				break;

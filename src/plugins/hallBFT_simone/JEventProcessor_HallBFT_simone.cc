@@ -66,6 +66,7 @@ using namespace std;
 /*Here goes the histograms*/
 static TH1D *hTest = 0; //Cancello tutto, posso sempre recuperarli da hallBFT_monitoring. Lascio solo htest
 static TH1D *hdTimeHit = 0;
+static TH1D *hdTimeHitSel1GeV=0;
 static TH1D *hdTimeCluster = 0;
 static TH1D *hdTimeClusterSel1GeV = 0;
 static TH1D *hdTimeClusterSel2GeV = 0;
@@ -142,6 +143,7 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
 	hdTimeHit = new TH1D("hdTimeHit", "hdTimeHit", 1001, -500, 500);
+	hdTimeHitSel1GeV=new TH1D("hdTimeHitSel1GeV","hdTimeHitSel1GeV",1001,-500,500);
 	hdTimeCluster = new TH1D("hdTimeCluster", "hdTimeCluster", 1001, -500, 500);
 	hdTimeClusterSel1GeV = new TH1D("hdTimeClusterSel1GeV", "hdTimeClusterSel1GeV", 1001, -500, 500);
 	hdTimeClusterSel2GeV = new TH1D("hdTimeClusterSel2GeV", "hdTimeClusterSel2GeV", 1001, -500, 500);
@@ -202,7 +204,7 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 
 	//Variables declaration
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
-	auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
+	auto clusters = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters dell'evento
 //	auto eventNumber = aEvent->GetEventNumber();
 
 	//Variables
@@ -228,6 +230,8 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 				if (i != j) {
 					auto hit2 = hits[j];
 					hdTimeHit->Fill(hit2->getHitTime() - hit1->getHitTime());
+					if(hit1->getHitEnergy()>3000 && hit2->getHitEnergy()>3000)
+						hdTimeHitSel1GeV->Fill(hit2->getHitTime() - hit1->getHitTime());
 				}
 			}
 		}
@@ -299,9 +303,9 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 		if (dt2 < 2 || (dt2 > 18 && dt2 < 22))
 			flag2 = true;
 
-		if (flag1 == true && flag2 == false)
+		if (flag1 == true)
 			hDTimeThirdClusterPicco->Fill(dt2);
-		if (flag2 == true && flag1 == false)
+		if (flag2 == true)
 			hDTimeThirdClusterPicco->Fill(dt1);
 
 		for (int i = 0; i < clusters.size(); i++) {
