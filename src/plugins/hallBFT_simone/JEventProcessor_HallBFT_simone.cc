@@ -66,9 +66,19 @@ using namespace std;
 /*Here goes the histograms*/
 static TH1D *hTest = 0; //Cancello tutto, posso sempre recuperarli da hallBFT_monitoring. Lascio solo htest
 static TH1D *hdTimeHit = 0;
-static TH1D *hdTimeHitSel1GeV=0;
+static TH1D *hdTimeHitSel1GeV = 0;
 static TH1D *hdTimeCluster = 0;
+static TH1D *hdTimeClusterSelSeed60 = 0;
+static TH1D *hdTimeClusterSelSeed70 = 0;
+static TH1D *hdTimeClusterSelSeed75 = 0;
+static TH1D *hdTimeClusterSelSeed80 = 0;
+static TH1D *hdTimeClusterSelSeed85 = 0;
+static TH1D *hdTimeClusterSelSeed90 = 0;
+static TH1D *hdTimeClusterSelSeed95 = 0;
+static TH1D *hdTimeClusterSelSeed99 = 0;
+
 static TH1D *hdTimeClusterSel1GeV = 0;
+static TH1D *hdTimeClusterSel1GeVSelSeed = 0;
 static TH1D *hdTimeClusterSel2GeV = 0;
 static TH1D *hdTimeClusterSel3GeV = 0;
 static TH1D *hdTimeClusterSel5GeV = 0;
@@ -143,13 +153,23 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
 	hdTimeHit = new TH1D("hdTimeHit", "hdTimeHit", 1001, -500, 500);
-	hdTimeHitSel1GeV=new TH1D("hdTimeHitSel1GeV","hdTimeHitSel1GeV",1001,-500,500);
+	hdTimeHitSel1GeV = new TH1D("hdTimeHitSel1GeV", "hdTimeHitSel1GeV", 1001, -500, 500);
 	hdTimeCluster = new TH1D("hdTimeCluster", "hdTimeCluster", 1001, -500, 500);
 	hdTimeClusterSel1GeV = new TH1D("hdTimeClusterSel1GeV", "hdTimeClusterSel1GeV", 1001, -500, 500);
 	hdTimeClusterSel2GeV = new TH1D("hdTimeClusterSel2GeV", "hdTimeClusterSel2GeV", 1001, -500, 500);
 	hdTimeClusterSel3GeV = new TH1D("hdTimeClusterSel3GeV", "hdTimeClusterSel3GeV", 1001, -500, 500);
 	hdTimeClusterSel5GeV = new TH1D("hdTimeClusterSel5GeV", "hdTimeClusterSel5GeV", 1001, -500, 500);
 	hdTimeClusterSel6GeV = new TH1D("hdTimeClusterSel6GeV", "hdTimeClusterSel6GeV", 1001, -500, 500);
+
+	hdTimeClusterSelSeed60 = new TH1D("hdTimeClusterSelSeed60", "hdTimeClusterSelSeed60", 1001, -500, 500);
+	hdTimeClusterSelSeed70 = new TH1D("hdTimeClusterSelSeed70", "hdTimeClusterSelSeed70", 1001, -500, 500);
+	hdTimeClusterSelSeed75 = new TH1D("hdTimeClusterSelSeed75", "hdTimeClusterSelSeed75", 1001, -500, 500);
+	hdTimeClusterSelSeed80 = new TH1D("hdTimeClusterSelSeed80", "hdTimeClusterSelSeed80", 1001, -500, 500);
+	hdTimeClusterSelSeed85 = new TH1D("hdTimeClusterSelSeed85", "hdTimeClusterSelSeed85", 1001, -500, 500);
+	hdTimeClusterSelSeed90 = new TH1D("hdTimeClusterSelSeed90", "hdTimeClusterSelSeed90", 1001, -500, 500);
+	hdTimeClusterSelSeed95 = new TH1D("hdTimeClusterSelSeed95", "hdTimeClusterSelSeed95", 1001, -500, 500);
+	hdTimeClusterSelSeed99 = new TH1D("hdTimeClusterSelSeed99", "hdTimeClusterSelSeed99", 1001, -500, 500);
+	hdTimeClusterSel1GeVSelSeed = new TH1D("hdTimeClusterSel1GeVSelSeed", "hdTimeClusterSel1GeVSelSeed", 1001, -500, 500);
 
 	hClusterPosition = new TH2D("hClusterPosition", "hClusterPosition", 40, -200, 200, 40, -200, 200);
 	hClusterPositionDTimeSimm = new TH2D("hClusterPositionDTimeSimm", "hClusterPositionDTimeSimm", 40, -200, 200, 40, -200, 200);
@@ -204,8 +224,9 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 
 	//Variables declaration
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
-	auto clusters = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters dell'evento
-//	auto eventNumber = aEvent->GetEventNumber();
+	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr"); //vector dei clusters dell'evento con correzione sull'energia degli hit
+//	auto clusters = aEvent->Get<FTCalCluster>();
+	//	auto eventNumber = aEvent->GetEventNumber();
 
 	//Variables
 	int nCluster4GeV = 0;
@@ -230,7 +251,7 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 				if (i != j) {
 					auto hit2 = hits[j];
 					hdTimeHit->Fill(hit2->getHitTime() - hit1->getHitTime());
-					if(hit1->getHitEnergy()>3000 && hit2->getHitEnergy()>3000)
+					if (hit1->getHitEnergy() > 3000 && hit2->getHitEnergy() > 3000)
 						hdTimeHitSel1GeV->Fill(hit2->getHitTime() - hit1->getHitTime());
 				}
 			}
@@ -245,8 +266,35 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 					auto cluster2 = clusters[jj];
 					auto dtime = cluster2->getClusterTime() - cluster1->getClusterTime();
 					hdTimeCluster->Fill(dtime);
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.6 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.6) {
+						hdTimeClusterSelSeed60->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.7 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.7) {
+						hdTimeClusterSelSeed70->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.75 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.75) {
+						hdTimeClusterSelSeed75->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.8 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.8) {
+						hdTimeClusterSelSeed80->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.85 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.85) {
+						hdTimeClusterSelSeed85->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.90 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.90) {
+						hdTimeClusterSelSeed90->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.95 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.95) {
+						hdTimeClusterSelSeed95->Fill(dtime);
+					}
+					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.99 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.99) {
+						hdTimeClusterSelSeed99->Fill(dtime);
+					}
 					if (cluster1->getClusterEnergy() > 1000 && cluster2->getClusterEnergy() > 1000) {
 						hdTimeClusterSel1GeV->Fill(dtime);
+						if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.7 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.7) {
+							hdTimeClusterSel1GeVSelSeed->Fill(dtime);
+						}
 					}
 					if (cluster1->getClusterEnergy() > 2000 && cluster2->getClusterEnergy() > 2000) {
 						hdTimeClusterSel2GeV->Fill(dtime);
