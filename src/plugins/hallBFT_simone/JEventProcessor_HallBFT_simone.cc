@@ -117,6 +117,15 @@ static TH1D *hMinvPicco2C3G = 0;
 static TH1D *hMinvPicco2C4G = 0;
 static TH1D *hDTimeThirdClusterPicco = 0;
 
+static TH1D* hECluster2Cluster1GeV = 0;
+static TH1D* hEHit2Cluster1GeV = 0;
+static TH1D* hMinv2C2GeV30ns = 0;
+static TH1D* hMinvSideband = 0;
+static TH1D* hMinvRapportoSideband = 0;
+static TH1D* hHitEnergy = 0;
+static TH1D* hAllHitEnergy = 0;
+//static TH3D* hdTimeVsPosition=0;
+
 //static TH2D *hClustersVsEventNumber = 0;
 //static TH2D *hDeltaTimeClusterVeEventNumber = 0;
 
@@ -152,9 +161,9 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	gDirectory->mkdir("HallBFT_simone")->cd();
 
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
-	hdTimeHit = new TH1D("hdTimeHit", "hdTimeHit", 1001, -500, 500);
+	hdTimeHit = new TH1D("hdTimeHit", "hdTimeHit", 260, -10.5, 259.5);
 	hdTimeHitSel1GeV = new TH1D("hdTimeHitSel1GeV", "hdTimeHitSel1GeV", 1001, -500, 500);
-	hdTimeCluster = new TH1D("hdTimeCluster", "hdTimeCluster", 1001, -500, 500);
+	hdTimeCluster = new TH1D("hdTimeCluster", "hdTimeCluster", 260, -10.5, 259.5);
 	hdTimeClusterSel1GeV = new TH1D("hdTimeClusterSel1GeV", "hdTimeClusterSel1GeV", 1001, -500, 500);
 	hdTimeClusterSel2GeV = new TH1D("hdTimeClusterSel2GeV", "hdTimeClusterSel2GeV", 1001, -500, 500);
 	hdTimeClusterSel3GeV = new TH1D("hdTimeClusterSel3GeV", "hdTimeClusterSel3GeV", 1001, -500, 500);
@@ -204,6 +213,16 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	hMinvPicco2C4G = new TH1D("hMinvPicco2C4G", "hMinvPicco2C4G", 200, 0, 1000);
 	hDTimeThirdClusterPicco = new TH1D("hDTimeThirdClusterPicco", "hDTimeThirdClusterPicco", 1001, -500, 500);
 
+	hECluster2Cluster1GeV = new TH1D("hECluster2Cluster1GeV", "hECluster2Cluster1GeV", 2000, 0, 10000);
+	hEHit2Cluster1GeV = new TH1D("hEHit2Cluster1GeV", "hEHit2Cluster1GeV", 2000, 0, 10000);
+	hMinv2C2GeV30ns = new TH1D("hMinv2C2GeV30ns", "hMinv2C2GeV30ns", 200, 0, 1000);
+	hMinvSideband = new TH1D("hMinvSideband", "hMinvSideband", 200, 0, 1000);
+	hMinvRapportoSideband = new TH1D("hMinvRapportoSideband", "hMinvRapportoSideband", 200, 0, 1000);
+	hHitEnergy = new TH1D("hHitEnergy", "hHitEnergy", 2000, 0, 10000);
+	hAllHitEnergy = new TH1D("hAllHitEnergy", "hAllHitEnergy", 2000, 0, 10000);
+
+//	hdTimeVsPosition= new TH3D("hdTimeVsPosition","hdTimeVsPosition",40,-200,200,40,-200,200,500,0,500);
+
 //	hClustersVsEventNumber = new TH2D("hClustersVsEventNumber", "hClustersVsEventNumber", 2000, 0, 2000, 20, -1.5, 18.5);
 //	hDeltaTimeClusterVeEventNumber = new TH2D("hDeltaTimeClusterVeEventNumber", "hDeltaTimeClusterVeEventNumber", 2000000, 0, 20000000, 1001, -501, 501);
 
@@ -224,8 +243,8 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 
 	//Variables declaration
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
-	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr"); //vector dei clusters dell'evento con correzione sull'energia degli hit
-//	auto clusters = aEvent->Get<FTCalCluster>();
+//	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr"); //vector dei clusters dell'evento con correzione sull'energia degli hit
+	auto clusters = aEvent->Get<FTCalCluster>();
 	//	auto eventNumber = aEvent->GetEventNumber();
 
 	//Variables
@@ -247,10 +266,10 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	if (hits.size() > 1) {
 		for (int i = 0; i < hits.size(); i++) {
 			auto hit1 = hits[i];
-			for (int j = 0; j < hits.size(); j++) {
+			for (int j = i+1; j < hits.size(); j++) {
 				if (i != j) {
 					auto hit2 = hits[j];
-					hdTimeHit->Fill(hit2->getHitTime() - hit1->getHitTime());
+					hdTimeHit->Fill(abs(hit2->getHitTime() - hit1->getHitTime()));
 					if (hit1->getHitEnergy() > 3000 && hit2->getHitEnergy() > 3000)
 						hdTimeHitSel1GeV->Fill(hit2->getHitTime() - hit1->getHitTime());
 				}
@@ -261,11 +280,11 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	if (clusters.size() > 1) {
 		for (int ii = 0; ii < clusters.size(); ii++) {
 			auto cluster1 = clusters[ii];
-			for (int jj = 0; jj < clusters.size(); jj++) {
+			for (int jj = ii+1; jj < clusters.size(); jj++) {
 				if (ii != jj) {
 					auto cluster2 = clusters[jj];
 					auto dtime = cluster2->getClusterTime() - cluster1->getClusterTime();
-					hdTimeCluster->Fill(dtime);
+					hdTimeCluster->Fill(abs(dtime));
 					if (cluster1->getClusterSeedEnergy() / cluster1->getClusterEnergy() > 0.6 && cluster2->getClusterSeedEnergy() / cluster2->getClusterEnergy() > 0.6) {
 						hdTimeClusterSelSeed60->Fill(dtime);
 					}
@@ -315,6 +334,9 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 					if (abs(dtime) > 80 && abs(dtime) < 90) {
 						hClusterPositionDTimeCas->Fill(cluster1->getX(), cluster1->getY());
 					}
+
+//					hdTimeVsPosition->Fill(cluster1->getX(),cluster1->getY(),abs(dtime));
+//					hdTimeVsPosition->Fill(cluster2->getX(),cluster2->getY(),abs(dtime));
 
 //					hClustersVsEventNumber->Fill(eventNumber * 0.0001, clusters.size());
 //					hDeltaTimeClusterVeEventNumber->Fill(eventNumber * 0.0001, dtime);
@@ -488,6 +510,47 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 		}
 	}
 
+	/*	hECluster2Cluster1GeV=0;
+	 hEHit2Cluster1GeV=0;
+	 hMinv2C2GeV30ns=0;
+	 hMinvSideband=0;
+	 */
+
+	if (clusters.size() == 2) {
+		auto cluster1 = clusters[0];
+		auto cluster2 = clusters[1];
+		if (cluster1->getClusterEnergy() > 1000 && cluster2->getClusterEnergy() > 1000) {
+			hECluster2Cluster1GeV->Fill(cluster1->getClusterEnergy());
+			hECluster2Cluster1GeV->Fill(cluster2->getClusterEnergy());
+			for (auto hit : hits) {
+				if (cluster1->containsHit(hit) == true || cluster2->containsHit(hit) == true) {
+					hEHit2Cluster1GeV->Fill(hit->getHitEnergy());
+				}
+			}
+			auto dtime = abs(cluster1->getClusterTime() - cluster2->getClusterTime());
+			if (cluster1->getClusterEnergy() > 2000 && cluster2->getClusterEnergy() > 2000 && dtime < 30) {
+				auto z = cos(cluster1->getCentroid().Angle(cluster2->getCentroid()));
+				auto M = sqrt(2 * cluster1->getClusterEnergy() * cluster2->getClusterEnergy() * (1 - z));
+				hMinv2C2GeV30ns->Fill(M);
+			}
+			if (cluster1->getClusterEnergy() > 2000 && cluster2->getClusterEnergy() > 2000 && dtime < 90 && dtime >= 60) {
+				auto z = cos(cluster1->getCentroid().Angle(cluster2->getCentroid()));
+				auto M = sqrt(2 * cluster1->getClusterEnergy() * cluster2->getClusterEnergy() * (1 - z));
+				hMinvSideband->Fill(M);
+			}
+
+		}
+	}
+
+	if (clusters.size() > 1) {
+		for (auto hit : hits) {
+			hHitEnergy->Fill(hit->getHitEnergy());
+		}
+	}
+	for (auto hit : hits) {
+		hAllHitEnergy->Fill(hit->getHitEnergy());
+	}
+
 	m_root_lock->release_lock();
 //unlock
 
@@ -498,6 +561,8 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 //------------------
 void JEventProcessor_HallBFT_simone::Finish(void) {
 // This is called when at the end of event processing
+
+	hMinvRapportoSideband->Divide(hMinv2C2GeV30ns, hMinvSideband, 1, 1);
 
 	auto app = japp;
 	std::string outFileName;
