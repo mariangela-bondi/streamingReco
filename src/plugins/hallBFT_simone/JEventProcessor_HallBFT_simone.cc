@@ -58,6 +58,7 @@
 #include <TFile.h>
 #include <TCollection.h>
 #include <TKey.h>
+
 #include <TPad.h>
 #include <THStack.h>
 
@@ -129,6 +130,7 @@ static TH1D* hAllHitEnergy = 0;
 //static TH2D *hClustersVsEventNumber = 0;
 //static TH2D *hDeltaTimeClusterVeEventNumber = 0;
 
+
 //---------------------------------
 // JEventProcessor_HallBFT_simone    (Constructor)
 //---------------------------------
@@ -161,6 +163,7 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	gDirectory->mkdir("HallBFT_simone")->cd();
 
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
+
 	hdTimeHit = new TH1D("hdTimeHit", "hdTimeHit", 260, -10.5, 259.5);
 	hdTimeHitSel1GeV = new TH1D("hdTimeHitSel1GeV", "hdTimeHitSel1GeV", 1001, -500, 500);
 	hdTimeCluster = new TH1D("hdTimeCluster", "hdTimeCluster", 260, -10.5, 259.5);
@@ -226,6 +229,7 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 //	hClustersVsEventNumber = new TH2D("hClustersVsEventNumber", "hClustersVsEventNumber", 2000, 0, 2000, 20, -1.5, 18.5);
 //	hDeltaTimeClusterVeEventNumber = new TH2D("hDeltaTimeClusterVeEventNumber", "hDeltaTimeClusterVeEventNumber", 2000000, 0, 20000000, 1001, -501, 501);
 
+
 	gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -240,6 +244,7 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	//double minSeed = 10;
 	//double minEnergy = 30;
 	//double minSize = 2;
+
 
 	//Variables declaration
 	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
@@ -260,8 +265,10 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	double dist_min = 1000000;
 	double dTime_max = -1000;
 
+
 	//lock
 	m_root_lock->acquire_write_lock();
+
 
 	if (hits.size() > 1) {
 		for (int i = 0; i < hits.size(); i++) {
@@ -554,6 +561,7 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	m_root_lock->release_lock();
 //unlock
 
+
 }
 
 //------------------
@@ -562,7 +570,9 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 void JEventProcessor_HallBFT_simone::Finish(void) {
 // This is called when at the end of event processing
 
+
 	hMinvRapportoSideband->Divide(hMinv2C2GeV30ns, hMinvSideband, 1, 1);
+
 
 	auto app = japp;
 	std::string outFileName;

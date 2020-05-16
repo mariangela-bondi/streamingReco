@@ -54,7 +54,7 @@ void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent
 			auto faHit = new faWaveboardHit;
 
 			faHit->m_charge = hit.charge;
-			faHit->m_time = hit.time;
+			faHit->m_time = hit.time - firstTime;
 
 			faHit->m_channel.crate = hit.crate;
 			faHit->m_channel.slot = hit.slot;
