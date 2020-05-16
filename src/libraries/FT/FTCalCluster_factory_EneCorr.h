@@ -5,21 +5,22 @@
  *      Author: celentan
  */
 
-#ifndef SRC_LIBRARIES_FT_FTCALCluster_FACTORY_H_
-#define SRC_LIBRARIES_FT_FTCALCluster_FACTORY_H_
+#ifndef SRC_LIBRARIES_FT_FTCALCluster_FACTORY_ENECORR_H_
+#define SRC_LIBRARIES_FT_FTCALCluster_FACTORY_ENECORR_H_
 
 #include "JANA/JFactoryT.h"
 #include "FTCalCluster.h"
 
-class FTCalCluster_factory: public JFactoryT<FTCalCluster> {
+class FTCalCluster_factory_EneCorr: public JFactoryT<FTCalCluster> {
 public:
-	FTCalCluster_factory();
-	virtual ~FTCalCluster_factory();
+	FTCalCluster_factory_EneCorr();
+	virtual ~FTCalCluster_factory_EneCorr();
 
 	// Overloaded by user Factories
 	virtual void Init();
 	virtual void ChangeRun(const std::shared_ptr<const JEvent> &aEvent);
 	virtual void Process(const std::shared_ptr<const JEvent> &aEvent);
+
 	static bool compareHits(const FTCalHit* a, const FTCalHit* b);
 };
 

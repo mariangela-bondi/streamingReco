@@ -49,6 +49,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 	//Get the hits from FADC. Support bot the waveboard hit and the fa250VTPMode7 hit
 	auto faHits_waveboard = aEvent->Get<faWaveboardHit>();
 	auto faHits_fa250VTPMode7 = aEvent->Get<fa250VTPMode7Hit>();
+	std::vector<FTCalHit*> allHits;
 
 	for (auto faHit : faHits_waveboard) {
 
@@ -82,7 +83,9 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->setHitY((ftCalHit->m_channel.iY - CRYS_DELTA) * CRYS_WIDTH);
 			ftCalHit->setHitZ(CRYS_ZPOS);
 
-			mData.push_back(ftCalHit);
+			allHits.push_back(ftCalHit);
+
+			//mData.push_back(ftCalHit);
 		}
 	}
 
@@ -115,10 +118,27 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->setHitY((ftCalHit->m_channel.iY - CRYS_DELTA) * CRYS_WIDTH);
 			ftCalHit->setHitZ(CRYS_ZPOS);
 
+			allHits.push_back(ftCalHit);
 
-			mData.push_back(ftCalHit);
+			//mData.push_back(ftCalHit);
 		}
 	}
 
+	//If you want all data, you need to comment this loop and to uncomment the //mData.push_back in the previous loop.
+	for (int i = 0; i < allHits.size(); i++) {
+		bool flag = false;
+		for (int j = 0; j < allHits.size(); j++) {
+			if (i != j && allHits[i]->getHitIX() == allHits[j]->getHitIX() && allHits[i]->getHitIY() == allHits[j]->getHitIY() && allHits[i]->getHitTime() - allHits[j]->getHitTime() < 160
+					&& allHits[i]->getHitTime() - allHits[j]->getHitTime() > 0 && allHits[i]->getHitEnergy() - allHits[j]->getHitEnergy() < 0) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag == true) {
+			delete allHits[i];
+		} else {
+			mData.push_back(allHits[i]);
+		}
+	}
 }
 

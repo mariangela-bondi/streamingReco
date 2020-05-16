@@ -67,6 +67,10 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 	//TODO: allow for a user-defined run number
 	event->SetRunNumber(curRunNumber);
 	event->SetEventNumber(ptEvent->id());
+//	static int evtNumber=0;
+//	event->SetEventNumber(evtNumber++);
+
+
 //	event.SetEventTS(ptTimeSlice->id());
 //	event->Insert(ptEvent);
 

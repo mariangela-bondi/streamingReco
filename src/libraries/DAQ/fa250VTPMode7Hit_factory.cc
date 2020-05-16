@@ -12,6 +12,7 @@
 #include "JANA/JException.h"
 
 using namespace std;
+
 fa250VTPMode7Hit_factory::fa250VTPMode7Hit_factory() {
 	// TODO Auto-generated constructor stub
 
