@@ -41,35 +41,42 @@
 
 #include "FT/FTCalHit.h"
 #include "FT/FTHodoHit.h"
+#include "FT/FTCalCluster.h"
+
+#include "TFile.h"
+#include "TH1D.h"
+#include "TH2D.h"
 //---------------------------------
 // JEventProcessor_HallB_FT    (Constructor)
 //---------------------------------
-JEventProcessor_HallB_FT::JEventProcessor_HallB_FT()
-{
-
+JEventProcessor_HallB_FT::JEventProcessor_HallB_FT() {
+	f=0;
+	hClusE=0;
+	hClusXY=0;
 }
 
 //---------------------------------
 // ~JEventProcessor_HallB_FT    (Destructor)
 //---------------------------------
-JEventProcessor_HallB_FT::~JEventProcessor_HallB_FT()
-{
+JEventProcessor_HallB_FT::~JEventProcessor_HallB_FT() {
 
 }
 
 //------------------
 // Init
 //------------------
-void JEventProcessor_HallB_FT::Init(void)
-{
+void JEventProcessor_HallB_FT::Init(void) {
 	// This is called once at program startup.
+	f=new TFile("out.root","recreate");
+	hClusE=new TH1D("hClusE","hClusE",200,0,12);
+	hClus2M=new TH1D("hClus2M","hClus2M",300,0,300);
+	hClusXY=new TH2D("hClusXY","hClusXY",200,-200,200,200,-200,200);
 }
 
 //------------------
 // Process
 //------------------
-void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEvent)
-{
+void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEvent) {
 	// This is called for every event. Use of common resources like writing
 	// to a file or filling a histogram should be mutex protected. Using
 	// aEvent->Get<type>() to get reconstructed objects (and thereby activating the
@@ -84,6 +91,25 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 	//  ... fill histograms or trees ...
 	// }
 
+	auto ftCalClusters = aEvent->Get<FTCalCluster>();
+	for (int ii=0;ii<ftCalClusters.size();ii++) {
+		auto cluster = ftCalClusters[ii];
+		hClusE->Fill(cluster->getClusterEnergy());
+		hClusXY->Fill(cluster->getX(),cluster->getY());
+		for (int jj=(ii+1);jj<ftCalClusters.size();jj++){
+			auto cluster2 = ftCalClusters[jj];
+			auto z = cos(cluster->getCentroid().Angle(cluster2->getCentroid()));
+			auto M = sqrt(2*cluster->getClusterEnergy()*cluster2->getClusterEnergy()*(1-z))*1000;
+			std::cout<<z<<" "<<M<<std::endl;
+			hClus2M->Fill(M);
+		}
+
+
+
+	}
+
+
+
 	/*std::cout<<"event start"<<std::endl;
 	std::cout<<"CAL"<<std::endl;
 	auto calhits = aEvent->Get<FTCalHit>();
@@ -96,12 +122,18 @@ void JEventProcessor_HallB_FT::Process(const std::shared_ptr<const JEvent>& aEve
 		std::cout<<1.*hodohit->m_channel.sector<<" "<<1.*hodohit->m_channel.layer<<" "<<1.*hodohit->m_channel.component<<std::endl;
 	}
 	std::cout<<"OK"<<std::endl;*/
+
 }
 
 //------------------
 // Finish
 //------------------
-void JEventProcessor_HallB_FT::Finish(void)
-{
+void JEventProcessor_HallB_FT::Finish(void) {
 	// This is called when at the end of event processing
+
+	hClusE->Write();
+	hClus2M->Write();
+	hClusXY->Write();
+	f->Write();
+	f->Close();
 }

@@ -34,13 +34,13 @@ void FTCalHit_factory::Init() {
 void FTCalHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//TODO: get the TT
+
 	std::cout << "FTCalHit_factory::ChangeRun run number: " << aEvent->GetRunNumber() << " " << this << " " << m_tt << " " << std::endl;
 	if (m_tt == 0) {
 		//std::cout << "FTCalHit_factory::get TT" << std::endl;
 		m_tt = aEvent->GetSingle<TranslationTable>();
 		//	std::cout << "FTCalHit_factory: got TT" << std::endl;
 	}
-
 }
 void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
@@ -73,6 +73,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 			//Assign the time
 			ftCalHit->setHitTime(4 * faHit->m_time.count());
+
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
@@ -108,6 +109,7 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 			//Assign the time
 			ftCalHit->setHitTime(4 * faHit->m_time.count());
+
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP

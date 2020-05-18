@@ -47,8 +47,6 @@
 
 
 
-#include "DAQ/JEventSourcePTFileGenerator.h"
-
 #include "addRecoFactoriesGenerators.h"
 
 void PrintUsage() {
@@ -143,7 +141,7 @@ int Execute(UserOptions& options) {
 
 		//A.C.
 		addRecoFactoriesGenerators(japp);
-		japp->Add(new JEventSourcePTFileGenerator());
+		japp->Add(new JEventSourceTxtFileGenerator());
 
 		auto calib_manager = std::make_shared<JCalibrationManager>();
 		calib_manager->AddCalibrationGenerator(new JCalibrationGeneratorCCDB);
