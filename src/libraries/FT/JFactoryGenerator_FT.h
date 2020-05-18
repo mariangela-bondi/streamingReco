@@ -7,7 +7,10 @@
 //#include "MyHit.h"
 
 #include "FT/FTCalHit_factory.h"
+#include "FT/FTCalHitEneCorr_factory.h"
+#include "FT/FTCalHitSummary_factory.h"
 #include "FT/FTCalCluster_factory.h"
+#include "FT/FTCalCluster_factory_EneCorr.h"
 #include "FT/FTHodoHit_factory.h"
 #include "FT/FTHodoCluster_factory.h"
 #include "FT/FTParticle_factory.h"
@@ -16,7 +19,10 @@ public:
 
 	void GenerateFactories(JFactorySet *factory_set) {
 		factory_set->Add(new FTCalHit_factory());
+		factory_set->Add(new FTCalHitEneCorr_factory());
+		factory_set->Add(new FTCalHitSummary_factory());
 		factory_set->Add(new FTCalCluster_factory());
+		factory_set->Add(new FTCalCluster_factory_EneCorr()); //tagged factory
 
 		factory_set->Add(new FTHodoHit_factory());
 		factory_set->Add(new FTHodoCluster_factory());

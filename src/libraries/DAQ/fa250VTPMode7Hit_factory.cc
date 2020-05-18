@@ -10,6 +10,11 @@
 #include "JANA/JEvent.h"
 #include "fa250VTPMode7Hit_factory.h"
 #include "JANA/JException.h"
+
+
+using namespace std;
+
+
 fa250VTPMode7Hit_factory::fa250VTPMode7Hit_factory() {
 	// TODO Auto-generated constructor stub
 
@@ -72,6 +77,14 @@ void fa250VTPMode7Hit_factory::Process(const std::shared_ptr<const JEvent> &aEve
 			faHit->m_channel.crate = hit.crate;
 			faHit->m_channel.slot = hit.slot;
 			faHit->m_channel.channel = hit.channel;
+
+#define WORK_AROUND
+#ifdef WORK_AROUND
+			if (hit.crate == 0) faHit->m_channel.crate = 70;
+			if (hit.crate == 1) faHit->m_channel.crate = 71;
+			if (hit.crate == 2) faHit->m_channel.crate = 72;
+#endif
+
 
 			//Add to the framework
 			mData.push_back(faHit);

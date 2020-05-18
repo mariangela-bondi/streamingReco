@@ -31,19 +31,22 @@
 
 #include <iostream>
 #include <JANA/JApplication.h>
-#include <JANA/Status/JVersion.h>
+
 
 #include <JANA/Calibrations/JCalibrationCCDB.h>
 #include <JANA/Calibrations/JCalibrationFile.h>
 #include <JANA/Calibrations/JCalibrationManager.h>
 
+#include <JANA/Services/JGlobalRootLock.h>
+#include <JANA/CLI/JVersion.h>
+#include <JANA/CLI/JBenchmarker.h>
+#include <JANA/CLI/JSignalHandler.h>
+
 #define HAVE_CCDB 1
 #include <JANA/Calibrations/JCalibrationGeneratorCCDB.h>
 
-#include "JBenchmarker.h"
-#include "JSignalHandler.h"
 
-#include "DAQ/JEventSourceTxtFileGenerator.h"
+
 #include "addRecoFactoriesGenerators.h"
 
 void PrintUsage() {
@@ -134,16 +137,17 @@ int Execute(UserOptions& options) {
 		for (auto event_src : options.eventSources) {
 			japp->Add(event_src);
 		}
-		AddSignalHandlers();
+		JSignalHandler::register_handlers(japp);
 
 		//A.C.
 		addRecoFactoriesGenerators(japp);
 		japp->Add(new JEventSourceTxtFileGenerator());
 
-
 		auto calib_manager = std::make_shared<JCalibrationManager>();
 		calib_manager->AddCalibrationGenerator(new JCalibrationGeneratorCCDB);
 		japp->ProvideService(calib_manager);
+
+		japp->ProvideService(std::make_shared<JGlobalRootLock>());
 
 		if (options.flags[ShowConfigs]) {
 			// Load all plugins, collect all parameters, exit without running anything

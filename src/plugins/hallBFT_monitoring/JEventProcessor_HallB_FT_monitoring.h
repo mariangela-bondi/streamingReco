@@ -42,6 +42,9 @@
 #define _JEventProcessor_HallB_FT_monitoring_h_
 
 #include <JANA/JEventProcessor.h>
+#include <memory>
+
+class JGlobalRootLock;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /// Brief class description.
@@ -61,6 +64,7 @@ class JEventProcessor_HallB_FT_monitoring : public JEventProcessor{
 
 
 	private:
+		std::shared_ptr<JGlobalRootLock> m_root_lock;
 
 };
 
