@@ -46,6 +46,8 @@
 #include <JANA/Calibrations/JCalibrationGeneratorCCDB.h>
 
 
+#include "DAQ/JEventSourceTxtFileGenerator.h"
+#include "DAQ/JEventSourcePTFileGenerator.h"
 
 #include "addRecoFactoriesGenerators.h"
 
@@ -142,6 +144,7 @@ int Execute(UserOptions& options) {
 		//A.C.
 		addRecoFactoriesGenerators(japp);
 		japp->Add(new JEventSourceTxtFileGenerator());
+		japp->Add(new JEventSourcePTFileGenerator());
 
 		auto calib_manager = std::make_shared<JCalibrationManager>();
 		calib_manager->AddCalibrationGenerator(new JCalibrationGeneratorCCDB);

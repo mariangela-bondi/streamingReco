@@ -117,7 +117,7 @@ void JEventSourceTxtFile::GetEvent(std::shared_ptr<JEvent> event) {
 		std::replace(fields.begin(), fields.end(), ':', ' ');  // replace ':' by ' '
 		std::istringstream strm2(fields);
 		strm2 >> id >> sector >> layer >> component >> adc >> tdc;
-		if (id == 0) {
+		if (id == 0 && adc>0) {
 			caloHit = new FTCalHit();
 			caloHit->m_channel.sector = sector;
 			caloHit->m_channel.layer = layer;
@@ -125,7 +125,8 @@ void JEventSourceTxtFile::GetEvent(std::shared_ptr<JEvent> event) {
 			caloHit->m_channel.iY = (caloHit->m_channel.component / 22) + 1;
 			caloHit->m_channel.iX = (caloHit->m_channel.component + 1) - (caloHit->m_channel.iY - 1) * 22;
 
-			caloHit->setHitEnergy(adc * fadc_to_charge[caloHit->m_channel.component - 1] * mips_energy[caloHit->m_channel.component - 1] / mips_charge[caloHit->m_channel.component  - 1] / 1000.);
+			auto ene=adc * fadc_to_charge[caloHit->m_channel.component - 1] * mips_energy[caloHit->m_channel.component - 1] / mips_charge[caloHit->m_channel.component  - 1];
+			caloHit->setHitEnergy(ene);
 
 
 			caloHit->setHitTime(tdc);
