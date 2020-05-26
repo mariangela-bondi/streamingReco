@@ -20,9 +20,11 @@ public:
 	void GenerateFactories(JFactorySet *factory_set) {
 		factory_set->Add(new FTCalHit_factory());
 		factory_set->Add(new FTCalHitEneCorr_factory());
+		factory_set->Add(new FTCalHitTimeCorr_factory());
 		factory_set->Add(new FTCalHitSummary_factory());
 		factory_set->Add(new FTCalCluster_factory());
 		factory_set->Add(new FTCalCluster_factory_EneCorr()); //tagged factory
+		factory_set->Add(new FTCalCluster_factory_TimeCorr()); //tagged factory
 
 		factory_set->Add(new FTHodoHit_factory());
 		factory_set->Add(new FTHodoCluster_factory());
