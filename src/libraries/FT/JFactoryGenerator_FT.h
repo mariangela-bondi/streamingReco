@@ -23,6 +23,7 @@ public:
 		factory_set->Add(new FTCalHitSummary_factory());
 		factory_set->Add(new FTCalCluster_factory());
 		factory_set->Add(new FTCalCluster_factory_EneCorr()); //tagged factory
+		factory_set->Add(new FTCalCluster_factory_TimeCorr()); //tagged factory
 
 		factory_set->Add(new FTHodoHit_factory());
 		factory_set->Add(new FTHodoCluster_factory());
