@@ -8,9 +8,11 @@
 
 #include "FT/FTCalHit_factory.h"
 #include "FT/FTCalHitEneCorr_factory.h"
+#include "FT/FTCalHitTimeCorr_factory.h"
 #include "FT/FTCalHitSummary_factory.h"
 #include "FT/FTCalCluster_factory.h"
 #include "FT/FTCalCluster_factory_EneCorr.h"
+#include "FT/FTCalCluster_factory_TimeCorr.h"
 #include "FT/FTHodoHit_factory.h"
 #include "FT/FTHodoCluster_factory.h"
 #include "FT/FTParticle_factory.h"
