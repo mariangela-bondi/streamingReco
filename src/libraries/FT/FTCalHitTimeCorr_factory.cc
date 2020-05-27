@@ -99,8 +99,9 @@ void FTCalHitTimeCorr_factory::Process(const std::shared_ptr<const JEvent> &aEve
 			//Assign the time
 //			double timeWalkCorrection = (pow(2186 / faHit->m_charge, 1 / 1.07) - 2.031);
 //			double timeWalkCorrection = (pow(3231 / faHit->m_charge, 1 / 1.19) - 2.246);
-			double timeWalkCorrection = (-2-847/(0.1115-0.02528*sqrt(faHit->m_charge))-3.497);
+			double timeWalkCorrection = (-2 - 847 / (0.1115 - 0.02528 * sqrt(faHit->m_charge)) - 3.497);
 			ftCalHit->setHitTime(4 * faHit->m_time.count() - timeWalkCorrection);
+//			cout << (4 * faHit->m_time.count() - timeWalkCorrection);
 //			ftCalHit->setHitTime(4 * faHit->m_time.count());
 
 			//Assign the energy
@@ -142,6 +143,11 @@ void FTCalHitTimeCorr_factory::Process(const std::shared_ptr<const JEvent> &aEve
 
 			//Assign the energy
 			ftCalHit->setHitEnergy(faHit->m_charge);
+
+			//Assign the position
+			ftCalHit->setHitX((ftCalHit->m_channel.iX - CRYS_DELTA) * CRYS_WIDTH);
+			ftCalHit->setHitY((ftCalHit->m_channel.iY - CRYS_DELTA) * CRYS_WIDTH);
+			ftCalHit->setHitZ(CRYS_ZPOS);
 
 			allHits.push_back(ftCalHit);
 
