@@ -78,6 +78,9 @@ static vector<TH2D *> HitsTime_timeCorr;
 static vector<TH2D *> ClusterHitsEnergy_timeCorr;
 static vector<TH2D *> ClusterHitsTime_timeCorr;
 
+static TH2D *hClusterEnergyVsTheta = 0;
+static TH2D *hClusterEnergyVsTheta_timeCorr = 0;
+
 //Selezione eventi "basica"
 const int firstEvent = 0;
 const int lastEvent = 20;
@@ -114,6 +117,8 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 	gDirectory->mkdir("HallBFT_simone")->cd();
 
 	hTest = new TH1D("hTest", "hTest", 10, -.5, 9.5);
+	hClusterEnergyVsTheta = new TH2D("hClusterEnergyVsTheta", "hClusterEnergyVsTheta", 120, 0.98, 1.02, 1000, 0, 10000);
+	hClusterEnergyVsTheta_timeCorr = new TH2D("hClusterEnergyVsTheta_timeCorr", "hClusterEnergyVsTheta_timeCorr", 120, 0.98, 1.02, 1000, 0, 10000);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -159,8 +164,6 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 		TH2D *hClusterHitsEnergy = new TH2D(Form("hClusterHitsEnergy%d", eventNumber), Form("hClusterHitsEnergy%d", eventNumber), 25, 0, 25, 25, 0, 25);
 		TH2D *hClusterHitsTime = new TH2D(Form("hClusterHitsTime%d", eventNumber), Form("hClusterHitsTime%d", eventNumber), 25, 0, 25, 25, 0, 25);
 
-//		TH2D *hHitsEnergy_timeCorr = new TH2D(Form("hHitsEnergy_timeCorr%d", eventNumber), Form("hHitsEnergy_timeCorr%d", eventNumber), 25, 0, 25, 25, 0, 25);
-//		TH2D *hHitsTime_timeCorr = new TH2D(Form("hHitsTime_timeCorr%d", eventNumber), Form("hHitsTime_timeCorr%d", eventNumber), 25, 0, 25, 25, 0, 25);
 		TH2D *hClusterHitsEnergy_timeCorr = new TH2D(Form("hClusterHitsEnergy_timeCorr%d", eventNumber), Form("hClusterHitsEnergy_timeCorr%d", eventNumber), 25, 0, 25, 25, 0, 25);
 		TH2D *hClusterHitsTime_timeCorr = new TH2D(Form("hClusterHitsTime_timeCorr%d", eventNumber), Form("hClusterHitsTime_timeCorr%d", eventNumber), 25, 0, 25, 25, 0, 25);
 
@@ -172,15 +175,6 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 				hHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), 1);
 			}
 		}
-
-//		for (auto hit : hits_timeCorr) {
-//			hHitsEnergy_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
-//			if (hit->getHitTime() != 0) {
-//				hHitsTime_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
-//			} else {
-//				hHitsTime_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), 1);
-//			}
-//		}
 
 		for (auto cluster : clusters) {
 			for (int i = 0; i < cluster->getClusterSize(); i++) {
@@ -211,11 +205,21 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 		ClusterHitsEnergy.push_back(hClusterHitsEnergy);
 		ClusterHitsTime.push_back(hClusterHitsTime);
 
-//		HitsEnergy_timeCorr.push_back(hHitsEnergy_timeCorr);
-//		HitsTime_timeCorr.push_back(hHitsTime_timeCorr);
 		ClusterHitsEnergy_timeCorr.push_back(hClusterHitsEnergy_timeCorr);
 		ClusterHitsTime_timeCorr.push_back(hClusterHitsTime_timeCorr);
 	}
+
+	if (clusters.size() == 1) {
+		hClusterEnergyVsTheta->Fill(clusters[0]->getCentroid().CosTheta(), clusters[0]->getClusterEnergy());
+//		cout << clusters[0]->getCentroid().CosTheta() << " " << clusters[0]->getClusterEnergy() << endl;
+	}
+	if (clusters_timeCorr.size() == 1) {
+		hClusterEnergyVsTheta_timeCorr->Fill(clusters_timeCorr[0]->getCentroid().CosTheta(), clusters_timeCorr[0]->getClusterEnergy());
+//		cout << clusters_timeCorr[0]->getCentroid().CosTheta() << " " << clusters_timeCorr[0]->getClusterEnergy() << endl;
+	}
+
+//		if(clusters.size()==2){}
+//		if(clusters_timeCorr.size()==2){}
 
 	m_root_lock->release_lock();
 //unlock

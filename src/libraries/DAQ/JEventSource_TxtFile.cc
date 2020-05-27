@@ -60,7 +60,9 @@ void JEventSourceTxtFile::GetEvent(std::shared_ptr<JEvent> event) {
 	// to the GetObjects method below which may be called in parallel.
 	curRunNumber = 8000;
 	event->SetRunNumber(curRunNumber);
-	event->SetEventNumber(idx++);
+//	event->SetEventNumber(idx++);
+	static int num=0;
+	event->SetEventNumber(num++);
 
 	if (isRead == 0) {
 
