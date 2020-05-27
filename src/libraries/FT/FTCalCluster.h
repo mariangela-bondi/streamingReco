@@ -67,10 +67,10 @@ public:
 
 	int getClusterId() const;
 
-	//Return number of crystal in a cluster. Why _clusID isn't a parameter?
+	//Return number of crystal in a cluster.
 	int getClusterSize() const;
 
-	//Return energy of a cluster. Why _clusID isn't a parameter?
+	//Return energy of a cluster.
 	float getClusterEnergy() const;
 
 	//Return energy of a cluster with correction.
@@ -103,10 +103,12 @@ public:
 
 	double getPhi() const;
 
+	const FTCalHit* getHit(int i) const;
+
 	bool isGoodCluster() const;
 
 	//Controlla se l'hit analizzato e' contenuto nel cluster.
-	bool containsHit(const FTCalHit *hit) const;
+	bool containsHit(const FTCalHit *hit, double time_min, double time_max) const;
 
 	void push_hit(const FTCalHit *hit);
 

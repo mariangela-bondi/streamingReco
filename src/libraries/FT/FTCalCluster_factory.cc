@@ -13,6 +13,10 @@
 #include <iostream>
 #include <functional>
 
+//Parametri clustering:
+double time_min = 0;
+double time_max = 30;
+
 //this will set the hits in DESCENDING order wrt energy
 bool FTCalCluster_factory::compareHits(const FTCalHit* a, const FTCalHit* b) {
 	return (a->getHitEnergy() > b->getHitEnergy());
@@ -46,7 +50,7 @@ void FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) 
 		if (flag == false) {
 			for (int j = 0; j < clusters.size(); j++) {
 				FTCalCluster* cluster = clusters[j];
-				if (cluster->containsHit(hit)) {
+				if (cluster->containsHit(hit, time_min, time_max)) {
 					cluster->push_hit(hit);
 					flag = true;
 					break;

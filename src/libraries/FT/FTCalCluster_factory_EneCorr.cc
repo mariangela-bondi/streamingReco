@@ -13,6 +13,10 @@
 #include <iostream>
 #include <functional>
 
+//Parametri finestra temporale cluster
+double time_min_EneCorr= 0;
+double time_max_EneCorr = 30;
+
 //this will set the hits in DESCENDING order wrt energy
 bool FTCalCluster_factory_EneCorr::compareHits(const FTCalHit* a, const FTCalHit* b) {
 	return (a->getHitEnergy() > b->getHitEnergy());
@@ -20,7 +24,7 @@ bool FTCalCluster_factory_EneCorr::compareHits(const FTCalHit* a, const FTCalHit
 
 FTCalCluster_factory_EneCorr::FTCalCluster_factory_EneCorr() {
 	// TODO Auto-generated constructor stub
-	mTag="EneCorr";
+	mTag = "EneCorr";
 }
 
 FTCalCluster_factory_EneCorr::~FTCalCluster_factory_EneCorr() {
@@ -46,7 +50,7 @@ void FTCalCluster_factory_EneCorr::Process(const std::shared_ptr<const JEvent> &
 		if (flag == false) {
 			for (int j = 0; j < clusters.size(); j++) {
 				FTCalCluster* cluster = clusters[j];
-				if (cluster->containsHit(hit)) {
+				if (cluster->containsHit(hit, time_min_EneCorr, time_max_EneCorr)) {
 					cluster->push_hit(hit);
 					flag = true;
 					break;
