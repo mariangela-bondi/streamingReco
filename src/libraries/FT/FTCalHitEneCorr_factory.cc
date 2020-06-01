@@ -60,7 +60,7 @@ void FTCalHitEneCorr_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEv
 			auto sector = int(row[0]);
 			auto layer = int(row[1]);
 			auto component = int(row[2]);
-			mips_charge[component - 1] = row[3];
+			mips_charge[component] = row[3];
 		}
 
 		daq_gain[0][3][0] = 0.118104;
@@ -515,7 +515,7 @@ void FTCalHitEneCorr_factory::Process(const std::shared_ptr<const JEvent> &aEven
 			static auto cosmic_ene = 15.3;
 
 			charge = charge * fadc_to_charge;
-			charge = charge * cosmic_ene / mips_charge[ftCalHit->m_channel.component - 1];
+			charge = charge * cosmic_ene / mips_charge[ftCalHit->m_channel.component];
 
 			ftCalHit->setHitEnergy(charge);
 
