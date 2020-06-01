@@ -14,7 +14,7 @@
 #include <functional>
 
 //Finestra temporale cluster
-double time_min_TimeCorr = -5;
+double time_min_TimeCorr = -10;
 double time_max_TimeCorr = 15;
 
 //this will set the hits in DESCENDING order wrt energy
