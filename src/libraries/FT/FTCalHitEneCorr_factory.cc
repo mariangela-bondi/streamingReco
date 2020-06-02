@@ -489,7 +489,13 @@ void FTCalHitEneCorr_factory::Process(const std::shared_ptr<const JEvent> &aEven
 			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-			ftCalHit->setHitTime(4 * faHit->m_time.count());
+			if (ftCalHit->m_channel.iX >= 12 || ftCalHit->m_channel.component == 224 || ftCalHit->m_channel.component == 242 || ftCalHit->m_channel.component == 360
+					|| ftCalHit->m_channel.component == 445 || ftCalHit->m_channel.component == 96 || ftCalHit->m_channel.component == 142) {
+				ftCalHit->setHitTime(4 * faHit->m_time.count() - 20);
+			} else {
+				ftCalHit->setHitTime(4 * faHit->m_time.count());
+			}
+//			ftCalHit->setHitTime(4 * faHit->m_time.count());
 
 			//Assign the energy
 			ftCalHit->setHitEnergyRaw(faHit->m_charge);

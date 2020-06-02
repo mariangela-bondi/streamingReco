@@ -135,18 +135,18 @@ void JEventProcessor_HallBFT_simone::Init(void) {
 //	hSeedDx = new TH2D("hSeedDx", "hSeedDx", 1000, 0, 10000, 40, -5.5, 34.5);
 //	hSeedSx = new TH2D("hSeedSx", "hSeedSx", 1000, 0, 10000, 40, -5.5, 34.5);
 
-//	hdTime = new TH1D("hdTime", "hdTime", 60, -20.5, 39.5);
-//	hdTime_corr = new TH1D("hdTime_corr", "hdTime_corr", 60, -20.5, 39.5);
+	hdTime = new TH1D("hdTime", "hdTime", 60, -20.5, 39.5);
+	hdTime_corr = new TH1D("hdTime_corr", "hdTime_corr", 60, -20.5, 39.5);
 
 //	for (int j = 0; j < 500; j++) {
 //		TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 40, -5.5, 34.5);
 //		CorrectionCurve.push_back(hCorrectionCurve);
 //	}
 
-	for (int j = 0; j < 500; j++) {
-		TH2D *hEnergyVsCorrEnergy = new TH2D(Form("hEnergyVsCorrEnergy%d", j), Form("hEnergyVsCorrEnergy%d", j), 1000, 0, 10000, 1000, 0, 10000);
-		EnergyVsCorrEnergy.push_back(hEnergyVsCorrEnergy);
-	}
+//	for (int j = 0; j < 500; j++) {
+//		TH2D *hEnergyVsCorrEnergy = new TH2D(Form("hEnergyVsCorrEnergy%d", j), Form("hEnergyVsCorrEnergy%d", j), 1000, 0, 10000, 1000, 0, 10000);
+//		EnergyVsCorrEnergy.push_back(hEnergyVsCorrEnergy);
+//	}
 
 //	hClusterEnergyVsTheta = new TH2D("hClusterEnergyVsTheta", "hClusterEnergyVsTheta", 100, 0.995, 1, 5000, 0, 10000);
 //	hClusterEnergyVsTheta_timeCorr = new TH2D("hClusterEnergyVsTheta_timeCorr", "hClusterEnergyVsTheta_timeCorr", 100, 0.995, 1, 5000, 0, 10000);
@@ -189,7 +189,8 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	//lock
 	m_root_lock->acquire_write_lock();
 
-	/*if (clusters.size() == 1) {
+	/* RIEMPE istogrammi per i cristalli della colonna x=12. Histo ritardo hit vs energy. Due histo per seed nella metà di destra o nella metà di sinistra del calorimetro
+	 if (clusters.size() == 1) {
 	 bool flag = false;
 	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
 	 auto hit = clusters[0]->getHit(i);
@@ -218,184 +219,185 @@ void JEventProcessor_HallBFT_simone::Process(const std::shared_ptr<const JEvent>
 	 }
 	 }*/
 
+	//Riempe TH2D ritardo hit (rispetto al seed) vs energy hit, uno diverso per ogni component, da cui ricavare la curva di correzione
 	/*	if (eventNumber > 1000000) {
-	 if (clusters.size() == 1) {
-	 auto seed = clusters[0]->getHit(0);
-	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-	 auto hit = clusters[0]->getHit(i);
+	 if (clusters_EneCorr.size() == 1) {
+	 auto seed = clusters_EneCorr[0]->getHit(0);
+	 for (int i = 0; i < clusters_EneCorr[0]->getClusterSize(); i++) {
+	 auto hit = clusters_EneCorr[0]->getHit(i);
 	 CorrectionCurve[hit->m_channel.component]->Fill(hit->getHitEnergy(), hit->getHitTime() - seed->getHitTime());
 	 }
 	 }
-	 }
-	 */
+	 }*/
 
-	if (clusters.size() == 1 && clusters_EneCorr.size() == 1) {
-		if (clusters[0]->getClusterSize() == clusters_EneCorr[0]->getClusterSize()) {
-			for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-				auto hit = clusters[0]->getHit(i);
-				auto hit_EC = clusters_EneCorr[0]->getHit(i);
-				if (hit->m_channel.component == hit_EC->m_channel.component) {
-					EnergyVsCorrEnergy[hit->m_channel.component]->Fill(hit_EC->getHitEnergy(), hit->getHitEnergy());
-				}
-			}
+	/* TH2D ENergia corretta vs Energia per ogni cristallo
+	 if (clusters.size() == 1 && clusters_EneCorr.size() == 1) {
+	 if (clusters[0]->getClusterSize() == clusters_EneCorr[0]->getClusterSize()) {
+	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
+	 auto hit = clusters[0]->getHit(i);
+	 auto hit_EC = clusters_EneCorr[0]->getHit(i);
+	 if (hit->m_channel.component == hit_EC->m_channel.component) {
+	 EnergyVsCorrEnergy[hit->m_channel.component]->Fill(hit_EC->getHitEnergy(), hit->getHitEnergy());
+	 }
+	 }
+	 }
+	 }*/
+
+	/*	Produce TH2D della posizione degli hit di eventi con hit nella colonna 12, con hit pesati per energia e tempo.
+	 if (clusters.size() == 1) {
+	 bool flag = false;
+	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
+	 auto hit = clusters[0]->getHit(i);
+	 if (hit->getHitIX() == 12) {
+	 flag = true;
+	 break;
+	 }
+	 }
+	 if (flag == true) {
+	 TH2D *hEvent = new TH2D(Form("hEvent%d", eventNumber), Form("hEvent%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+	 auto seed = clusters[0]->getHit(0);
+	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
+	 auto hit = clusters[0]->getHit(i);
+	 if (hit->getHitTime() - seed->getHitTime() != 0) {
+	 hEvent->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime() - seed->getHitTime());
+	 } else {
+	 hEvent->Fill(hit->getHitIX(), hit->getHitIY(), 1);
+	 }
+	 }
+	 IntEvent.push_back(hEvent);
+	 }
+	 }*/
+
+	//Produce TH2D degli hit di eventi applicando o meno la correzione temporale, con hit pesati su tempo o energia . Produce anche istogrammi dei cluster.
+	/*if (eventNumber >= firstEvent && eventNumber <= lastEvent && firstEvent != lastEvent) {
+	 if (eventCounter < 50) {
+	 eventCounter++;
+	 TH2D *hHitsEnergy = new TH2D(Form("hHitsEnergy%d", eventNumber), Form("hHitsEnergy%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+	 TH2D *hHitsTime = new TH2D(Form("hHitsTime%d", eventNumber), Form("hHitsTime%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+	 TH2D *hClusterHitsEnergy = new TH2D(Form("hClusterHitsEnergy%d", eventNumber), Form("hClusterHitsEnergy%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+	 TH2D *hClusterHitsTime = new TH2D(Form("hClusterHitsTime%d", eventNumber), Form("hClusterHitsTime%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+
+	 TH2D *hClusterHitsEnergy_timeCorr = new TH2D(Form("hClusterHitsEnergy_timeCorr%d", eventNumber), Form("hClusterHitsEnergy_timeCorr%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+	 TH2D *hClusterHitsTime_timeCorr = new TH2D(Form("hClusterHitsTime_timeCorr%d", eventNumber), Form("hClusterHitsTime_timeCorr%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+
+	 TH2D *hTimeSpread = new TH2D(Form("hTimeSpread%d", eventNumber), Form("hTimeSpread%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
+	 for (auto hit : hits) {
+	 hHitsEnergy->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
+	 if (hit->getHitTime() != 0) {
+	 hHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
+	 } else {
+	 hHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), 1);
+	 }
+	 }
+
+	 for (auto cluster : clusters) {
+	 for (int i = 0; i < cluster->getClusterSize(); i++) {
+	 auto hit = cluster->getHit(i);
+	 hClusterHitsEnergy->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
+	 if (hit->getHitTime() != 0) {
+	 hClusterHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
+	 } else {
+	 hClusterHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), 1);
+	 }
+	 }
+	 }
+
+	 for (auto cluster : clusters_timeCorr) {
+	 for (int i = 0; i < cluster->getClusterSize(); i++) {
+	 auto hit = cluster->getHit(i);
+	 hClusterHitsEnergy_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
+	 if (hit->getHitTime() != 0) {
+	 hClusterHitsTime_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
+	 } else {
+	 hClusterHitsTime_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), 1);
+	 }
+	 }
+	 }
+
+
+	 auto seed = clusters[0]->getHit(0);
+	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
+	 auto hit = clusters[0]->getHit(i);
+	 if (hit->getHitTime() - seed->getHitTime() != 0) {
+	 hTimeSpread->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime() - seed->getHitTime());
+	 } else {
+	 hTimeSpread->Fill(hit->getHitIX(), hit->getHitIY(), 1);
+	 }
+
+	 HitsEnergy.push_back(hHitsEnergy);
+	 HitsTime.push_back(hHitsTime);
+	 ClusterHitsEnergy.push_back(hClusterHitsEnergy);
+	 ClusterHitsTime.push_back(hClusterHitsTime);
+
+	 ClusterHitsEnergy_timeCorr.push_back(hClusterHitsEnergy_timeCorr);
+	 ClusterHitsTime_timeCorr.push_back(hClusterHitsTime_timeCorr);
+
+	 TimeWalkViewer.push_back(hTimeSpread);
+	 }*/
+
+	if (clusters_EneCorr.size() == 1 && clusters_timeCorr.size() == 1) {
+		TH1D *hTimeDistribution = new TH1D(Form("hTimeDistribution%d", eventNumber), Form("hTimeDistribution%d", eventNumber), 45, -10.5, 34.5);
+		TH1D *hTimeDistribution_timeCorr = new TH1D(Form("hTimeDistribution_timeCorr%d", eventNumber), Form("hTimeDistribution_timeCorr%d", eventNumber), 45, -10.5, 34.5);
+
+		auto seed_EneCorr = clusters_EneCorr[0]->getHit(0);
+		for (int i = 0; i < clusters_EneCorr[0]->getClusterSize(); i++) {
+			auto hit = clusters_EneCorr[0]->getHit(i);
+			hTimeDistribution->Fill(hit->getHitTime() - seed_EneCorr->getHitTime());
+		}
+
+		auto seed_timeCorr = clusters_timeCorr[0]->getHit(0);
+		for (int i = 0; i < clusters_timeCorr[0]->getClusterSize(); i++) {
+			auto hit = clusters_timeCorr[0]->getHit(i);
+			hTimeDistribution_timeCorr->Fill(hit->getHitTime() - seed_timeCorr->getHitTime());
+		}
+		TimeDistribution.push_back(hTimeDistribution);
+		TimeDistribution_timeCorr.push_back(hTimeDistribution_timeCorr);
+	}
+//Per eventi con 1 cluster e 1 cluster con tempi corretti, produce la distribuzione temporale degli hit del cluster per entrambi i casi.
+	if (clusters.size() == 1 && clusters_timeCorr.size() == 1) {
+		auto seed = clusters[0]->getHit(0);
+		for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
+			auto hit = clusters[0]->getHit(i);
+			hdTime->Fill(hit->getHitTime() - seed->getHitTime());
+		}
+		auto seed_timeCorr = clusters_timeCorr[0]->getHit(0);
+		for (int i = 0; i < clusters_timeCorr[0]->getClusterSize(); i++) {
+			auto hit = clusters_timeCorr[0]->getHit(i);
+			hdTime_corr->Fill(hit->getHitTime() - seed_timeCorr->getHitTime());
 		}
 	}
 
-//	if (clusters.size() == 1) {
-//		bool flag = false;
-//		for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-//			auto hit = clusters[0]->getHit(i);
-//			if (hit->getHitIX() == 12) {
-//				flag = true;
-//				break;
-//			}
-//		}
-//		if (flag == true) {
-//			TH2D *hEvent = new TH2D(Form("hEvent%d", eventNumber), Form("hEvent%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//			auto seed = clusters[0]->getHit(0);
-//			for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-//				auto hit = clusters[0]->getHit(i);
-//				if (hit->getHitTime() - seed->getHitTime() != 0) {
-//					hEvent->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime() - seed->getHitTime());
-//				} else {
-//					hEvent->Fill(hit->getHitIX(), hit->getHitIY(), 1);
-//				}
-//			}
-//			IntEvent.push_back(hEvent);
-//		}
-//	}
-//	if (eventNumber >= firstEvent && eventNumber <= lastEvent && firstEvent != lastEvent) {
-//	if (eventCounter < 50) {
-//		eventCounter++;
-//		TH2D *hHitsEnergy = new TH2D(Form("hHitsEnergy%d", eventNumber), Form("hHitsEnergy%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//		TH2D *hHitsTime = new TH2D(Form("hHitsTime%d", eventNumber), Form("hHitsTime%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//		TH2D *hClusterHitsEnergy = new TH2D(Form("hClusterHitsEnergy%d", eventNumber), Form("hClusterHitsEnergy%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//		TH2D *hClusterHitsTime = new TH2D(Form("hClusterHitsTime%d", eventNumber), Form("hClusterHitsTime%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//
-//		TH2D *hClusterHitsEnergy_timeCorr = new TH2D(Form("hClusterHitsEnergy_timeCorr%d", eventNumber), Form("hClusterHitsEnergy_timeCorr%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//		TH2D *hClusterHitsTime_timeCorr = new TH2D(Form("hClusterHitsTime_timeCorr%d", eventNumber), Form("hClusterHitsTime_timeCorr%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//
-//		TH2D *hTimeSpread = new TH2D(Form("hTimeSpread%d", eventNumber), Form("hTimeSpread%d", eventNumber), 25, -0.5, 24.5, 25, -0.5, 24.5);
-//		for (auto hit : hits) {
-//			hHitsEnergy->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
-//			if (hit->getHitTime() != 0) {
-//				hHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
-//			} else {
-//				hHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), 1);
-//			}
-//		}
-//
-//		for (auto cluster : clusters) {
-//			for (int i = 0; i < cluster->getClusterSize(); i++) {
-//				auto hit = cluster->getHit(i);
-//				hClusterHitsEnergy->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
-//				if (hit->getHitTime() != 0) {
-//					hClusterHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
-//				} else {
-//					hClusterHitsTime->Fill(hit->getHitIX(), hit->getHitIY(), 1);
-//				}
-//			}
-//		}
-//
-//		for (auto cluster : clusters_timeCorr) {
-//			for (int i = 0; i < cluster->getClusterSize(); i++) {
-//				auto hit = cluster->getHit(i);
-//				hClusterHitsEnergy_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
-//				if (hit->getHitTime() != 0) {
-//					hClusterHitsTime_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime());
-//				} else {
-//					hClusterHitsTime_timeCorr->Fill(hit->getHitIX(), hit->getHitIY(), 1);
-//				}
-//			}
-//		}
-//
-//		if (clusters.size() == 1 && clusters_timeCorr.size() == 1) {
-//			TH1D *hTimeDistribution = new TH1D(Form("hTimeDistribution%d", eventNumber), Form("hTimeDistribution%d", eventNumber), 45, -10.5, 34.5);
-//			TH1D *hTimeDistribution_timeCorr = new TH1D(Form("hTimeDistribution_timeCorr%d", eventNumber), Form("hTimeDistribution_timeCorr%d", eventNumber), 45, -10.5, 34.5);
-//
-//			auto seed = clusters[0]->getHit(0);
-//			for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-//				auto hit = clusters[0]->getHit(i);
-//				if (hit->getHitTime() - seed->getHitTime() != 0) {
-////					hTimeSpread->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitTime() - seed->getHitTime());
-//				} else {
-////					hTimeSpread->Fill(hit->getHitIX(), hit->getHitIY(), 1);
-//				}
-//
-//				hTimeDistribution->Fill(hit->getHitTime() - seed->getHitTime());
-//			}
-//			auto seed_timeCorr = clusters_timeCorr[0]->getHit(0);
-//			for (int i = 0; i < clusters_timeCorr[0]->getClusterSize(); i++) {
-//				auto hit = clusters_timeCorr[0]->getHit(i);
-//				hTimeDistribution_timeCorr->Fill(hit->getHitTime() - seed_timeCorr->getHitTime());
-//			}
-//			TimeDistribution.push_back(hTimeDistribution);
-//			TimeDistribution_timeCorr.push_back(hTimeDistribution_timeCorr);
-//		}
-//		HitsEnergy.push_back(hHitsEnergy);
-//		HitsTime.push_back(hHitsTime);
-//		ClusterHitsEnergy.push_back(hClusterHitsEnergy);
-//		ClusterHitsTime.push_back(hClusterHitsTime);
-//
-//		ClusterHitsEnergy_timeCorr.push_back(hClusterHitsEnergy_timeCorr);
-//		ClusterHitsTime_timeCorr.push_back(hClusterHitsTime_timeCorr);
-//
-//		TimeWalkViewer.push_back(hTimeSpread);
-//	}
-//
-//	if (clusters.size() == 1 && clusters_timeCorr.size() == 1) {
-//		auto seed = clusters[0]->getHit(0);
-//		for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-//			auto hit = clusters[0]->getHit(i);
-//			hdTime->Fill(hit->getHitTime() - seed->getHitTime());
-//		}
-//		auto seed_timeCorr = clusters_timeCorr[0]->getHit(0);
-//		for (int i = 0; i < clusters_timeCorr[0]->getClusterSize(); i++) {
-//			auto hit = clusters_timeCorr[0]->getHit(i);
-//			hdTime_corr->Fill(hit->getHitTime() - seed_timeCorr->getHitTime());
-//		}
-//	}
-//	if (clusters.size() == 1) {
-//		hClusterEnergyVsTheta->Fill(clusters[0]->getCentroid().CosTheta(), clusters[0]->getClusterEnergy());
-//		for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-//			auto hit = clusters[0]->getHit(i);
-//			cout << hit->getHitEnergy() << " " << hit->getHitTime() << " " << hit->getHitIX() << " " << hit->getHitIY() << endl;
-//		}
-//		cout << clusters[0]->getCentroid().CosTheta() << " " << clusters[0]->getClusterEnergy() << endl;
-//		cout << clusters[0]->getCentroid().X() << " " << clusters[0]->getCentroid().Y() << " " << clusters[0]->getCentroid().Z() << endl;
-//	}
-//	if (clusters_timeCorr.size() == 1) {
-//		hClusterEnergyVsTheta_timeCorr->Fill(clusters_timeCorr[0]->getCentroid().CosTheta(), clusters_timeCorr[0]->getClusterEnergy());
-//		for (int i = 0; i < clusters_timeCorr[0]->getClusterSize(); i++) {
-//			auto hit = clusters_timeCorr[0]->getHit(i);
-//			cout << hit->getHitEnergy() << " " << hit->getHitTime() << " " << hit->getHitIX() << " " << hit->getHitIY() << endl;
-//		}
-//		cout << clusters_timeCorr[0]->getCentroid().X() << " " << clusters_timeCorr[0]->getCentroid().Y() << " " << clusters_timeCorr[0]->getCentroid().Z() << endl << endl;
-//	}
-	hTest->Fill(clusters.size());
+	/* produce la distribuzione energetica dei cluster in funzione del coseno dell'angolo polare
+	 if (clusters.size() == 1) {
+	 hClusterEnergyVsTheta->Fill(clusters[0]->getCentroid().CosTheta(), clusters[0]->getClusterEnergy());
+	 for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
+	 auto hit = clusters[0]->getHit(i);
+	 cout << hit->getHitEnergy() << " " << hit->getHitTime() << " " << hit->getHitIX() << " " << hit->getHitIY() << endl;
+	 }
+	 cout << clusters[0]->getCentroid().CosTheta() << " " << clusters[0]->getClusterEnergy() << endl;
+	 cout << clusters[0]->getCentroid().X() << " " << clusters[0]->getCentroid().Y() << " " << clusters[0]->getCentroid().Z() << endl;
+	 }*/
 
-	hTest->Fill(clusters.size() + 10);
+	/* produce la distribuzione energetica dei cluster in funzione del coseno dell'angolo polare, per eventi con tempo corretto.
+	 if (clusters_timeCorr.size() == 1) {
+	 hClusterEnergyVsTheta_timeCorr->Fill(clusters_timeCorr[0]->getCentroid().CosTheta(), clusters_timeCorr[0]->getClusterEnergy());
+	 for (int i = 0; i < clusters_timeCorr[0]->getClusterSize(); i++) {
+	 auto hit = clusters_timeCorr[0]->getHit(i);
+	 cout << hit->getHitEnergy() << " " << hit->getHitTime() << " " << hit->getHitIX() << " " << hit->getHitIY() << endl;
+	 }
+	 cout << clusters_timeCorr[0]->getCentroid().X() << " " << clusters_timeCorr[0]->getCentroid().Y() << " " << clusters_timeCorr[0]->getCentroid().Z() << endl << endl;
+	 }*/
 
-//	for (auto hit : hits)
-//		cout << hit->m_channel.component << endl;
-
-//	if (clusters.size() == 1 && clusters_timeCorr.size() == 1) {
-//		cout << "Id " << clusters[0]->getClusterId() << " " << clusters_timeCorr[0]->getClusterId() << endl;
-//		cout << "Size " << clusters[0]->getClusterSize() << " " << clusters_timeCorr[0]->getClusterSize() << endl;
-//		cout << "Energy " << clusters[0]->getClusterEnergy() << " " << clusters_timeCorr[0]->getClusterEnergy() << endl;
-//		cout << "Time " << clusters[0]->getClusterTime() << " " << clusters_timeCorr[0]->getClusterTime() << endl;
-//		cout << "X " << clusters[0]->getCentroid().X() << " " << clusters_timeCorr[0]->getCentroid().X() << endl;
-//		cout << "Y " << clusters[0]->getCentroid().Y() << " " << clusters_timeCorr[0]->getCentroid().Y() << endl;
-//		cout << "Y " << clusters[0]->getCentroid().Z() << " " << clusters_timeCorr[0]->getCentroid().Z() << endl << endl;
-//	}
-
-//	if (clusters.size() == 1) {
-//		auto seed = clusters[0]->getHit(0);
-//		for (int i = 0; i < clusters[0]->getClusterSize(); i++) {
-//			auto hit = clusters[0]->getHit(i);
-//			CorrectionCurve[hit->m_channel.component]->Fill(hit->getHitEnergy(), hit->getHitTime() - seed->getHitTime());
-//		}
-//	}
+	/*	Stampa su terminale un po' di numeri comodi per capire se la factory standar e la factory time_corr funzionano bene.
+	 if (clusters.size() == 1 && clusters_timeCorr.size() == 1) {
+	 cout << "Id " << clusters[0]->getClusterId() << " " << clusters_timeCorr[0]->getClusterId() << endl;
+	 cout << "Size " << clusters[0]->getClusterSize() << " " << clusters_timeCorr[0]->getClusterSize() << endl;
+	 cout << "Energy " << clusters[0]->getClusterEnergy() << " " << clusters_timeCorr[0]->getClusterEnergy() << endl;
+	 cout << "Time " << clusters[0]->getClusterTime() << " " << clusters_timeCorr[0]->getClusterTime() << endl;
+	 cout << "X " << clusters[0]->getCentroid().X() << " " << clusters_timeCorr[0]->getCentroid().X() << endl;
+	 cout << "Y " << clusters[0]->getCentroid().Y() << " " << clusters_timeCorr[0]->getCentroid().Y() << endl;
+	 cout << "Y " << clusters[0]->getCentroid().Z() << " " << clusters_timeCorr[0]->getCentroid().Z() << endl << endl;
+	 }*/
 
 	m_root_lock->release_lock();
 //unlock

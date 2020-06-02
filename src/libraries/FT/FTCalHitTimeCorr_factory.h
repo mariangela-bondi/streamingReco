@@ -37,7 +37,7 @@ private:
 	double mips_charge[332];
 
 	//crate,slot,channel. crate: 70=adcft1, 71=adcft2
-	double daq_gain[2][22][16];
+	double tw[500][4];
 };
 
 #endif /* SRC_LIBRARIES_FT_FTCALHIT_FACTORY_H_ */
