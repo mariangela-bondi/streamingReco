@@ -42,6 +42,7 @@
 // FTCalHitTimeCorr    (Constructor)
 //---------------------------------
 FTCalHitTimeCorr::FTCalHitTimeCorr() {
+	energyRaw = 0;
 
 }
 

@@ -38,6 +38,7 @@ private:
 
 	//crate,slot,channel. crate: 70=adcft1, 71=adcft2
 	double tw[500][4];
+	double daq_gain[2][22][16];
 };
 
 #endif /* SRC_LIBRARIES_FT_FTCALHIT_FACTORY_H_ */

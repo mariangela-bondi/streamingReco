@@ -56,10 +56,18 @@ public:
 	FTCalHitTimeCorr();
 	virtual ~FTCalHitTimeCorr();
 
+	float getHitEnergyRaw() const {
+		return energyRaw;
+	}
+
+	void setHitEnergyRaw(float energy) {
+		this->energyRaw = energy;
+	}
+
 protected:
 
 private:
-
+	float energyRaw;
 };
 
 #endif // _FTCalHit_h_
