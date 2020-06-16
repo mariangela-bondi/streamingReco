@@ -88,10 +88,18 @@ public:
 		return m_channel.iY;
 	}
 
-
 	double getHitZ() const{
 		return _Z;
 	}
+
+	double getTimeWalkCorrection() const {
+		return twCorrection;
+	}
+
+	void setTimeWalkCorrection(double twcorr) {
+		this->twCorrection = twcorr;
+	}
+
 
 	void setHitX(double x){_X=x;}
 	void setHitY(double y){_Y=y;}
@@ -112,6 +120,7 @@ protected:
 private:
 	float time;
 	float energy;
+	double twCorrection;
 
 	double _X,_Y,_Z;
 

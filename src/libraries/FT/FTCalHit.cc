@@ -39,24 +39,23 @@
 
 #include "FTCalHit.h"
 
-
 //---------------------------------
 // FTCalHit    (Constructor)
 //---------------------------------
-FTCalHit::FTCalHit(){
+FTCalHit::FTCalHit() {
 
-	_X=0;
-	_Y=0;
-	_Z=0;
-	energy=0;
-	time=0;
+	_X = 0;
+	_Y = 0;
+	_Z = 0;
+	energy = 0;
+	time = 0;
+	twCorrection = 0;
 
 }
 
 //---------------------------------
 // ~FTCalHit    (Destructor)
 //---------------------------------
-FTCalHit::~FTCalHit()
-{
+FTCalHit::~FTCalHit() {
 
 }
