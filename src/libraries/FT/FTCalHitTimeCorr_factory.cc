@@ -2886,6 +2886,8 @@ FTCalHitTimeCorr_factory::FTCalHitTimeCorr_factory() {
 	tw[499][2] = 0;
 	tw[499][3] = 0;
 
+	cout << "TW28 " << this << " " << tw[28][0] << "  " << tw[28][1] << "  " << tw[28][2] << "  " << tw[28][3] << endl;
+	cin.get();
 }
 
 FTCalHitTimeCorr_factory::~FTCalHitTimeCorr_factory() {
@@ -2894,10 +2896,12 @@ FTCalHitTimeCorr_factory::~FTCalHitTimeCorr_factory() {
 }
 
 void FTCalHitTimeCorr_factory::Init() {
-
+	cout << "TW28 INIt " << this << " " << tw[28][0] << "  " << tw[28][1] << "  " << tw[28][2] << "  " << tw[28][3] << endl;
+	cin.get();
 }
 void FTCalHitTimeCorr_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
-
+	cout << "TW28 ChangeRun" << this << " " << tw[28][0] << "  " << tw[28][1] << "  " << tw[28][2] << "  " << tw[28][3] << endl;
+	cin.get();
 	if (m_tt == 0) {
 		//std::cout << "FTCalHit_factory::get TT" << std::endl;
 		m_tt = aEvent->GetSingle<TranslationTable>();
@@ -3018,24 +3022,34 @@ void FTCalHitTimeCorr_factory::Process(const std::shared_ptr<const JEvent> &aEve
 			if (faHit->m_channel.crate == 71)
 				theCrate = 1;
 
-			/*			auto charge = faHit->m_charge / daq_gain[theCrate][faHit->m_channel.slot][faHit->m_channel.channel];
-			 //code in https://github.com/JeffersonLab/clas12-offline-software/blob/development/reconstruction/ft/src/main/java/org/jlab/rec/ft/cal/FTCALHit.java
-			 //chargeNew = charge * fadc_to_charge, where fadc_to_charge = 0.039064
-			 //ene = calib * cosmics_ene / cosmics_charge, where cosmics_ene = 15.3
+			auto charge = faHit->m_charge / daq_gain[theCrate][faHit->m_channel.slot][faHit->m_channel.channel];
+			//code in https://github.com/JeffersonLab/clas12-offline-software/blob/development/reconstruction/ft/src/main/java/org/jlab/rec/ft/cal/FTCALHit.java
+			//chargeNew = charge * fadc_to_charge, where fadc_to_charge = 0.039064
+			//ene = calib * cosmics_ene / cosmics_charge, where cosmics_ene = 15.3
 
-			 static auto fadc_to_charge = 0.039064;
-			 static auto cosmic_ene = 15.3;
+			static auto fadc_to_charge = 0.039064;
+			static auto cosmic_ene = 15.3;
 
-			 charge = charge * fadc_to_charge;
-			 charge = charge * cosmic_ene / mips_charge[ftCalHit->m_channel.component];
+			charge = charge * fadc_to_charge;
+			charge = charge * cosmic_ene / mips_charge[ftCalHit->m_channel.component];
 
-			 ftCalHit->setHitEnergy(charge);*/
+			ftCalHit->setHitEnergy(charge);
 
-			ftCalHit->setHitEnergy(faHit->m_charge);
+//			ftCalHit->setHitEnergy(faHit->m_charge);
 
 			//Assign corrected time to FTCalHit (timewalk + crates delay)
 			double timeWalkCorrection = -(tw[ftCalHit->m_channel.component][0] / (tw[ftCalHit->m_channel.component][1] + tw[ftCalHit->m_channel.component][2] * sqrt(faHit->m_charge))
 					+ tw[ftCalHit->m_channel.component][3]);
+
+//			double timeWalkCorrection = -(tw[75][0] / (tw[75][1] + tw[75][2] * sqrt(faHit->m_charge)) + tw[75][3]);
+
+			if (ftCalHit->m_channel.component == 28) {
+				cout << endl << "TW: " << this << " " << tw[28][0] << "  " << tw[28][1] << "  " << tw[28][2] << "  " << tw[28][3] << endl;
+				cout << "Energia " << faHit->m_charge << endl;
+				cout << "Tempo non corretto " << 4. * faHit->m_time.count() << endl;
+				cout << "Correzione tw " << timeWalkCorrection << endl;
+				cout << "Tempo corretto " << 4 * faHit->m_time.count() + timeWalkCorrection << endl << endl;
+			}
 
 			if (ftCalHit->m_channel.iX >= 12 || ftCalHit->m_channel.component == 224 || ftCalHit->m_channel.component == 242 || ftCalHit->m_channel.component == 360
 					|| ftCalHit->m_channel.component == 445 || ftCalHit->m_channel.component == 96 || ftCalHit->m_channel.component == 142) {
