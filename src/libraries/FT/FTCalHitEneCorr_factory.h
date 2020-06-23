@@ -36,11 +36,11 @@ private:
 	double CRYS_LENGTH;													  // crystal length in mm
 	double CRYS_ZPOS;
 
-
 	//I am hard-coding the indexes here, since it will always be 1 sector, 1 layer, 332 components.
-	std::map<int,double> mips_charge; //not really true, since the components are 332, but they are not continuous from 1 to 332!
-	
+	std::map<int, double> mips_charge; //not really true, since the components are 332, but they are not continuous from 1 to 332!
+
 	//crate,slot,channel. crate: 70=adcft1, 71=adcft2
+	double tw[500][4];
 	double daq_gain[2][22][16];
 };
 

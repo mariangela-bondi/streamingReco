@@ -10,6 +10,8 @@
 #include "JANA/JFactoryT.h"
 #include "FTCalHitTimeCorr.h"
 #include "TT/TranslationTable.h"
+
+#include <map>
 class TranslationTable;
 
 class FTCalHitTimeCorr_factory: public JFactoryT<FTCalHitTimeCorr> {
@@ -34,7 +36,7 @@ private:
 	double CRYS_ZPOS;
 
 	//I am hard-coding the indexes here, since it will always be 1 sector, 1 layer, 332 components.
-	double mips_charge[332];
+	std::map<int,double> mips_charge; //not really true, since the components are 332, but they are not continuous from 1 to 332!
 
 	//crate,slot,channel. crate: 70=adcft1, 71=adcft2
 	double tw[500][4];
