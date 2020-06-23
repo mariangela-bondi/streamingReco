@@ -14,8 +14,8 @@
 #include <functional>
 
 //Finestra temporale cluster
-double time_min_TimeCorr = -30;
-double time_max_TimeCorr = 30;
+double time_min_TimeCorr = -6;
+double time_max_TimeCorr = 6;
 
 //this will set the hits in DESCENDING order wrt energy
 bool FTCalCluster_factory_TimeCorr::compareHits(const FTCalHit* a, const FTCalHit* b) {

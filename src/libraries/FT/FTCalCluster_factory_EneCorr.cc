@@ -14,8 +14,8 @@
 #include <functional>
 
 //Parametri finestra temporale cluster
-double time_min_EneCorr= 0;
-double time_max_EneCorr = 30;
+double time_min_EneCorr = -6;
+double time_max_EneCorr = 6;
 
 //this will set the hits in DESCENDING order wrt energy
 bool FTCalCluster_factory_EneCorr::compareHits(const FTCalHit* a, const FTCalHit* b) {
