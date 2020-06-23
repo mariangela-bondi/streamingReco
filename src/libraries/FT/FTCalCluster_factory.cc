@@ -14,7 +14,7 @@
 #include <functional>
 
 //Parametri clustering:
-double time_min = 0;
+double time_min = -1;
 double time_max = 30;
 
 //this will set the hits in DESCENDING order wrt energy
@@ -45,6 +45,15 @@ void FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) 
 	std::sort(hits.begin(), hits.end(), FTCalCluster_factory::compareHits);
 	std::vector<FTCalCluster*> clusters;
 
+//	cout << "Hits size " << hits.size() << endl;
+//	for (auto hit : hits) {
+//		cout << "Hit Energy " << hit->getHitEnergy() << endl;
+//	}
+//	cout << "Hits end! " << endl << endl;
+//	auto eventNumber = aEvent->GetEventNumber();
+//	if (eventNumber == 333)
+//		cin.get();
+//	cout << "Event Number " << endl;
 	for (auto hit : hits) {
 		bool flag = false;
 		if (flag == false) {
