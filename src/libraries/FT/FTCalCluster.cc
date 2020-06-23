@@ -205,7 +205,10 @@ float FTCalCluster::getClusterEnergy() const {
 float FTCalCluster::getClusterFullEnergy() const {
 	return _clusRecEnergy;
 }
-
+//set energy of a cluster with correction.
+void FTCalCluster::setClusterFullEnergy(float ene)  {
+	_clusRecEnergy=ene;
+}
 float FTCalCluster::getClusterSeedEnergy() const {
 	//Restituisce l'energia del cristallo [0] del cluster, che essendo i cluster costruiti dai cristalli ordinati in energia e' sempre il max del cluster.
 	return _clusSeedEnergy;
