@@ -77,6 +77,7 @@ public:
 	float getClusterFullEnergy() const;
 
 	float getClusterSeedEnergy() const;
+	void setClusterFullEnergy(float ene);
 
 	double getClusterTime() const;
 
