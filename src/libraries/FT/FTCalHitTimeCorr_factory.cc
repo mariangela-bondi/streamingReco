@@ -20,6 +20,7 @@ FTCalHitTimeCorr_factory::FTCalHitTimeCorr_factory() {
 	CRYS_WIDTH = 15.3;													  // crystal width in mm
 	CRYS_LENGTH = 200.;													  // crystal length in mm
 	CRYS_ZPOS = 1898.;
+//	CRYS_ZPOS = 1628.;
 
 	auto jcalib_manager = japp->GetService<JCalibrationManager>();
 	static int runN = 11324;

@@ -22,6 +22,8 @@ FTCalHit_factory::FTCalHit_factory() {
 	CRYS_WIDTH = 15.3;													  // crystal width in mm
 	CRYS_LENGTH = 200.;													  // crystal length in mm
 	CRYS_ZPOS = 1898.;
+//	CRYS_ZPOS = 1628.;
+
 }
 
 FTCalHit_factory::~FTCalHit_factory() {
@@ -107,16 +109,13 @@ void FTCalHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			ftCalHit->m_channel.iX = (ftCalHit->m_channel.component + 1) - (ftCalHit->m_channel.iY - 1) * 22;
 
 			//Assign the time
-//			double timeWalkCorrection = -(pow(2186 / faHit->m_charge, 1 / 1.07) - 2.031);
-//			double timeWalkCorrection = -(pow(3231 / faHit->m_charge, 1 / 1.19) - 2.246);
-//			ftCalHit->setHitTime(4 * faHit->m_time.count() + timeWalkCorrection);
 			if (ftCalHit->m_channel.iX >= 12 || ftCalHit->m_channel.component == 224 || ftCalHit->m_channel.component == 242 || ftCalHit->m_channel.component == 360
 					|| ftCalHit->m_channel.component == 445 || ftCalHit->m_channel.component == 96) {
 				ftCalHit->setHitTime(4 * faHit->m_time.count() - 19.5);
 			} else {
 				ftCalHit->setHitTime(4 * faHit->m_time.count());
 			}
-			//ftCalHit->setHitTime(4 * faHit->m_time.count());
+//			ftCalHit->setHitTime(4 * faHit->m_time.count());
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
