@@ -76,8 +76,9 @@ public:
 	//Return energy of a cluster with correction.
 	float getClusterFullEnergy() const;
 
-	float getClusterSeedEnergy() const;
 	void setClusterFullEnergy(float ene);
+
+	float getClusterSeedEnergy() const;
 
 	double getClusterTime() const;
 

@@ -71,7 +71,8 @@ FTCalCluster::FTCalCluster() {
 
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
-	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
+//	CRYS_ZPOS = 1798;
+	depth_z = 45; //ok, this was not hard-coded BUT it is a single number in CCDB
 
 	hCLUS = 0;
 }
@@ -95,7 +96,8 @@ FTCalCluster::FTCalCluster(int clusid) {
 
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
-	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
+	//	CRYS_ZPOS = 1628;
+	depth_z = 45; //ok, this was not hard-coded BUT it is a single number in CCDB
 
 	hCLUS = 0;
 }
@@ -140,14 +142,16 @@ void FTCalCluster::computeCluster() {
 
 	//Cluster center
 	double w_tot = 0;
-	double x, y;
+	double x, y, z;
 	x = 0;
 	y = 0;
+	z = 0;
 	for (int i = 0; i < _clusSize; i++) {
 		const FTCalHit *hit = hits[i];
 		double w1 = std::max(0., (3.45 + std::log(hit->getHitEnergy() / _clusEnergy)));
 		x += w1 * hit->getHitX();
 		y += w1 * hit->getHitY();
+		z += w1 * hit->getHitZ();
 		_clusXX = w1 * (double) hit->getHitX() * (double) hit->getHitX();
 		_clusYY = w1 * (double) hit->getHitY() * (double) hit->getHitY();
 		w_tot += w1;
@@ -155,7 +159,9 @@ void FTCalCluster::computeCluster() {
 
 	_clusCenter.SetX(x / w_tot);
 	_clusCenter.SetY(y / w_tot);
-	_clusCenter.SetZ(CRYS_ZPOS + depth_z);
+	_clusCenter.SetZ(z / w_tot + depth_z);
+//	cout << "z / w_tot " << z / w_tot << endl;
+//	_clusCenter.SetZ(CRYS_ZPOS + depth_z);
 
 	_clusXX /= w_tot;
 	_clusYY /= w_tot;
@@ -206,8 +212,8 @@ float FTCalCluster::getClusterFullEnergy() const {
 	return _clusRecEnergy;
 }
 //set energy of a cluster with correction.
-void FTCalCluster::setClusterFullEnergy(float ene)  {
-	_clusRecEnergy=ene;
+void FTCalCluster::setClusterFullEnergy(float ene) {
+	_clusRecEnergy = ene;
 }
 float FTCalCluster::getClusterSeedEnergy() const {
 	//Restituisce l'energia del cristallo [0] del cluster, che essendo i cluster costruiti dai cristalli ordinati in energia e' sempre il max del cluster.
