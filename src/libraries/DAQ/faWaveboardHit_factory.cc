@@ -27,7 +27,7 @@ void faWaveboardHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEve
 }
 void faWaveboardHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
-	vector<const TridasEvent*> tridas_events;
+	std::vector<const TridasEvent*> tridas_events;
 	try {
 		tridas_events = aEvent->Get<TridasEvent>();
 	} catch (JException &e) {
