@@ -29,7 +29,7 @@ else:
 env.Append(CXXFLAGS = '-std=c++11')
 if os.environ.get('JANA_HOME') is not None:
     env['JANA_HOME'] = os.environ.get('JANA_HOME')
-    env.Append(CPPPATH=["$JANA_HOME/src/lib"])
+    env.Append(CPPPATH=["$JANA_HOME/include"])
     env.Append(LIBPATH=["$JANA_HOME/lib"])
 else:
     print("ERROR, JANA_HOME NOT DEFINED")
