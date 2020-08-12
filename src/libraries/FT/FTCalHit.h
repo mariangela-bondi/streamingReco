@@ -88,16 +88,29 @@ public:
 		return m_channel.iY;
 	}
 
-
 	double getHitZ() const{
 		return _Z;
 	}
+
+	double getTimeWalkCorrection() const {
+		return twCorrection;
+	}
+
+	void setTimeWalkCorrection(double twcorr) {
+		this->twCorrection = twcorr;
+	}
+
 
 	void setHitX(double x){_X=x;}
 	void setHitY(double y){_Y=y;}
 	void setHitZ(double z){_Z=z;}
 
-
+	virtual void Summarize(JObjectSummary& summary) const {
+			summary.add(_X, "X", "%f", "Y");
+			summary.add(_Y, "Y", "%f", "X");
+			summary.add(energy, "ENE", "%f", "ENERGY - MeV");
+			summary.add(time, "TIME", "%f", "TIME - ns");
+		}
 
 
 	TranslationTable::FTCAL_Index_t m_channel;
@@ -107,6 +120,7 @@ protected:
 private:
 	float time;
 	float energy;
+	double twCorrection;
 
 	double _X,_Y,_Z;
 

@@ -37,105 +37,113 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 #ifndef _FTCalCluster_h_
 #define _FTCalCluster_h_
 
 #include <JANA/JObject.h>
+#include "system/JObjectDrawable.h"
 #include <vector>
 #include "FTCalHit.h"
 #include "TVector3.h"
-
+#include "TH2D.h"
+#include "TCanvas.h"
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /// Brief class description.
 ///
 /// Detailed class description.
 //////////////////////////////////////////////////////////////////////////////////////////////////
-class FTCalCluster : public JObject {
-	public:
+class FTCalCluster: public JObjectDrawable {
+public:
 
-		FTCalCluster();
+	FTCalCluster();
 
-		FTCalCluster(int clusid);
+	FTCalCluster(int clusid);
 
-		virtual ~FTCalCluster();
-		
-		void setClusterID(int clusid);
+	virtual ~FTCalCluster();
 
-		void computeCluster();
+	void setClusterID(int clusid);
 
-		int getClusterId() const;
+	void computeCluster();
 
-		//Return number of crystal in a cluster. Why _clusID isn't a parameter?
-		int getClusterSize() const;
+	int getClusterId() const;
 
-		//Return energy of a cluster. Why _clusID isn't a parameter?
-		float getClusterEnergy() const;
+	//Return number of crystal in a cluster.
+	int getClusterSize() const;
 
-		//Return energy of a cluster with correction.
-		float getClusterFullEnergy() const;
+	//Return energy of a cluster.
+	float getClusterEnergy() const;
 
-		float getClusterSeedEnergy() const;
+	//Return energy of a cluster with correction.
+	float getClusterFullEnergy() const;
 
-		double getClusterTime() const;
+	void setClusterFullEnergy(float ene);
 
-		//Return center of cluster.
-		TVector3 getCentroid() const;
+	float getClusterSeedEnergy() const;
 
-		double getX() const;
+	double getClusterTime() const;
 
-		double getY() const;
+	//Return center of cluster.
+	TVector3 getCentroid() const;
 
-		double getZ() const;
+	double getX() const;
 
-		double getXX() const;
+	double getY() const;
 
-		double getYY() const;
+	double getZ() const;
 
-		double getWidthX() const;
+	double getXX() const;
 
-		double getWidthY() const;
+	double getYY() const;
 
-		double getRadius() const;
+	double getWidthX() const;
 
-		double getTheta() const;
+	double getWidthY() const;
 
-		double getPhi() const;
+	double getRadius() const;
 
-		bool isGoodCluster() const;
+	double getTheta() const;
 
+	double getPhi() const;
 
-		//Controlla se l'hit analizzato e' contenuto nel cluster.
-		bool containsHit(const FTCalHit *hit) const;
+	const FTCalHit* getHit(int i) const;
 
-		void push_hit(const FTCalHit *hit);
+	bool isGoodCluster() const;
 
+	//Controlla se l'hit analizzato e' contenuto nel cluster.
+	bool containsHit(const FTCalHit *hit, double time_min, double time_max) const;
 
-		//Need
-		void showCluster();
+	void push_hit(const FTCalHit *hit);
 
+	void toHisto(TH2D *h) const;
+	virtual TCanvas* Draw(int id = 0) const;
 
-	protected:
+	virtual void Summarize(JObjectSummary& summary) const {
+		summary.add(_clusCenter.X(), "X", "%f", "Y");
+		summary.add(_clusCenter.Y(), "Y", "%f", "X");
+		summary.add(_clusEnergy, "ENE", "%f", "ENERGY - MeV");
+		summary.add(_clusTime, "TIME", "%f", "TIME - ns");
+	}
 
-	private:
+protected:
+	mutable TH2D *hCLUS;
 
-		int _clusID;
-		int _clusSize;
-		float _clusEnergy;
-		float _clusRecEnergy;
-		double _clusTime;
-		double _clusXX, _clusYY;
-		double _clusSigmaX, _clusSigmaY;
-		double _clusRadius;
-		float _clusSeedEnergy;
-		double _clusTheta, _clusPhi;
-		bool _goodCluster;
-		TVector3 _clusCenter;
-		std::vector<const FTCalHit*> hits;
+private:
 
-		double CRYS_ZPOS,depth_z;
+	int _clusID;
+	int _clusSize;
+	float _clusEnergy;
+	float _clusRecEnergy;
+	double _clusTime;
+	double _clusXX, _clusYY;
+	double _clusSigmaX, _clusSigmaY;
+	double _clusRadius;
+	float _clusSeedEnergy;
+	double _clusTheta, _clusPhi;
+	bool _goodCluster;
+	TVector3 _clusCenter;
+	std::vector<const FTCalHit*> hits;
 
-
+	double CRYS_ZPOS, depth_z;
 
 };
 

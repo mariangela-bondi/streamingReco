@@ -38,13 +38,15 @@
 #include <JANA/Calibrations/JCalibrationManager.h>
 
 #include <JANA/Services/JGlobalRootLock.h>
+#include <JANA/CLI/JVersion.h>
+#include <JANA/CLI/JBenchmarker.h>
+#include <JANA/CLI/JSignalHandler.h>
 
 #define HAVE_CCDB 1
 #include <JANA/Calibrations/JCalibrationGeneratorCCDB.h>
 
-#include "JBenchmarker.h"
-#include "JSignalHandler.h"
 
+#include "DAQ/JEventSourceTxtFileGenerator.h"
 #include "DAQ/JEventSourcePTFileGenerator.h"
 
 #include "addRecoFactoriesGenerators.h"
@@ -142,6 +144,7 @@ int Execute(UserOptions& options) {
 
 		//A.C.
 		addRecoFactoriesGenerators(japp);
+		japp->Add(new JEventSourceTxtFileGenerator());
 		japp->Add(new JEventSourcePTFileGenerator());
 
 		auto calib_manager = std::make_shared<JCalibrationManager>();

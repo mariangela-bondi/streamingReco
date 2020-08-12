@@ -42,13 +42,12 @@
 
 #include <cmath>
 
-
 //Need file of constant!!!!!!!!!!
-int minClusterSize = 2; //Need size > to min for accept cluster. Not >=.
+int minClusterSize = 4; //Need size >= to min for accept cluster.
 double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
 double minSeedEnergy = 10;
-int time_window = 30;
-
+//int time_max= 30; //Temporary modify of cluster definition.
+//int time_min = -5;
 
 //---------------------------------
 // FTCalCluster    (Constructor)
@@ -68,11 +67,14 @@ FTCalCluster::FTCalCluster() {
 	_clusTheta = 0;
 	_clusPhi = 0;
 	_goodCluster = false;
-	_clusCenter.SetXYZ(0,0,0);
+	_clusCenter.SetXYZ(0, 0, 0);
 
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
-	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
+//	CRYS_ZPOS = 1798;
+	depth_z = 45; //ok, this was not hard-coded BUT it is a single number in CCDB
+
+	hCLUS = 0;
 }
 
 FTCalCluster::FTCalCluster(int clusid) {
@@ -90,11 +92,14 @@ FTCalCluster::FTCalCluster(int clusid) {
 	_clusTheta = 0;
 	_clusPhi = 0;
 	_goodCluster = false;
-	_clusCenter.SetXYZ(0,0,0);
+	_clusCenter.SetXYZ(0, 0, 0);
 
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
-	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
+	//	CRYS_ZPOS = 1628;
+	depth_z = 45; //ok, this was not hard-coded BUT it is a single number in CCDB
+
+	hCLUS = 0;
 }
 
 //---------------------------------
@@ -131,46 +136,52 @@ void FTCalCluster::computeCluster() {
 	_clusTime = 0;
 	for (int i = 0; i < _clusSize; i++) {
 		const FTCalHit *hit = hits[i];
-		_clusTime += hit->getHitTime()* hit->getHitEnergy();
+		_clusTime += hit->getHitTime() * hit->getHitEnergy();
 	}
 	_clusTime /= _clusEnergy;
 
 	//Cluster center
 	double w_tot = 0;
-	double x,y;
-	x=0;
-	y=0;
+	double x, y, z;
+	x = 0;
+	y = 0;
+	z = 0;
 	for (int i = 0; i < _clusSize; i++) {
 		const FTCalHit *hit = hits[i];
 		double w1 = std::max(0., (3.45 + std::log(hit->getHitEnergy() / _clusEnergy)));
 		x += w1 * hit->getHitX();
 		y += w1 * hit->getHitY();
+		z += w1 * hit->getHitZ();
 		_clusXX = w1 * (double) hit->getHitX() * (double) hit->getHitX();
 		_clusYY = w1 * (double) hit->getHitY() * (double) hit->getHitY();
 		w_tot += w1;
 	}
 
-	_clusCenter.SetX(x/w_tot);
-	_clusCenter.SetY(y/w_tot);
-	_clusCenter.SetZ(CRYS_ZPOS+depth_z);
-
+	_clusCenter.SetX(x / w_tot);
+	_clusCenter.SetY(y / w_tot);
+	_clusCenter.SetZ(z / w_tot + depth_z);
+//	cout << "z / w_tot " << z / w_tot << endl;
+//	_clusCenter.SetZ(CRYS_ZPOS + depth_z);
 
 	_clusXX /= w_tot;
 	_clusYY /= w_tot;
 
 	//Cluster sigmaX
 	double sigmax2 = _clusXX - std::pow(_clusCenter.X(), 2.);
-	if (sigmax2 < 0) sigmax2 = 0;
+	if (sigmax2 < 0)
+		sigmax2 = 0;
 	_clusSigmaX = std::sqrt(sigmax2);
 
 	//Cluster sigmaY
 	double sigmay2 = _clusYY - std::pow(_clusCenter.Y(), 2.);
-	if (sigmay2 < 0) sigmay2 = 0;
+	if (sigmay2 < 0)
+		sigmay2 = 0;
 	_clusSigmaY = std::sqrt(sigmay2);
 
 	//Cluster radius
 	double radius2 = (sigmax2 + sigmay2);
-	if (radius2 < 0) radius2 = 0;
+	if (radius2 < 0)
+		radius2 = 0;
 	_clusRadius = std::sqrt(radius2);
 
 	//Cluster theta (Z is the depth in the crystal starting from entrance as z=0 along the beam direction)
@@ -179,7 +190,7 @@ void FTCalCluster::computeCluster() {
 	//Cluster phi
 	_clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.Y()) * (180. / M_PI); //
 
-	if (_clusSize >= minClusterSize && _clusEnergy >= minClusterEnergy && _clusSeedEnergy >=minSeedEnergy)
+	if (_clusSize >= minClusterSize && _clusEnergy >= minClusterEnergy && _clusSeedEnergy >= minSeedEnergy)
 		_goodCluster = true;
 	else
 		_goodCluster = false;
@@ -200,7 +211,10 @@ float FTCalCluster::getClusterEnergy() const {
 float FTCalCluster::getClusterFullEnergy() const {
 	return _clusRecEnergy;
 }
-
+//set energy of a cluster with correction.
+void FTCalCluster::setClusterFullEnergy(float ene) {
+	_clusRecEnergy = ene;
+}
 float FTCalCluster::getClusterSeedEnergy() const {
 	//Restituisce l'energia del cristallo [0] del cluster, che essendo i cluster costruiti dai cristalli ordinati in energia e' sempre il max del cluster.
 	return _clusSeedEnergy;
@@ -256,18 +270,28 @@ double FTCalCluster::getPhi() const {
 	return _clusPhi;
 }
 
+const FTCalHit* FTCalCluster::getHit(int i) const {
+	return hits[i];
+}
+;
+
 bool FTCalCluster::isGoodCluster() const {
 	return _goodCluster;
 }
 
-bool FTCalCluster::containsHit(const FTCalHit* hit) const {
+bool FTCalCluster::containsHit(const FTCalHit* hit, double time_min, double time_max) const {
 	bool flag = false;
 	for (int i = 0; i < hits.size(); i++) {
 		const FTCalHit *hit_conf = hits[i];
-		double tDiff = std::fabs((hit->getHitTime() - hit_conf->getHitTime())); //ns
+		const FTCalHit *seed = hits[0];
+//		double tDiff = std::fabs((hit->getHitTime() - hit_conf->getHitTime())); //ns
+		double tDiff = ((hit->getHitTime() - seed->getHitTime())); //ns
+
 		auto xDiff = std::fabs(hit->getHitIX() - hit_conf->getHitIX());
 		auto yDiff = std::fabs(hit->getHitIY() - hit_conf->getHitIY());
-		if (tDiff < time_window && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0) flag = true;
+//		if (tDiff < time_window && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0) flag = true;
+		if (tDiff >= time_min && tDiff < time_max && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0)
+			flag = true;
 	}
 	return flag;
 }
@@ -275,3 +299,34 @@ bool FTCalCluster::containsHit(const FTCalHit* hit) const {
 void FTCalCluster::push_hit(const FTCalHit* hit) {
 	hits.push_back(hit);
 }
+
+TCanvas* FTCalCluster::Draw(int id) const {
+
+	if (m_canvas == 0) {
+		if (id < 0) {
+			m_canvas = new TCanvas();
+		} else {
+			m_canvas = new TCanvas(Form("c_%i", id), 100, 100, id);
+		}
+	}
+	m_canvas->cd();
+
+	if (hCLUS != 0)
+		delete hCLUS;
+	hCLUS = new TH2D(Form("hCLUS"), Form("hCLUS"), 23, -0.5, 22.5, 23, -0.5, 22.5);
+	this->toHisto(hCLUS);
+	hCLUS->Draw("colz");
+	return m_canvas;
+}
+
+void FTCalCluster::toHisto(TH2D *h) const {
+	if (h == 0) {
+		cerr << "fa250Mode1CalibPedSubHit::toHisto, h pointer is null. Do nothing" << std::endl;
+	}
+	h->Reset();
+	for (auto hit : hits) {
+		h->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
+	}
+	return;
+}
+

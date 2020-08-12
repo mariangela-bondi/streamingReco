@@ -26,7 +26,7 @@ map<TranslationTable::csc_t, TranslationTable::ChannelInfo>& TranslationTable::G
 }
 
 TranslationTable::TranslationTable(JApplication *app, int runN) :
-		m_japp(app), m_runN(runN),m_verbose(0) {
+		m_japp(app), m_runN(runN), m_verbose(0) {
 	/*In preparation for multiple runs, in different configurations, we foresee diffeent ways to read in the translation table.
 	 * We use the parameter RUNTYPE to do this (RUNTYPE may be used also somewhere else)
 	 *
@@ -43,32 +43,52 @@ TranslationTable::TranslationTable(JApplication *app, int runN) :
 	 *
 	 */
 	string tttype;
-#define WORK_AROUND
-/*
-	if (m_japp->GetJParameterManager()->Exists("RUNTYPE") == false) {
-		throw JException("RUNTYPE PARAMETER NOT SPECIFIED");
-	}
+//#define WORK_AROUND
+
+	 if (m_japp->GetJParameterManager()->Exists("RUNTYPE") == false) {
+	 throw JException("RUNTYPE PARAMETER NOT SPECIFIED");
+	 }
 
 
-	m_japp->GetJParameterManager()->GetParameter("RUNTYPE",tttype);
-	std::cout << "TranslationTable ttype is: -->" << tttype << " <--- "<< std::endl;fflush(stdout);
+	 m_japp->GetJParameterManager()->GetParameter("RUNTYPE",tttype);
+	 std::cout << "TranslationTable ttype is: -->" << tttype << " <--- "<< std::endl;fflush(stdout);
 
-*/
+
 #ifdef WORK_AROUND
-	tttype="HALLB";
+	tttype = "HALLB";
 #endif
 
 	if (tttype == "HALLB") {
 		ReadTranslationTableHALLB();
+	} else if (tttype == "HALLD") {
+		ReadTranslationTableHALLD();
 	} else {
 		ostringstream strm;
-		strm<<"RUNTYPE PARAMETER NOT SUPPORTED BY TranslationTable: " << tttype;
+		strm << "RUNTYPE PARAMETER NOT SUPPORTED BY TranslationTable: " << tttype;
 		throw JException(strm.str());
 	}
 
-
 }
+void TranslationTable::ReadTranslationTableHALLD() {
 
+	//TODO
+	for (int ii = 0; ii < 9; ii++) {
+		TranslationTable::csc_t csc;
+		csc.crate = 0;
+		csc.slot = 1;
+		csc.channel = ii;
+
+		TranslationTable::ChannelInfo ch;
+		ch.det_sys = TranslationTable::HallDCAL;
+		ch.HallDCAL = new TranslationTable::HallDCAL_Index_t;
+		ch.HallDCAL->iX=ii/3; //TODO
+		ch.HallDCAL->iY=ii%3; //TODO
+
+
+		//insert into TT data - [] operator creates a new entry in map
+		Get_TT()[csc] = ch;
+	}
+}
 void TranslationTable::ReadTranslationTableHALLB() {
 	//std::cout << "ReadTranslationTableHALLB() start" << std::endl;
 
@@ -80,8 +100,6 @@ void TranslationTable::ReadTranslationTableHALLB() {
 		return;
 	}
 
-
-
 	//Try to read from CCDB
 
 	auto jcalib_manager = m_japp->GetService<JCalibrationManager>();
@@ -91,8 +109,7 @@ void TranslationTable::ReadTranslationTableHALLB() {
 	vector<map<string, int> > ttdata;
 	jcalib->Get("/daq/tt/ftcal", ttdata);
 
-	std::cout<<"ReadTranslationTableHALLB(): ftcal size: "<<ttdata.size()<<std::endl;
-
+	std::cout << "ReadTranslationTableHALLB(): ftcal size: " << ttdata.size() << std::endl;
 
 	for (auto line : ttdata) {
 		TranslationTable::csc_t csc;
@@ -114,9 +131,7 @@ void TranslationTable::ReadTranslationTableHALLB() {
 	//Load FT-HODO;
 	ttdata.clear();
 	jcalib->Get("/daq/tt/fthodo", ttdata);
-	std::cout<<"ReadTranslationTableHALLB(): fthodo size: "<<ttdata.size()<<std::endl;
-
-
+	std::cout << "ReadTranslationTableHALLB(): fthodo size: " << ttdata.size() << std::endl;
 
 	for (auto line : ttdata) {
 		TranslationTable::csc_t csc;
@@ -293,18 +308,18 @@ TranslationTable::ChannelInfo TranslationTable::getChannelInfo(const csc_t &csc)
 	map<csc_t, ChannelInfo>::const_iterator iter = Get_TT().find(csc);
 
 	if (iter == Get_TT().end()) {
-		if (m_verbose > 6) {
-			std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
-			std::cout << "    - Didn't find it" << std::endl;
-		}
+		/*	if (m_verbose > 6) {
+		 std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
+		 std::cout << "    - Didn't find it " << m_verbose<<" "<<std::endl;
+		 }*/
 		m_channel.det_sys = UNKNOWN_DETECTOR;
 		return m_channel;
 	}
 	const ChannelInfo &chaninfo = iter->second;
 	/*if (m_verbose > 6) { //TODO!!
-		std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
-		std::cout <<"     - Found entry for: " << DetectorName(chaninfo.det_sys) <<" "<<this<<" "<<m_verbose<<std::endl;
-	}*/
+	 std::cout << 1.*csc.crate << " " << 1.*csc.slot << " " << 1.*csc.channel << " ";
+	 std::cout <<"     - Found entry for: " << DetectorName(chaninfo.det_sys) <<" "<<this<<" "<<m_verbose<<std::endl;
+	 }*/
 	m_channel = chaninfo;
 	return m_channel;
 }

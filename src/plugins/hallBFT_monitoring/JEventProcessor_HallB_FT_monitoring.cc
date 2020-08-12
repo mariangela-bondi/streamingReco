@@ -40,6 +40,7 @@
 #include "JEventProcessor_HallB_FT_monitoring.h"
 
 #include "FT/FTCalHit.h"
+#include "FT/FTCalHitEneCorr.h"
 #include "FT/FTHodoHit.h"
 #include "FT/FTCalCluster.h"
 
@@ -51,32 +52,33 @@
 #include <TH1.h>
 #include <TProfile2D.h>
 #include <TStyle.h>
-#include "TROOT.h"
+#include <TROOT.h>
+#include <TClass.h>
+#include <TFile.h>
+#include <TCollection.h>
+#include <TKey.h>
 
 /*Here goes the histograms*/
 static TH1D *hTest = 0;
 static TH1D *hnClusters = 0; //Number of cluster found
 static TH1D *hnHitsFT = 0; //Number of hits founf
-static TH1D *hnHitsComponentFT=0;   // histo number of counts for each FT components
+static TH1D *hnHitsComponentFT = 0;   // histo number of counts for each FT components
 
-static TH1D *hAllHitsEnergy=0;
+static TH1D *hAllHitsEnergy = 0;
 
-static TH2D *hnHitsXYFT=0; //"Ring" of FTCal, number of Hits in every scintillator
+static TH2D *hnHitsXYFT = 0; //"Ring" of FTCal, number of Hits in every scintillator
 
-static TH1D *hCluster_TotEnergy=0; //Energy of cluster of event that verify the trigger
-static TH1D *hCluster_EnergySeed=0; //Energy of seed cluster of event that verify the trigger
+static TH1D *hCluster_TotEnergy = 0; //Energy of cluster of event that verify the trigger
+static TH1D *hCluster_EnergySeed = 0; //Energy of seed cluster of event that verify the trigger
 
-static TH1D *hTotEnergy=0; //Total energy summing over clusters in this event
+static TH1D *hTotEnergy = 0; //Total energy summing over clusters in this event
 
+static TH1D *hnHitsInCluster_Trigger = 0; //Number of hits in cluster of event that verify the trigger
+static TH1D *hnClusters_Trigger = 0; //Number of cluster of event that verify the trigger
+static TH2D *hClusXY_Trigger = 0; //Position of clusters of event that verify the trigger
 
-static TH1D *hnHitsInCluster_Trigger=0; //Number of hits in cluster of event that verify the trigger
-static TH1D *hnClusters_Trigger=0; //Number of cluster of event that verify the trigger
-static TH2D *hClusXY_Trigger=0; //Position of clusters of event that verify the trigger
-
-static TH1D *hClusM_Trigger=0; //pi0 mass
-static TH2D *hClusAngle_M_Trigger=0; 
-
-
+static TH1D *hClusM_Trigger = 0; //pi0 mass
+static TH2D *hClusAngle_M_Trigger = 0;
 
 //---------------------------------
 // JEventProcessor_HallB_FT_monitoring    (Constructor)
@@ -96,40 +98,40 @@ JEventProcessor_HallB_FT_monitoring::~JEventProcessor_HallB_FT_monitoring() {
 // Init
 //------------------
 void JEventProcessor_HallB_FT_monitoring::Init(void) {
-  // This is called once at program startup.
-  m_root_lock = japp->GetService<JGlobalRootLock>();
+	// This is called once at program startup.
+	m_root_lock = japp->GetService<JGlobalRootLock>();
 
-  m_root_lock->acquire_write_lock();
-  if (hTest != NULL) {
-    m_root_lock->release_lock();
-    return;
-  }
+	m_root_lock->acquire_write_lock();
+	if (hTest != NULL) {
+		m_root_lock->release_lock();
+		return;
+	}
 
-  gROOT->cd();
-  TDirectory *main = gDirectory;
-  gDirectory->mkdir("HallB_FT_monitoring")->cd();
+	gROOT->cd();
+	TDirectory *main = gDirectory;
+	gDirectory->mkdir("HallB_FT_monitoring")->cd();
 
-  hnClusters = new TH1D(" hnClusters", " hnClusters", 21, -0.5, 20);
-  hnHitsFT = new TH1D(" hnHitsFT", " hnHitsFT", 400, 0, 400);
-  hnHitsComponentFT = new TH1D(" hnHitsComponentFT", " hnHitsComponentFT", 500, 0, 500);
-  hnHitsComponentFT->SetFillColor(4);
-  hnHitsXYFT = new TH2D("hnHitsXYFT","hnHitsXYFT",24,-23.5,.5,24,-.5,23.5);
- 
-  hAllHitsEnergy=new TH1D("hAllHitsEnergy","hAllHitsEnergy",10000,0,10000);
+	hnClusters = new TH1D(" hnClusters", " hnClusters", 21, -0.5, 20);
+	hnHitsFT = new TH1D(" hnHitsFT", " hnHitsFT", 400, 0, 400);
+	hnHitsComponentFT = new TH1D(" hnHitsComponentFT", " hnHitsComponentFT", 500, 0, 500);
+	hnHitsComponentFT->SetFillColor(4);
+	hnHitsXYFT = new TH2D("hnHitsXYFT", "hnHitsXYFT", 24, -23.5, .5, 24, -.5, 23.5);
 
-  hTotEnergy = new TH1D("hTotEnergy", "hTotEnergy", 300, 0, 11000.);
-  hCluster_TotEnergy = new TH1D("hCluster_TotEnergy", "hCluster_TotEnergy", 300, 0, 11000.);
-  hCluster_EnergySeed = new TH1D("hCluster_EnergySeed","hCluster_EnergySeed", 300,0, 11000.);
+	hAllHitsEnergy = new TH1D("hAllHitsEnergy", "hAllHitsEnergy", 10000, 0, 10000);
 
-  hnHitsInCluster_Trigger = new TH1D("hnHitsInCluster_Trigger", "hnHitsInCluster_Trigger", 400, 0, 400);
-  hnClusters_Trigger = new TH1D("hnClusters_Trigger", "hnClusters_Trigger", 100, 0, 100);
- 
- hClusM_Trigger=new TH1D("hClusM_Trigger","hClusM_Trigger",500,0,500);
-  hClusXY_Trigger=new TH2D("hClusXY_Trigger","hClusXY_Trigger",200,-200,200,200,-200,200);
-  hClusAngle_M_Trigger=new TH2D("hClusAngle_M_Trigger","hClusAngle_M_Trigger", 500,0,500,100,0.9,1);
+	hTotEnergy = new TH1D("hTotEnergy", "hTotEnergy", 300, 0, 11000.);
+	hCluster_TotEnergy = new TH1D("hCluster_TotEnergy", "hCluster_TotEnergy", 300, 0, 11000.);
+	hCluster_EnergySeed = new TH1D("hCluster_EnergySeed", "hCluster_EnergySeed", 300, 0, 11000.);
 
+	hnHitsInCluster_Trigger = new TH1D("hnHitsInCluster_Trigger", "hnHitsInCluster_Trigger", 400, 0, 400);
+	hnClusters_Trigger = new TH1D("hnClusters_Trigger", "hnClusters_Trigger", 100, 0, 100);
 
-  m_root_lock->release_lock();
+	hClusM_Trigger = new TH1D("hClusM_Trigger", "hClusM_Trigger", 500, 0, 500);
+	hClusXY_Trigger = new TH2D("hClusXY_Trigger", "hClusXY_Trigger", 200, -200, 200, 200, -200, 200);
+	hClusAngle_M_Trigger = new TH2D("hClusAngle_M_Trigger", "hClusAngle_M_Trigger", 500, 0, 500, 1000, 0.9, 1);
+
+	gDirectory->cd();
+	m_root_lock->release_lock();
 
 }
 
@@ -138,86 +140,86 @@ void JEventProcessor_HallB_FT_monitoring::Init(void) {
 //------------------
 void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JEvent>& aEvent) {
 
-  // conditions to be a good cluster; //Condition on clusters are implemented in FTCalCluster.cc, if there are not yet an external file reading.
-  //double minSeed = 10;
-  //double minEnergy = 30;
-  //double minSize = 2;
+	// conditions to be a good cluster; //Condition on clusters are implemented in FTCalCluster.cc, if there are not yet an external file reading.
+	//double minSeed = 10;
+	//double minEnergy = 30;
+	//double minSize = 2;
 
-  //////////////////COPY TRIGGER CONDITION FOR MONITORING HERE
-  //condition on trigger   
-  int nCluster_th = 1;  // number of clusters required to do trigger 
-  //Searching pi0
-  int nCluster_pi0 = 3;
-  
+	//////////////////COPY TRIGGER CONDITION FOR MONITORING HERE
+	//condition on trigger
+	int nCluster_th = 1;  // number of clusters required to do trigger
+	//Searching pi0
+	int nCluster_pi0 = 3;
 
-  auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
-  auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
+	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
+	auto clusters = aEvent->Get<FTCalCluster>("EneCorr"); //vector dei clusters dell'evento
+	//auto clusters = aEvent->Get<FTCalCluster>(); //vector dei clusters dell'evento
 
-  bool isSet = false;
+	bool isSet = false;
 
-  //lock
-  m_root_lock->acquire_write_lock();
+	//lock
+	m_root_lock->acquire_write_lock();
 
-  // for (auto cluster : calclusters) {}
+	// for (auto cluster : calclusters) {}
 
-  //Number of clusters
-  hnClusters->Fill(clusters.size());
- 
-  //Number of hits 
-  hnHitsFT->Fill(hits.size());
+	//Number of clusters
+	hnClusters->Fill(clusters.size());
 
-  for (auto hit : hits) {
-    //Number of hit vs crystal
-    hnHitsComponentFT->Fill(hit->m_channel.component);
-    
-    //Energy of all hits
-    hAllHitsEnergy->Fill(hit->getHitEnergy());
-   
-    //2D histo of FTCal
-    hnHitsXYFT->Fill(-hit->getHitIX(), hit->getHitIY());
-  }
- 
- 
+	//Number of hits
+	hnHitsFT->Fill(hits.size());
 
-  // monitoring histogram Trigger Decision.
-  int nCluster=0;
-  double totE=0;
-  for(auto cluster : clusters){ 
-    nCluster++; 
-    totE+=cluster->getClusterEnergy();
-    hCluster_TotEnergy->Fill(cluster->getClusterEnergy());
-    hCluster_EnergySeed->Fill(cluster->getClusterSeedEnergy());
-  }
-  hTotEnergy->Fill(totE);
-  //Plot quantities related to trigger decision
-  if (nCluster>=nCluster_th){
-    hnClusters_Trigger->Fill(nCluster);
-    for(auto cluster : clusters){
-      hClusXY_Trigger->Fill(cluster->getX(),cluster->getY());
-      hnHitsInCluster_Trigger->Fill(cluster->getClusterSize());
-    }
-  }
-   
- 
-  //plot the invariant mass of ALL clusters pairs
-  if (clusters.size()>1){
-  for(int ii=0; ii<clusters.size(); ii++){
-    auto cluster1 = clusters[ii];
-    if (cluster1->getClusterEnergy()<1.) continue;
-    hClusXY_Trigger->Fill(cluster1->getX(),cluster1->getY());
-    for (int jj=(ii+1);jj<clusters.size();jj++){
-      auto cluster2 = clusters[jj];
-      if (cluster2->getClusterEnergy()<1.) continue;
-      auto z = cos(cluster1->getCentroid().Angle(cluster2->getCentroid()));
-      auto M = sqrt(2*cluster1->getClusterEnergy()*cluster2->getClusterEnergy()*(1-z))*1000;
-      hClusM_Trigger->Fill(M);
-      hClusAngle_M_Trigger->Fill(M,z);   
-    }
-  }
-  }
+	for (auto hit : hits) {
+		//Number of hit vs crystal
+		hnHitsComponentFT->Fill(hit->m_channel.component);
 
-  m_root_lock->release_lock();
-  //unlock
+		//Energy of all hits
+		hAllHitsEnergy->Fill(hit->getHitEnergy());
+
+		//2D histo of FTCal
+		hnHitsXYFT->Fill(-hit->getHitIX(), hit->getHitIY());
+	}
+
+	// monitoring histogram Trigger Decision.
+	int nCluster = 0;
+	double totE = 0;
+	for (auto cluster : clusters) {
+		nCluster++;
+		totE += cluster->getClusterEnergy();
+		hCluster_TotEnergy->Fill(cluster->getClusterEnergy());
+		hCluster_EnergySeed->Fill(cluster->getClusterSeedEnergy());
+	}
+	hTotEnergy->Fill(totE);
+	//Plot quantities related to trigger decision
+	if (nCluster >= nCluster_th) {
+		hnClusters_Trigger->Fill(nCluster);
+		for (auto cluster : clusters) {
+			hClusXY_Trigger->Fill(cluster->getX(), cluster->getY());
+			hnHitsInCluster_Trigger->Fill(cluster->getClusterSize());
+		}
+	}
+
+	//plot the invariant mass of ALL clusters pairs
+	if (clusters.size() > 1) {
+		for (int ii = 0; ii < clusters.size(); ii++) {
+			auto cluster1 = clusters[ii];
+			if (cluster1->getClusterEnergy() < 1.)
+				continue;
+			hClusXY_Trigger->Fill(cluster1->getX(), cluster1->getY());
+			for (int jj = (ii + 1); jj < clusters.size(); jj++) {
+				auto cluster2 = clusters[jj];
+				if (cluster2->getClusterEnergy() < 1.)
+					continue;
+				auto z = cos(cluster1->getCentroid().Angle(cluster2->getCentroid()));
+				auto M = sqrt(2 * cluster1->getClusterEnergy() * cluster2->getClusterEnergy() * (1 - z));
+				hClusM_Trigger->Fill(M);
+				hClusAngle_M_Trigger->Fill(M, z);
+			}
+		}
+	}
+
+
+	m_root_lock->release_lock();
+	//unlock
 
 }
 
@@ -225,5 +227,39 @@ void JEventProcessor_HallB_FT_monitoring::Process(const std::shared_ptr<const JE
 // Finish
 //------------------
 void JEventProcessor_HallB_FT_monitoring::Finish(void) {
-  // This is called when at the end of event processing
+	// This is called when at the end of event processing
+
+	auto app = japp;
+	std::string outFileName;
+	TFile *fout;
+	if (app->GetJParameterManager()->Exists("hallBFT_monitoring:output_file") == true) {
+		gROOT->cd();
+		TDirectory *main = gDirectory;
+
+		app->GetJParameterManager()->GetParameter("hallBFT_monitoring:output_file", outFileName);
+		std::cout << "JEventProcessor_HallB_FT_monitoring::Finish " << this << " " << outFileName << std::endl;
+		fout = new TFile(outFileName.c_str(), "recreate");
+
+		main->cd("HallB_FT_monitoring");
+		TIter next(gDirectory->GetList());
+		TObject* object = 0;
+		fout->cd();
+
+
+		while (object =  next()) {
+
+			if (object->InheritsFrom(TH1::Class())) {
+
+				fout->cd();
+				object->Write();
+
+				std::cout << "JEventProcessor_HallB_FT_monitoring::wrote " << object->GetName() << std::endl;
+			}
+
+		}
+
+
+		fout->Write();
+		fout->Close();
+	}
 }
