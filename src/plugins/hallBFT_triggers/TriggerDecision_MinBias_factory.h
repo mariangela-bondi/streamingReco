@@ -25,7 +25,6 @@ public:
 	virtual void Init();
 	virtual void Process(const std::shared_ptr<const JEvent> &aEvent);
 
-	std::atomic<uint64_t> Nevents;
 	uint64_t PRESCALE_FACTOR;
 };
 

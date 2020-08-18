@@ -12,12 +12,12 @@
 
 #include "JANA/JEvent.h"
 
-
+static std::atomic<uint64_t> Nevents(0);
 
 //-----------------------------------------------
 // TriggerDecision_MinBias_factory (constructor)
 //-----------------------------------------------
-TriggerDecision_MinBias_factory::TriggerDecision_MinBias_factory():Nevents(0){
+TriggerDecision_MinBias_factory::TriggerDecision_MinBias_factory(){
   mTag="MinBias";//A.C. is this the right way to set the tag? (D.L. for the moment yes. SetTag() available in next release)
 }
 
@@ -31,6 +31,7 @@ void TriggerDecision_MinBias_factory::Init(){
 	mApp->SetDefaultParameter("TRIGGER:MinBias:PRESCALE_FACTOR", PRESCALE_FACTOR, "Prescale factor for min bias events. (n.b. 0 and 1 will both trigger on every event.");
 	
 	if( PRESCALE_FACTOR == 0 ) PRESCALE_FACTOR = 1; // protect from division by zero
+	LOG << "PRESCALE FACTOR SET TO: " << PRESCALE_FACTOR << LOG_END;
 }
 
 //-----------------------------------------------

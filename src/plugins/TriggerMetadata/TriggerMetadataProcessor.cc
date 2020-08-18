@@ -116,14 +116,14 @@ void TriggerMetadataProcessor::Process(const std::shared_ptr<const JEvent> &even
 			triggerIDmap[ description ] = triggerIDmap.size()+1;
 			triggerID = triggerIDmap[ description ];
 			sprintf(trigger_description, "%s", description.c_str());
-			trig_descriptions_tree->Fill();
+			if( rootfile != nullptr ) trig_descriptions_tree->Fill();
 		}
 
 		// Add trigger decision to tree
 		trigger_eventnumber = event->GetEventNumber();
 		triggerID = triggerIDmap[ description ];
 		trigger_decision = trigger->GetDecision();
-		trig_tree->Fill();
+		if( rootfile != nullptr ) trig_tree->Fill();
 	}
 
 	// Release ROOT lock
