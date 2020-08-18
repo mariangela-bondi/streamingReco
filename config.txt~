@@ -1,4 +1,0 @@
-plugins hallBFT,hallBFT_monitoring
-hallBFT_monitoring:output_file out.root
-RUNTYPE HALLB
-nthreads 1

@@ -189,21 +189,35 @@ void jv_mainframe::DoSelectObjectType(Int_t id) {
 
 	cout<<"DoSelectedObjectType() "<<tag<<" "<<name<<endl;fflush(stdout);
 
-
-	auto factories = JEP->event->GetFactorySet()->GetAllFactories(); //get ALL the factories for this event
-
-
+	//get list of ALL the factories for this event
+	auto factory_map = JEP->event->GetAllChildren<JObject>(); // factory_map = std::map<std::pair<std::string, std::string>, std::vector<S*>>
 	bool flagFind = false;
-	for (auto factory : factories) {
-		auto fname = factory->GetName();
-		auto ftag = factory->GetTag();
-
+	for( auto p : factory_map ){
+		auto &fname = p.first.first;
+		auto &ftag  = p.first.second;
 		if ((fname == name) && (ftag == tag)) {
 			flagFind = true;
-			objs = factory->GetAllObjectP(JEP->event,JEP->event->GetJApplication(),JEP->event->GetRunNumber());
+			// WARNING: The GetAllChildren call above will not activate
+			// any factory so the JObjects list it returns may be empty!
+			objs = p.second;
 			break;
 		}
 	}
+
+//	auto factories = JEP->event->GetFactorySet()->GetAllFactories(); //get ALL the factories for this event
+//
+//
+//	bool flagFind = false;
+//	for (auto factory : factories) {
+//		auto fname = factory->GetName();
+//		auto ftag = factory->GetTag();
+//
+//		if ((fname == name) && (ftag == tag)) {
+//			flagFind = true;
+//			objs = factory->GetAllObjectP(JEP->event,JEP->event->GetJApplication(),JEP->event->GetRunNumber());
+//			break;
+//		}
+//	}
 
 	if (flagFind == false) {
 		JEP->Unlock();

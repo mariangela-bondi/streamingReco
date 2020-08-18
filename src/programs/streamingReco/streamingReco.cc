@@ -31,7 +31,7 @@
 
 #include <iostream>
 #include <JANA/JApplication.h>
-
+#include <JANA/CLI/JVersion.h>
 
 #include <JANA/Calibrations/JCalibrationCCDB.h>
 #include <JANA/Calibrations/JCalibrationFile.h>
@@ -139,6 +139,7 @@ int Execute(UserOptions& options) {
 		for (auto event_src : options.eventSources) {
 			japp->Add(event_src);
 		}
+		//AddSignalHandlers();
 		JSignalHandler::register_handlers(japp);
 
 		//A.C.

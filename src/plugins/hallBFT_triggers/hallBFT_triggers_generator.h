@@ -4,14 +4,14 @@
 #include <JANA/JFactoryGenerator.h>
 #include <JANA/JFactoryT.h>
 
-#include "TriggerDecision_default_factory.h"
-#include "TriggerDecision_second_factory.h"
+#include "TriggerDecision_FTCalCluster_factory.h"
+#include "TriggerDecision_MinBias_factory.h"
 
 class hallBFT_triggers_generator: public JFactoryGenerator {
 public:
 	void GenerateFactories(JFactorySet *factory_set) {
-		factory_set->Add(new TriggerDecision_default_factory());
-		factory_set->Add(new TriggerDecision_second_factory());
+		factory_set->Add(new TriggerDecision_FTCalCluster_factory());
+		factory_set->Add(new TriggerDecision_MinBias_factory());
 	}
 };
 

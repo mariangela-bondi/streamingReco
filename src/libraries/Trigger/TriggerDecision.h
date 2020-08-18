@@ -52,8 +52,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 class TriggerDecision: public JObject {
 public:
-	TriggerDecision();
-	virtual ~TriggerDecision();
+	TriggerDecision():decision(false){}
+	TriggerDecision(std::string val):decision(false),description(val){}
+	virtual ~TriggerDecision(){}
 
 	bool GetDecision() const{return decision;};
 	void SetDecision(bool val=true){decision=val;};

@@ -40,6 +40,10 @@ bool FactoryNameSort(JFactory *a, JFactory *b) {
 	if (a->GetName() == b->GetName()) return string(a->GetTag()) < string(b->GetTag());
 	return a->GetName() < b->GetName();
 }
+bool FactoryNameSort(JVFactoryInfo *a, JVFactoryInfo *b) {
+	if (a->name == b->name) return string(a->tag) < string(b->tag);
+	return a->name < b->name;
+}
 
 //==============================================================================
 
@@ -171,15 +175,11 @@ string JEventProcessor_janaview::MakeNametag(const string &name, const string &t
 //------------------
 void JEventProcessor_janaview::GetObjectTypes(vector<JVFactoryInfo> &facinfo) {
 	// Get factory pointers and sort them by factory name
-	vector<JFactory*> factories = event->GetFactorySet()->GetAllFactories();
-
-	sort(factories.begin(), factories.end(), FactoryNameSort);
-
-	// Copy factory info into JVFactoryInfo structures
-	for (uint32_t i = 0; i < factories.size(); i++) {
+	auto factory_map = event->GetAllChildren<JObject>(); // factory_map = std::map<std::pair<std::string, std::string>, std::vector<S*>>
+	for( auto p : factory_map ){
 		JVFactoryInfo finfo;
-		finfo.name = factories[i]->GetName();
-		finfo.tag = factories[i]->GetTag();
+		finfo.name = p.first.first;
+		finfo.tag  = p.first.second;
 		finfo.nametag = MakeNametag(finfo.name, finfo.tag);
 		facinfo.push_back(finfo);
 	}
@@ -190,12 +190,18 @@ void JEventProcessor_janaview::GetObjectTypes(vector<JVFactoryInfo> &facinfo) {
 //------------------
 void JEventProcessor_janaview::GetAssociatedTo(JObject *jobj, vector<const JObject*> &associatedTo) {
 
-	vector<JObject*> objs = event->GetAllObjectsJObjectP();
-	for (uint32_t ii = 0; ii < objs.size(); ii++) {
-		JObject *obj = objs[ii];
-		vector<const JObject*> associated;
-		if (obj->IsAssociated(jobj)){
-			associatedTo.push_back(obj);
+	// Get all JObjects from all factories
+	// n.b. GetAllChildren() will not activate a factory to 
+	// create the JObjects, only get ones that already have
+	// been created. This could be a problem here since not
+	// all JObjects that may use the given jobj will
+	// necessarily exist yet.
+	auto factory_map = event->GetAllChildren<JObject>(); // factory_map = std::map<std::pair<std::string, std::string>, std::vector<S*>>
+	for( auto p : factory_map ){
+		for( auto obj : p.second ){
+			if (obj->IsAssociated(jobj)){
+				associatedTo.push_back(obj);
+			}
 		}
 	}
 }
@@ -205,12 +211,19 @@ void JEventProcessor_janaview::GetAssociatedTo(JObject *jobj, vector<const JObje
 //------------------
 void JEventProcessor_janaview::GetAssociated(JObject *jobj, vector<const JObject*> &associatedTo) {
 
-	vector<JObject*> objs = event->GetAllObjectsJObjectP();
-	for (uint32_t ii = 0; ii < objs.size(); ii++) {
-		JObject *obj = objs[ii];
-		vector<const JObject*> associated;
-		if (jobj->IsAssociated(obj)){
-			associatedTo.push_back(obj);
+	// Get all JObjects from all factories
+	// n.b. GetAllChildren() will not activate a factory to 
+	// create the JObjects, only get ones that already have
+	// been created. This should be OK since we are looking
+	// things in the associated object list of the given jobj
+	// that itself already exists (so all of its associated
+	// objects should too).
+	auto factory_map = event->GetAllChildren<JObject>(); // factory_map = std::map<std::pair<std::string, std::string>, std::vector<S*>>
+	for( auto p : factory_map ){
+		for( auto obj : p.second ){
+			if (jobj->IsAssociated(obj)){
+				associatedTo.push_back(obj);
+			}
 		}
 	}
 }

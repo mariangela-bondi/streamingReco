@@ -1,4 +1,4 @@
-plugins hallBFT,hallBFT_monitoring
+plugins hallBFT,hallBFT_monitoring,TriggerMetadata
 hallBFT_monitoring:output_file out.root
 RUNTYPE HALLB
 nthreads 8
