@@ -31,7 +31,6 @@ void TriggerDecision_MinBias_factory::Init(){
 	mApp->SetDefaultParameter("TRIGGER:MinBias:PRESCALE_FACTOR", PRESCALE_FACTOR, "Prescale factor for min bias events. (n.b. 0 and 1 will both trigger on every event.");
 	
 	if( PRESCALE_FACTOR == 0 ) PRESCALE_FACTOR = 1; // protect from division by zero
-	LOG << "PRESCALE FACTOR SET TO: " << PRESCALE_FACTOR << LOG_END;
 }
 
 //-----------------------------------------------
@@ -42,8 +41,9 @@ void TriggerDecision_MinBias_factory::Process(const std::shared_ptr<const JEvent
 	// Create TriggerDecision object to publish the decision
 	// Argument is trigger description. It will end up in metadata file so keep it simple.
 	// I think a good convention here is to just give it the tag of the factory.
-	auto mTriggerDecision = new TriggerDecision( mTag ); 
-	mTriggerDecision->SetDecision( ((Nevents++)%PRESCALE_FACTOR) == 0 );
+	auto mTriggerDecision = new TriggerDecision( mTag );
+	bool decision = ((Nevents++)%PRESCALE_FACTOR) == 0;
+	mTriggerDecision->SetDecision( decision );
 	mData.push_back(mTriggerDecision);
 }
 
