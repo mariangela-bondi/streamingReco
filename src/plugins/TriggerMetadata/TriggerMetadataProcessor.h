@@ -18,6 +18,7 @@ class TriggerMetadataProcessor : public JEventProcessor {
     		virtual ~TriggerMetadataProcessor() = default;
 
     		void Init() override;
+			void OpenMetadataFile(uint64_t runnumber);
     		void Process(const std::shared_ptr<const JEvent>& event) override;
    		void Finish() override;
 

@@ -40,6 +40,63 @@ void TriggerMetadataProcessor::Init() {
 }
 
 //--------------------------------------------------------
+// OpenMetadataFile
+//--------------------------------------------------------
+void TriggerMetadataProcessor::OpenMetadataFile(uint64_t runnumber) {
+
+	// Open a new ROOT file for trigger metadata, but ONLY if the 
+	// runnumber is not the same as the currently open file.
+	// (see comments in Process for details).
+
+	// Lock ROOT access
+	m_root_lock->acquire_write_lock();
+	
+	// If the run number has not actually changed and there is 
+	// already an open ROOT file, then release the lock and return.
+	if( (runnumber == last_runnumber) && (rootfile!=nullptr) ) {
+		// Release ROOT lock
+		m_root_lock->release_lock();
+		return;
+	} 
+	
+		
+	// If file is already open for a different run number then close it.
+	if( rootfile != nullptr ){
+		LOG << "Closing " << rootfile->GetName() << "  (run number changed from " << last_runnumber << " to " << runnumber << ")" << LOG_END;
+		rootfile->Write();
+		delete rootfile;
+	}
+		
+	// Determine ROOT filename
+	std::string METADATAFILENAME = "AUTO"; // special name meaning to automatically form filename from runnumber
+	GetApplication()->SetDefaultParameter("METADATAFILENAME", METADATAFILENAME, "File name for ROOT file to write the JANA trigger metadata into. Do not set to have filename auto-generated based on run number.");
+	if( METADATAFILENAME == "AUTO" ){
+		char str[256];
+		sprintf(str, "JANA_Triggers_%06d.root", runnumber);
+		METADATAFILENAME = str;
+	}
+
+	// Open ROOT file
+	rootfile = new TFile(METADATAFILENAME.c_str(), "recreate");
+
+	// Add trees
+	trig_tree = new TTree("trig", "JANA Trigger metadata");
+	trig_tree->Branch("event",    &trigger_eventnumber, "event/l");
+	trig_tree->Branch("id",       &triggerID,           "id/i");
+	trig_tree->Branch("decision", &trigger_decision,    "decision/i");
+	
+	trig_descriptions_tree = new TTree("trig_descriptions", "JANA Trigger Descriptions");
+	trig_descriptions_tree->Branch("id",          &triggerID,                 "id/i");
+	trig_descriptions_tree->Branch("description", (void*)trigger_description, "description/C", 256);
+
+	last_runnumber = runnumber;
+
+	// Release ROOT lock
+	m_root_lock->release_lock();
+}
+
+
+//--------------------------------------------------------
 // Process
 //--------------------------------------------------------
 void TriggerMetadataProcessor::Process(const std::shared_ptr<const JEvent> &event) {
@@ -48,42 +105,14 @@ void TriggerMetadataProcessor::Process(const std::shared_ptr<const JEvent> &even
 	auto runnumber = event->GetRunNumber();
 	if( runnumber != last_runnumber){
 
-		// Lock ROOT access
-		m_root_lock->acquire_write_lock();
-		
-		// If file is already open for a different run number then close it.
-		if( rootfile != nullptr ){
-			LOG << "Closing " << rootfile->GetName() << LOG_END;
-			rootfile->Write();
-			delete rootfile;
-		}
-		
-		// Determine ROOT filename
-		std::string METADATAFILENAME = "AUTO"; // special name meaning to automatically form filename from runnumber
-		GetApplication()->SetDefaultParameter("METADATAFILENAME", METADATAFILENAME, "File name for ROOT file to write the JANA trigger metadata into. Do not set to have filename auto-generated based on run number.");
-		if( METADATAFILENAME == "AUTO" ){
-			char str[256];
-			sprintf(str, "JANA_Triggers_%06d.root", runnumber);
-			METADATAFILENAME = str;
-		}
-
-		// Open ROOT file
-		rootfile = new TFile(METADATAFILENAME.c_str(), "recreate");
-
-		// Add trees
-		trig_tree = new TTree("trig", "JANA Trigger metadata");
-		trig_tree->Branch("event",    &trigger_eventnumber, "event/l");
-		trig_tree->Branch("id",       &triggerID,           "id/i");
-		trig_tree->Branch("decision", &trigger_decision,    "decision/i");
-
-		trig_descriptions_tree = new TTree("trig_descriptions", "JANA Trigger Descriptions");
-		trig_descriptions_tree->Branch("id",          &triggerID,                 "id/i");
-		trig_descriptions_tree->Branch("description", (void*)trigger_description, "description/C", 256);
-
-		// Release ROOT lock
-		m_root_lock->release_lock();
-
-		last_runnumber = runnumber;
+		// The following will acquire the ROOT lock and then double check that
+		// it really needs to open a new ROOT file before opening it. If you look
+		// carefully, you'll see that the run number is actually checked twice.
+		// Once here, outside of the lock, and again in OpenMetadataFile while
+		// inside the lock. This is done on purpose since it avoids obtaining the
+		// lock for every event, but also avoids a race condition that can lead
+		// to multiple threads re-opening the ROOT file.
+		OpenMetadataFile(runnumber);
 	}
 
 	// Get all TriggerDecision objects from all plugins, libraries, etc ...
