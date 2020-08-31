@@ -356,6 +356,8 @@ public:
 		m_file.seekg(0);
 		m_file.clear();
 	}
+	
+	std::size_t tellg(void){ return m_file.tellg(); }
 
 	// Access to header members
 

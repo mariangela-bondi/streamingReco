@@ -1,6 +1,7 @@
 #include "JEventSource_PTFile.h"
 #include "TRIDAS/s_dataformat_bdx.hpp"
 #include <iostream>
+#include <chrono>
 
 JEventSourcePTFile::JEventSourcePTFile(std::string res_name, JApplication* app) :
 		JEventSource(std::move(res_name), app), ptReader(0) {
@@ -17,8 +18,20 @@ JEventSourcePTFile::JEventSourcePTFile(std::string res_name, JApplication* app) 
 //-------------------------------------------------------------------------
 void JEventSourcePTFile::Open() {
 
-	std::cout << this->GetResourceName() << std::endl;
+	LOG << "Scanning input file \"" << this->GetResourceName() << "\" ..." << LOG_END;
 	ptReader = new PtFileReader<sample::uncompressed>(this->GetResourceName());
+	
+	// Print stats about file
+	LOG << "TriDAS PT File opened." << LOG_END;
+	LOG << "===================================================" << LOG_END;
+	LOG << "            File name: " << this->GetResourceName()  << LOG_END;
+	LOG << "           Run Number: " << ptReader->runNumber()    << LOG_END;
+	LOG << "          File Number: " << ptReader->fileNumber()   << LOG_END;
+	LOG << "     Num. Time Slices: " << ptReader->nTS()          << LOG_END;
+	LOG << "          Num. Events: " << ptReader->nEvents()      << LOG_END;
+	LOG << "File Size (effective): " << ptReader->fileSize()     << LOG_END;
+	LOG << "       Data Card Size: " << ptReader->datacardSize() << LOG_END;
+	LOG << "===================================================" << LOG_END;
 
 	//point to the first time slice
 	it_ptReader = ptReader->begin();
@@ -29,7 +42,7 @@ void JEventSourcePTFile::Open() {
 	it_ptTimeSlice = ptTimeSlice->begin();
 
 	//currEventTimeSlice = 0;
-	std::cout << "JEventSourcePTFile creator DONE: " << this << std::endl;
+	LOG << "JEventSourcePTFile creator DONE: " << this << LOG_END;
 
 }
 //-------------------------------------------------------------------------
@@ -48,7 +61,7 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 	if (it_ptTimeSlice == ptTimeSlice->end()) {
 		it_ptReader++;
 		delete ptTimeSlice;
-		//It the iterator on time slices is at the end, the source is completely read.
+		//If the iterator on time slices is at the end, the source is completely read.
 		if (it_ptReader == ptReader->end()) {
 			std::cout << "Source done" << std::endl;
 			fflush(stdout);
@@ -70,6 +83,38 @@ void JEventSourcePTFile::GetEvent(std::shared_ptr<JEvent> event) {
 	static int evtNumber=0;
 	event->SetEventNumber(evtNumber++);
 
+	// To give user better indication of how far we are into file,
+	// periodically print message.
+	static auto t_last = time(NULL);
+	auto t_now = time(NULL);
+	if( (t_now-t_last)%4 ){
+		t_last = t_now;
+		
+		auto num = GetEventCount();
+		auto len = ptReader->nEvents();
+		
+		// Calculate rate we are reading in MB/s
+		static auto last_pos = ptReader->tellg();
+		static auto t_last = std::chrono::steady_clock::now();
+		auto t_now = std::chrono::steady_clock::now();
+		auto t_diff = std::chrono::duration_cast<std::chrono::microseconds>(t_now-t_last).count();
+		static double MB_per_sec = 0.0;
+		if( t_diff>=1000000 ){
+			
+			auto pos = ptReader->tellg();
+			auto bytes_diff = pos - last_pos;
+			MB_per_sec = (double)bytes_diff/(double)t_diff;
+
+			last_pos = pos;
+			t_last = t_now;
+		}
+		
+		double percent_done = 100.0*(double)num/(double)len;
+ 		char str[256];
+		sprintf(str, "--- PTFileSource: %ld/%ld time slices read (%3.1f%%)  %3.1fMB (%3.3fMB/s)", num, len, percent_done, last_pos/1.0E6, MB_per_sec);
+		
+		LOG << str << LOG_END; 
+	}
 
 //	event.SetEventTS(ptTimeSlice->id());
 //	event->Insert(ptEvent);
