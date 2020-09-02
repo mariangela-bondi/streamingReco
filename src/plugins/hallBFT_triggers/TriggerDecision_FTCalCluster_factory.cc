@@ -101,6 +101,7 @@ void TriggerDecision_FTCalCluster_factory::Process(const std::shared_ptr<const J
 	// I think a good convention here is to just give it the tag of the factory.
 	auto mTriggerDecision = new TriggerDecision( mTag ); 
 	mTriggerDecision->SetDecision(decision);
+	mTriggerDecision->SetID(0x01); // this will show up in 16 high order bit in TriggeredEvent::plugin_nseeds[] (lower 16 will be 0 or 1 depending on whether trigger fired)
 	mData.push_back(mTriggerDecision);
 }
 

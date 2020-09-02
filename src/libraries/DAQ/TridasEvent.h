@@ -36,7 +36,7 @@ struct TridasEvent: public JObject {
 	int event_number;
 	int time_slice;
 
-	std::vector<uint32_t> triggerWords;
+	mutable std::vector<uint32_t> triggerWords;
 
 	mutable bool should_keep;  // TODO: This needs to be mutable because we will be updating a const JObject
 							   //       This won't be a problem with the 'real' TRIDAS, whose should_keep lives behind the

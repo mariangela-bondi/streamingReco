@@ -125,34 +125,34 @@ void TriggerMetadataProcessor::Process(const std::shared_ptr<const JEvent> &even
 	// Loop over trigger objects adding them to tree
 	for (auto trigger : triggers){
 
+
 		// Here the trigger information is stored to a metadata file.
 		// This will allow one to correlate each trigger's decision
-		// with an event (i.e. "tag" it). Eventually, this type of
-		// metadata will be passed to Tridas for inclusion in the 
-		// output stream directly.
+		// with an event (i.e. "tag" it). Note that this is also passed
+		// to Tridas for inclusion in the output stream directly (sans
+		// the descriptions).
 		//
 		// A trigger ID is used to identify each trigger inserted into
-		// the file. The ID is generated here based on the description
-		// returned from the TriggerDecision object. This avoids storing
-		// the description itself with every event which would be
-		// inefficient. In order to make it easy to identify the trigger
-		// within the file, a second tree is created that holds the
-		// actual description and the ID.
+		// the file. The ID is hardcoded in the TRiggerDecision subclasses
+		// so one must take care when creating a new one that they don't
+		// assign one that is already in use. In order to make it easy to
+		// identify the trigger within the file, a second tree is created
+		// that holds the actual description and the ID.
+
+
+		// Add trigger decision to tree
+		trigger_eventnumber = event->GetEventNumber();
+		trigger_decision = trigger->GetDecision();
+		triggerID = trigger->GetID();
+		if( rootfile != nullptr ) trig_tree->Fill();
 
 		// Add trigger description to tree if needed
 		auto description = trigger->GetDescription();
 		if( triggerIDmap.count( description ) == 0 ){
-			triggerIDmap[ description ] = triggerIDmap.size()+1;
-			triggerID = triggerIDmap[ description ];
+			triggerIDmap[ description ] = triggerID;
 			sprintf(trigger_description, "%s", description.c_str());
 			if( rootfile != nullptr ) trig_descriptions_tree->Fill();
 		}
-
-		// Add trigger decision to tree
-		trigger_eventnumber = event->GetEventNumber();
-		triggerID = triggerIDmap[ description ];
-		trigger_decision = trigger->GetDecision();
-		if( rootfile != nullptr ) trig_tree->Fill();
 	}
 
 	// Release ROOT lock

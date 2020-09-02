@@ -44,6 +44,7 @@ void TriggerDecision_MinBias_factory::Process(const std::shared_ptr<const JEvent
 	auto mTriggerDecision = new TriggerDecision( mTag );
 	bool decision = ((Nevents++)%PRESCALE_FACTOR) == 0;
 	mTriggerDecision->SetDecision( decision );
+	mTriggerDecision->SetID(0x02); // this will show up in 16 high order bit in TriggeredEvent::plugin_nseeds[] (lower 16 will be 0 or 1 depending on whether trigger fired)
 	mData.push_back(mTriggerDecision);
 }
 
