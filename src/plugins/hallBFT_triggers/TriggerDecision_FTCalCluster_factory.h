@@ -21,7 +21,8 @@
 class TriggerDecision_FTCalCluster_factory: public JFactoryT<TriggerDecision> {
 public:
 	TriggerDecision_FTCalCluster_factory();
-	virtual ~TriggerDecision_FTCalCluster_factory() = default;
+	// virtual ~TriggerDecision_FTCalCluster_factory() = default;
+	virtual ~TriggerDecision_FTCalCluster_factory();
 
 	// Overloaded by user Factories
 	virtual void Init();
@@ -32,6 +33,7 @@ public:
 		MODE_Energy_Cut =1
 	};
 
+	bool   ENABLED;
 	int    TRIGGER_MODE; 
 	int    MIN_CLUSTERS;
 	int    MIN_CLUSTER_SIZE;
