@@ -4,7 +4,7 @@
 #include <JANA/JFactoryGenerator.h>
 
 #include "HallDCalTrack_Factory.h"
-#include "HallDCal_cosmicsTriggerProcessor.h"
+#include "TriggerDecision_HallDCal_cosmics_factory.h"
 #include "DAQ/TridasEvent.h"
 
 
@@ -23,51 +23,53 @@ void InitPlugin(JApplication* app) {
     InitJANAPlugin(app);
 
     LOG << "Loading HallDCal_cosmics_trigger" << LOG_END;
-    app->Add( new HallDCal_cosmicsTriggerProcessor() );
+    app->Add( new JFactoryGeneratorT<TriggerDecision_HallDCal_cosmics_factory>() );
     app->Add( new JFactoryGeneratorT<HallDCalTrack_Factory>() );
 }
 }
 
 //-----------------------------------------------
-// HallDCal_cosmicsTriggerProcessor (constructor)
+// TriggerDecision_HallDCal_cosmics_factory (constructor)
 //-----------------------------------------------
-HallDCal_cosmicsTriggerProcessor::HallDCal_cosmicsTriggerProcessor() {
-    SetTypeName(NAME_OF_THIS); // Provide JANA with this class's name
+TriggerDecision_HallDCal_cosmics_factory::TriggerDecision_HallDCal_cosmics_factory() {
+	mTag="HallDCal_cosmics";
 }
 
 //-----------------------------------------------
 // Init
 //-----------------------------------------------
-void HallDCal_cosmicsTriggerProcessor::Init() {
-	LOG << "HallDCal_cosmicsTriggerProcessor::Init" << LOG_END;
+void TriggerDecision_HallDCal_cosmics_factory::Init() {
+
+	ENABLED    = true;
+	MIN_TRACKS = 1;
+	MAX_TRACKS = 1000;
+
+	mApp->SetDefaultParameter("TRIGGER:HallDCal_cosmics:ENABLED", ENABLED, "Set to 0 to disable the HallDCal_cosmics trigger completely (no TriggerDecision objects will be produced).");
+	mApp->SetDefaultParameter("TRIGGER:HallDCal_cosmics:MIN_TRACKS", MIN_TRACKS, "Minimum number of HallDCalTrack objects to trigger.");
+	mApp->SetDefaultParameter("TRIGGER:HallDCal_cosmics:MAX_TRACKS", MAX_TRACKS, "Maximum number of HallDCalTrack objects to trigger.");
 }
 
 //-----------------------------------------------
 // Process
 //-----------------------------------------------
-void HallDCal_cosmicsTriggerProcessor::Process(const std::shared_ptr<const JEvent> &event) {
+void TriggerDecision_HallDCal_cosmics_factory::Process(const std::shared_ptr<const JEvent> &event) {
+
+	if( !ENABLED ) return; // allow user to disable this via JANA config. param.
 
 	// Get track objects from factory
 	auto trks = event->Get<HallDCalTrack>();
-	
-	try{	
-		// The TridasEvent object is created in the JEventSource_PTFile
-		// class (or the JEventSource used for online streaming).
-		// It has one mutable member called "should_keep" that we can set
-		// true here if the event should be kept.
-		auto tridasEvent = event->GetSingle<TridasEvent>();
-		tridasEvent->should_keep = trks.size()>0; // keep anything with a track
-		
-	}catch(JException &e){
-		// Ignore exceptions for now.
-	}   
+	int Ntrks = trks.size();
+
+	bool decision = ((Ntrks>=MIN_TRACKS) && (Ntrks<=MAX_TRACKS));
+
+	// Create TriggerDecision object to publish the decision
+	// Argument is trigger description. It will end up in metadata file so keep it simple.
+	// I think a good convention here is to just give it the tag of the factory.
+	auto mTriggerDecision = new TriggerDecision( mTag ); 
+	mTriggerDecision->SetDecision( decision );
+	mTriggerDecision->SetID(0x01); // this will show up in 16 high order bit in TriggeredEvent::plugin_nseeds[] (lower 16 will be 0 or 1 depending on whether trigger fired)
+	mData.push_back(mTriggerDecision);	
 }
 
-//-----------------------------------------------
-// Finish
-//-----------------------------------------------
-void HallDCal_cosmicsTriggerProcessor::Finish() {
-	// Close any resources
-	LOG << "HallDCal_cosmicsTriggerProcessor::Finish" << LOG_END;
-}
+
 

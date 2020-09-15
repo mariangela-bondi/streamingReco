@@ -2,18 +2,24 @@
 #ifndef _HallDCal_cosmicsTriggerProcessor_h_
 #define _HallDCal_cosmicsTriggerProcessor_h_
 
-#include <JANA/JEventProcessor.h>
+#include <JANA/JFactoryT.h>
+#include <JANA/JEvent.h>
+#include <Trigger/TriggerDecision.h>
 
-class HallDCal_cosmicsTriggerProcessor : public JEventProcessor {
+
+class TriggerDecision_HallDCal_cosmics_factory : public JFactoryT<TriggerDecision> {
 
 public:
 
-    HallDCal_cosmicsTriggerProcessor();
-    virtual ~HallDCal_cosmicsTriggerProcessor() = default;
+    TriggerDecision_HallDCal_cosmics_factory();
+    virtual ~TriggerDecision_HallDCal_cosmics_factory() = default;
 
     void Init() override;
     void Process(const std::shared_ptr<const JEvent>& event) override;
-    void Finish() override;
+
+    bool ENABLED;
+    int MIN_TRACKS;
+    int MAX_TRACKS;
 };
 
 
