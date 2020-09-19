@@ -29,9 +29,6 @@ static std::mutex mtx;
 // TriggerDecision_FTCalCluster_factory (constructor)
 //-----------------------------------------------
 TriggerDecision_FTCalCluster_factory::TriggerDecision_FTCalCluster_factory(){
-//_DBG_<<"---------------------- " << this << std::endl;
-//_DBG_ << make_backtrace(std::cerr);
-//_DBG_ << "============================================================" << std::endl;
   mTag="FTCalCluster";//A.C. is this the right way to set the tag? (D.L. for the moment yes. SetTag() available in next release)
 }
 
@@ -39,9 +36,7 @@ TriggerDecision_FTCalCluster_factory::TriggerDecision_FTCalCluster_factory(){
 // ~TriggerDecision_FTCalCluster_factory (destructor)
 //-----------------------------------------------
 TriggerDecision_FTCalCluster_factory::~TriggerDecision_FTCalCluster_factory(){
-//_DBG_<<"---------------------- " << this << std::endl;
-//_DBG_ << make_backtrace(std::cerr);
-//_DBG_ << "============================================================" << std::endl;
+
 }
 
 
@@ -49,23 +44,20 @@ TriggerDecision_FTCalCluster_factory::~TriggerDecision_FTCalCluster_factory(){
 // Init
 //-----------------------------------------------
 void TriggerDecision_FTCalCluster_factory::Init(){
-//_DBG_<<"---------------------- " << this << std::endl;
-//_DBG_ << make_backtrace(std::cerr);
-//_DBG_ << "============================================================" << std::endl;
-//ENABLED = false;
-//return;
 
 	ENABLED             = true;
 	TRIGGER_MODE        = MODE_Ncluster;
+	FACTORY_TAG         = "EneCorr";  // Tag used when accessing FTCalClus objects
 	MIN_CLUSTERS        = 1;    //         TRIGGER_MODE = 0 and 1
 	MIN_CLUSTER_SIZE    = 2;    //         TRIGGER_MODE = 1
 	MIN_SEED_ENERGY     = 10.0; // units?  TRIGGER_MODE = 1
 	MIN_CLUSTER_ENERGY  = 30.0; // units?  TRIGGER_MODE = 1
 
-std::lock_guard<std::mutex> lck(mtx);
+	std::lock_guard<std::mutex> lck(mtx);
 	
 	mApp->SetDefaultParameter("TRIGGER:FTCalClus:ENABLED", ENABLED, "Set to 0 to disable the FTCalCluster trigger completely (no TriggerDecision objects will be produced).");
 	mApp->SetDefaultParameter("TRIGGER:FTCalClus:TRIGGER_MODE", TRIGGER_MODE, "Set to 0 for triggering only on number of FTCalCluster objects. Set to 1 for trigger to also consider MIN_CLUSTER_SIZE, MIN_SEED_ENERGY, and MIN_CLUSTER_ENERGY.");
+	mApp->SetDefaultParameter("TRIGGER:FTCalClus:FACTORY_TAG", FACTORY_TAG, "Factory tag to use for FTCalCluster objects. Empty string for uncalibrated. TimeCorr for time corrected. EneCorr for Time+Energy corrected.");
 	mApp->SetDefaultParameter("TRIGGER:FTCalClus:MIN_CLUSTERS", MIN_CLUSTERS, "Minimum number of FTCalCluster objects needed for trigger.");
 	mApp->SetDefaultParameter("TRIGGER:FTCalClus:MIN_CLUSTER_SIZE", MIN_CLUSTER_SIZE, "Minimum number of blocks hit for cluster to be counted.");
 	mApp->SetDefaultParameter("TRIGGER:FTCalClus:MIN_SEED_ENERGY", MIN_SEED_ENERGY, "Minimum seed energy for cluster to be counted.");
@@ -115,12 +107,10 @@ std::lock_guard<std::mutex> lck(mtx);
 // Process
 //-----------------------------------------------
 void TriggerDecision_FTCalCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent){
-//_DBG_<<this<<std::endl;
 	if( !ENABLED ) return; // allow user to disable this via JANA config. param.
-//_DBG__;
 	
 	// Decide if this trigger fired (see comments in Init)  
-	auto calclus = aEvent->Get<FTCalCluster>();
+	auto calclus = aEvent->Get<FTCalCluster>( FACTORY_TAG );
 	bool decision = count_if(calclus.begin(), calclus.end(), lambda) >= MIN_CLUSTERS;
 
 	// Create TriggerDecision object to publish the decision
