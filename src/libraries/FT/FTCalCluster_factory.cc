@@ -19,7 +19,7 @@
 
 //Parametri clustering:
 double time_min = -1;
-double time_max = 30;
+double time_max = 50;
 
 //this will set the hits in DESCENDING order wrt energy
 bool FTCalCluster_factory::compareHits(const FTCalHit* a, const FTCalHit* b) {
