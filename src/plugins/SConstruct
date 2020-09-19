@@ -6,6 +6,11 @@ plugins = getSubdirs('./')
 
 for plugin in plugins:
     env_plugins=env.Clone()
+
+    # Disable rootspy and janaview plugins for now  9/18/2020 DL
+    if ("rootspy" in plugin): continue
+    if ("janaview" in plugin): continue
+
     print  bcolors.OKBLUE,"Found plugin ",plugin,bcolors.ENDC
     
     #save the relative dir and the absolute dir
