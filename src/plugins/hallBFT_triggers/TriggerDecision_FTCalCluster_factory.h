@@ -35,7 +35,7 @@ public:
 
 	bool   ENABLED;
 	int    TRIGGER_MODE;
-	std::string FACTORY_TAG;
+	std::map<std::string, int> FACTORY_TAGS;
 	int    MIN_CLUSTERS;
 	int    MIN_CLUSTER_SIZE;
 	double MIN_SEED_ENERGY;
