@@ -25,6 +25,7 @@ public:
 	virtual void Init();
 	virtual void Process(const std::shared_ptr<const JEvent> &aEvent);
 
+	bool ENABLED;
 	uint64_t PRESCALE_FACTOR;
 };
 

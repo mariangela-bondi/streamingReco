@@ -26,8 +26,10 @@ TriggerDecision_MinBias_factory::TriggerDecision_MinBias_factory(){
 //-----------------------------------------------
 void TriggerDecision_MinBias_factory::Init(){
 
+	ENABLED = true;
 	PRESCALE_FACTOR     = 50; // trigger on one event out of this many
 	
+	mApp->SetDefaultParameter("TRIGGER:MinBias:ENABLED", ENABLED, "Set to 0 to disable the MinBias trigger completely (no TriggerDecision objects will be produced).");
 	mApp->SetDefaultParameter("TRIGGER:MinBias:PRESCALE_FACTOR", PRESCALE_FACTOR, "Prescale factor for min bias events. (n.b. 0 and 1 will both trigger on every event.");
 	
 	if( PRESCALE_FACTOR == 0 ) PRESCALE_FACTOR = 1; // protect from division by zero
@@ -37,6 +39,8 @@ void TriggerDecision_MinBias_factory::Init(){
 // Process
 //-----------------------------------------------
 void TriggerDecision_MinBias_factory::Process(const std::shared_ptr<const JEvent> &aEvent){
+
+	if( !ENABLED ) return; // allow user to disable this via JANA config. param.
 	
 	// Create TriggerDecision object to publish the decision
 	// Argument is trigger description. It will end up in metadata file so keep it simple.
