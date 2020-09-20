@@ -3,15 +3,13 @@ from utils import *
 Import('env mc_enable')
 
 # Loop over libraries, building each
-libs=['system','HallD','FT','DAQ','TT','Trigger']
+libs=['system','HallD','FT','DAQ','TT','Trigger','FT/hdbscandir','FT/kmeans']
 
 src = []
 for lib in libs:
 	reldir = str(lib)
-	absdir = Dir('#/src/libraries/'+reldir).srcnode().abspath	
+	absdir = Dir('#/src/libraries/'+reldir).srcnode().abspath
 	AddROOTdict(env,reldir,absdir)
 	src = src+Glob(lib+'/*.cc')
 
 env.SharedLibrary(source=src,target='#/lib/streamingReco')
-
-
