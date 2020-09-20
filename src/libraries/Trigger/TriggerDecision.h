@@ -56,21 +56,21 @@ public:
 	TriggerDecision(std::string val):decision(false),description(val){}
 	virtual ~TriggerDecision(){}
 
-	bool GetDecision() const{return decision;};
-	void SetDecision(bool val=true){decision=val;};
+	uint16_t GetDecision() const{return decision;};
+	void SetDecision(uint16_t val=1){decision=val;};
 
 	std::string GetDescription()const{return description;};
 	void SetDescription(std::string val){description=val;};
 
-	bool GetID() const{return id;};
+	uint16_t GetID() const{return id;};
 	void SetID(uint32_t newid){ id = newid; };
 
 protected:
 
 private:
-	bool decision;
+	uint16_t decision;
 	std::string description;
-	uint32_t id=0;
+	uint16_t id=0;
 };
 
 #endif // _TriggerDecision_h_
