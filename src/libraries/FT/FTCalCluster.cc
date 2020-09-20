@@ -43,9 +43,10 @@
 #include <cmath>
 
 //Need file of constant!!!!!!!!!!
-int minClusterSize = 4; //Need size >= to min for accept cluster.
+int minClusterSize = 3; //Need size >= to min for accept cluster.
 double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
 double minSeedEnergy = 10;
+int time_window = 50; //ns
 //int time_max= 30; //Temporary modify of cluster definition.
 //int time_min = -5;
 
@@ -116,6 +117,64 @@ void FTCalCluster::setClusterID(int clusid) {
 	_clusID = clusid;
 }
 
+
+void FTCalCluster::setCluster(int size, float energy, \
+	float seed_energy, double clus_time, double X, double Y, \
+	double X2, double Y2, double Dt){
+
+ _clusSize = size;
+ _clusEnergy = energy;
+ //Compute corrected energy;
+ //Need to known correction
+ _clusRecEnergy = _clusEnergy;
+ _clusSeedEnergy = seed_energy;
+ _clusTime = clus_time;
+ _clusCenter.SetX(X);
+ _clusCenter.SetY(Y);
+ _clusCenter.SetZ(CRYS_ZPOS+depth_z);
+ _clusXX = X2;
+ _clusYY = Y2;
+ _clusDt = Dt;
+
+ //std::cout<<" _clusDt: "<< _clusDt<<std::endl;
+
+ //Cluster sigmaX
+ double sigmax2 = _clusXX - std::pow(_clusCenter.X(), 2.);
+ if (sigmax2 < 0) sigmax2 = 0;
+ _clusSigmaX = std::sqrt(sigmax2);
+
+ //Cluster sigmaY
+ double sigmay2 = _clusYY - std::pow(_clusCenter.Y(), 2.);
+ if (sigmay2 < 0) sigmay2 = 0;
+ _clusSigmaY = std::sqrt(sigmay2);
+
+ //Cluster radius
+ double radius2 = (sigmax2 + sigmay2);
+ if (radius2 < 0) radius2 = 0;
+ _clusRadius = std::sqrt(radius2);
+
+ double tmp_radius = std::sqrt(std::pow(_clusCenter.X(), 2.) + std::pow(_clusCenter.Y(), 2.));
+
+ //Cluster theta (Z is the depth in the crystal starting from entrance as z=0 along the beam direction)
+ _clusTheta = (std::atan((std::sqrt(std::pow(_clusCenter.X(), 2.) + std::pow(_clusCenter.Y(), 2.))) / _clusCenter.Z())) * (180. / M_PI);
+
+ //Cluster phi
+ _clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.X()) * (180. / M_PI); //
+
+ //if (_clusSize >= minClusterSize && _clusEnergy > minClusterEnergy && tmp_radius> 85. && tmp_radius < 160. && _clusDt<50.)//&& _clusDt<50.////&& tmp_radius> 85. && tmp_radius < 160.
+ if (_clusSize >= minClusterSize && _clusEnergy >= minClusterEnergy && _clusSeedEnergy >= minSeedEnergy)
+	 _goodCluster = true;
+ else
+	 _goodCluster = false;
+
+ if(_clusSeedEnergy==1.) _goodCluster = false;
+
+ //cout<<"...seed energy: "<< _clusSeedEnergy <<endl;
+
+
+}
+
+
 void FTCalCluster::computeCluster() {
 	//Cluster size
 	_clusSize = hits.size();
@@ -146,14 +205,18 @@ void FTCalCluster::computeCluster() {
 	x = 0;
 	y = 0;
 	z = 0;
+
+	_clusXX = 0;
+	_clusYY = 0.;
+
 	for (int i = 0; i < _clusSize; i++) {
 		const FTCalHit *hit = hits[i];
 		double w1 = std::max(0., (3.45 + std::log(hit->getHitEnergy() / _clusEnergy)));
 		x += w1 * hit->getHitX();
 		y += w1 * hit->getHitY();
 		z += w1 * hit->getHitZ();
-		_clusXX = w1 * (double) hit->getHitX() * (double) hit->getHitX();
-		_clusYY = w1 * (double) hit->getHitY() * (double) hit->getHitY();
+		_clusXX += w1 * (double) hit->getHitX() * (double) hit->getHitX();
+		_clusYY += w1 * (double) hit->getHitY() * (double) hit->getHitY();
 		w_tot += w1;
 	}
 
@@ -329,4 +392,3 @@ void FTCalCluster::toHisto(TH2D *h) const {
 	}
 	return;
 }
-

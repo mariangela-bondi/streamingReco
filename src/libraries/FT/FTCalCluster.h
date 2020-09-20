@@ -63,6 +63,10 @@ public:
 
 	void setClusterID(int clusid);
 
+	void setCluster(int , float , \
+		float , double , double , double , \
+		double , double , double);
+
 	void computeCluster();
 
 	int getClusterId() const;
@@ -133,7 +137,7 @@ private:
 	int _clusSize;
 	float _clusEnergy;
 	float _clusRecEnergy;
-	double _clusTime;
+	double _clusTime, _clusDt;
 	double _clusXX, _clusYY;
 	double _clusSigmaX, _clusSigmaY;
 	double _clusRadius;
