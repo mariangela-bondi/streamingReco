@@ -8,6 +8,7 @@
 
 #include <TFile.h>
 #include <TTree.h>
+#include <TH2.h>
 
 class TriggerMetadataProcessor : public JEventProcessor {
 
@@ -33,9 +34,21 @@ class TriggerMetadataProcessor : public JEventProcessor {
 
 		// Used for tree branches
 		uint64_t trigger_eventnumber;
-		int  triggerID;
+		uint16_t  triggerID;
 		char trigger_description[256];
-		int  trigger_decision;
+		uint16_t  trigger_decision;
+
+		// Analysis histograms
+		TH1 *hTimeSlice = nullptr;
+		TH2 *hTriggerID = nullptr;
+		TH2 *hTriggerID_norm = nullptr;
+
+		uint64_t min_time_slice = 0;
+		uint64_t max_time_slice = 0;
+		uint64_t num_time_slice = 0;
+		uint64_t min_event = 0;
+		uint64_t max_event = 0;
+		uint64_t num_events = 0;
 
 		std::shared_ptr<JGlobalRootLock> m_root_lock;
 };
