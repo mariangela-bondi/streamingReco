@@ -23,8 +23,8 @@ FTCalHitTimeCorr_factory::FTCalHitTimeCorr_factory() {
 	CRYS_ZPOS = 1923.; //Test 21 cm
 
 	auto jcalib_manager = japp->GetService<JCalibrationManager>();
-	static int runN = 11324;
-	auto jcalib = jcalib_manager->GetJCalibration(11324);
+	static int runN = 13000;
+	auto jcalib = jcalib_manager->GetJCalibration(13000);
 
 	std::vector<std::vector<double>> data;
 	jcalib->Get("/calibration/ft/ftcal/charge_to_energy", data);
