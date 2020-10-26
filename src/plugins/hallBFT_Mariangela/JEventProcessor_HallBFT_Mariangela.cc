@@ -234,8 +234,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //	auto hits_TimeCorr = aEvent->Get<FTCalHitTimeCorr>();
 
 //Clusters dell'evento
-	auto clusters = aEvent->Get<FTCalCluster>();
-//	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr");
+//	auto clusters = aEvent->Get<FTCalCluster>();
+	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr");
 //	auto clusters_TimeCorr = aEvent->Get < FTCalCluster > ("TimeCorr");
 //	auto clusters_EneCorr = aEvent->Get < FTCalCluster > ("EneCorr"); //vector dei clusters dell'evento con correzione sull'energia degli hit
 //	auto clusters_TimeCorr = aEvent->Get<FTCalCluster>();
