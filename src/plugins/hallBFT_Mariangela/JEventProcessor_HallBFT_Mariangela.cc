@@ -228,14 +228,14 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	vector<uint32_t> word = tridas_event->triggerWords;
 
 //Hits dell'evento
-	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
+//	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
 //	auto hits_EneCorr = aEvent->Get<FTCalHitEneCorr>();
-//	auto hits = aEvent->Get<FTCalHitEneCorr>();
+	auto hits = aEvent->Get<FTCalHitEneCorr>();
 //	auto hits_TimeCorr = aEvent->Get<FTCalHitTimeCorr>();
 
 //Clusters dell'evento
-	auto clusters = aEvent->Get<FTCalCluster>();
-//	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr");
+//	auto clusters = aEvent->Get<FTCalCluster>();
+	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr");
 //	auto clusters_TimeCorr = aEvent->Get < FTCalCluster > ("TimeCorr");
 //	auto clusters_EneCorr = aEvent->Get < FTCalCluster > ("EneCorr"); //vector dei clusters dell'evento con correzione sull'energia degli hit
 //	auto clusters_TimeCorr = aEvent->Get<FTCalCluster>();
