@@ -71,6 +71,7 @@
 using namespace std;
 
 /*Here goes the histograms*/
+static TH1D *hTest = 0;
 
 //Selezione eventi "basica"
 const int firstEvent = 0;
