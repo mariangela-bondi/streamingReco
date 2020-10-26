@@ -82,7 +82,7 @@ void FTCalCluster_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent
 			c2[component] = row[5];
 			c3[component] = row[6];
 			c4[component] = row[7];
-	cout << sector<< " "<<layer<<" "<<component<<" "<< c0[component]<< " "<<c1[component]<<" "c2[component]<<endl
+	cout << sector<< " "<<layer<<" "<<component<<" "<< c0[component]<< " "<<c1[component]<<" "<<c2[component]<<endl
 		}
 	}
 }
