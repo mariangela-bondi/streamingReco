@@ -50,7 +50,7 @@ void FTCalCluster_factory_EneCorr::CorrectClusterEnergy(FTCalCluster *clus) {
 
 	auto corr = (cc0 + cc1 * rawEne + cc2 * rawEne * rawEne + cc3 * rawEne * rawEne * rawEne + cc4 * rawEne * rawEne * rawEne * rawEne) / 1000.;
 	rawEne += corr;
-   cout << rawEne<< " "<<corr<<endl;
+ //  cout << rawEne<< " "<<corr<<endl;
 	clus->setClusterFullEnergy(rawEne * 1000); //MeV again
 
 	return;

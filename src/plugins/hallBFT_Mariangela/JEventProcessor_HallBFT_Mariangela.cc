@@ -179,7 +179,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	//	hSCEnergyPosition = new TH2D("hSCEnergyPosition", "hSCEnergyPosition", 25, -.5, 24.5, 25, -0.5, 24.5);
 	hSCClusterPosition = new TH2D("hSCClusterPosition", "hSCClusterPosition", 200, -200, 200, 200, -200, 200);
 	hSCEnergyPosition = new TH2D("hSCEnergyPosition", "hSCEnergyPosition", 200, -200, 200, 200, -200, 200);
-	hSCClusterEnergyVsSeedEnergy = new TH2D("hSCClusterEnergyVsSeedEnergy", "hSCClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1000, 0, 10000);
+	hSCClusterEnergyVsSeedEnergy = new TH2D("hSCClusterEnergyVsSeedEnergy", "hSCClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1500, 0, 15000);
 
 	//Double clusters events
 	hDCClustersDeltaTime = new TH1D("hDCClustersDeltaTime", "hDCClustersDeltaTime", 400, -200, 200);
@@ -191,9 +191,9 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCClusterEnergy = new TH2D("hDCClusterEnergy", "hDCClusterEnergy", 1500, 0, 15000, 1500, 0, 15000);
 	hDCClusterPosition = new TH2D("hDCClusterPosition", "hDCClusterPosition", 200, -200, 200, 200, -200, 200);
 	hDCEnergyPosition = new TH2D("hDCEnegyPosition", "hDCEnergyPosition", 200, -200, 200, 200, -200, 200);
-	hDCBigClusterEnergyVsSeedEnergy = new TH2D("hDCBigClusterEnergyVsSeedEnergy", "hDCBigClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1000, 0, 10000);
-	hDCSmallClusterEnergyVsSeedEnergy = new TH2D("hDCSmallClusterEnergyVsSeedEnergy", "hDCSmallClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1000, 0, 10000);
-	hDCClusterEnergyVsSeedEnergy = new TH2D("hDCClusterEnergyVsSeedEnergy", "hDCClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1000, 0, 10000);
+	hDCBigClusterEnergyVsSeedEnergy = new TH2D("hDCBigClusterEnergyVsSeedEnergy", "hDCBigClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1500, 0, 15000);
+	hDCSmallClusterEnergyVsSeedEnergy = new TH2D("hDCSmallClusterEnergyVsSeedEnergy", "hDCSmallClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1500, 0, 15000);
+	hDCClusterEnergyVsSeedEnergy = new TH2D("hDCClusterEnergyVsSeedEnergy", "hDCClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1500, 0, 15000);
 	hDCInvariantMass = new TH1D("hDCInvariantMass", "hDCInvariantMass", 500, 0, 500);
 	//	hDCSelectedInvariantMass = new TH1D("hDCSelectedInvariantMass", "hDCSelectedInvariantMass", 500, 0, 500);
 
