@@ -66,16 +66,6 @@ class JEventProcessor_HallBFT_Mariangela : public JEventProcessor{
 	private:
 		std::shared_ptr<JGlobalRootLock> m_root_lock;
 
-		int Nclusters;
-		double Eseed[3];
-		double Eclus[3];
-		double Tseed[3];
-		double Tclus[3];
-		double Xseed[3];
-		double Yseed[3];
-		double Xclus[3];
-		double Yclus[3];
-
 
 };
 

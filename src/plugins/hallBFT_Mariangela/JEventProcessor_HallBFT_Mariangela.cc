@@ -124,6 +124,17 @@ static TH1D *h_tcoinc_combo = 0;
 static TH1D *h_minv = 0;
 static TH1D *h_minv_nocuts = 0;
 
+int Nclusters = -99;
+double Eseed[3] = {-99, -99, -99};
+double Eclus[3] = {-99, -99, -99};
+double Tseed[3]= {-99, -99, -99};
+double Tclus[3]= {-99, -99, -99};
+double Xseed[3]= {-99, -99, -99};
+double Yseed[3]= {-99, -99, -99};
+double Xclus[3]= {-99, -99, -99};
+double Yclus[3]= {-99, -99, -99};
+
+
 static TTree *tout =0;
 
 //TimeWalk correction
@@ -272,7 +283,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //lock
 	m_root_lock->acquire_write_lock();
 
-
+/*
 	 Nclusters = -999;
 	 for(int i=0; i<3; i++){
 	 Eseed[i] =-999;
@@ -284,7 +295,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 Xclus[i]=-999;
 	 Yclus[i]=-999;
 	 }
-
+*/
 
 
 	/*	double dist_min = 1000000; //mm
