@@ -283,7 +283,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //lock
 	m_root_lock->acquire_write_lock();
 
-/*
+
 	 Nclusters = -999;
 	 for(int i=0; i<3; i++){
 	 Eseed[i] =-999;
@@ -295,7 +295,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 Xclus[i]=-999;
 	 Yclus[i]=-999;
 	 }
-*/
+
 
 
 	/*	double dist_min = 1000000; //mm
@@ -358,7 +358,9 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDelayFromSeed->Fill(hit->getHitTime() - eventSeedTime);
 	}
 
+	cout << "before"<< Nclusters<<endl;
 	Nclusters = clusters.size();
+	cout << "after"<< Nclusters<<endl;
 	if (clusters.size() == 1) {
 
 		auto cluster = clusters[0];
