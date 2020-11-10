@@ -358,9 +358,9 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDelayFromSeed->Fill(hit->getHitTime() - eventSeedTime);
 	}
 
-	cout << "before"<< Nclusters<<endl;
+	//cout << "before"<< Nclusters<<endl;
 	Nclusters = clusters.size();
-	cout << "after"<< Nclusters<<endl;
+	//cout << "after"<< Nclusters<<endl;
 	if (clusters.size() == 1) {
 
 		auto cluster = clusters[0];
