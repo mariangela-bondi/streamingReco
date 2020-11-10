@@ -241,15 +241,16 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 	 Nclusters = -999;
-	 Eseed[3] ={-999, -999, -999};
-	 Eclus[3] ={-999, -999, -999};
-	 Tseed[3]={-999, -999, -999};
-	 Tclus[3]={-999, -999, -999};
-	 Xseed[3]={-999, -999, -999};
-	 Yseed[3]={-999, -999, -999};
-	 Xclus[3]={-999, -999, -999};
-	 Yclus[3]={-999, -999, -999};
-
+	 for(int i=0; i<3; i++){
+	 Eseed[i] =-999;
+	 Eclus[i] =-999;
+	 Tseed[i]=-999;
+	 Tclus[i]=-999;
+	 Xseed[i]=-999;
+	 Yseed[i]=-999;
+	 Xclus[i]=-999;
+	 Yclus[i]=-999;
+	 }
 
 
 //Dichiarazione TriggerWord
