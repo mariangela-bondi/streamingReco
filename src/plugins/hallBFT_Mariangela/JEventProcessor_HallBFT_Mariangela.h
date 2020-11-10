@@ -43,7 +43,7 @@
 
 #include <JANA/JEventProcessor.h>
 #include <memory>
-
+#include <TTree.h>
 class JGlobalRootLock;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +59,19 @@ class JEventProcessor_HallBFT_Mariangela : public JEventProcessor{
 		virtual void Init(void);
 		virtual void Process(const std::shared_ptr<const JEvent>& aEvent);
 		virtual void Finish(void);
+
+		 int Nclusters ;
+		 double Eseed[3] ;
+		 double Eclus[3] ;
+		 double Tseed[3];
+		 double Tclus[3];
+		 double Xseed[3];
+		 double Yseed[3];
+		 double Xclus[3];
+		 double Yclus[3];
+
+
+		 TTree *tout;
 
 	protected:
 

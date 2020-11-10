@@ -54,7 +54,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
-#include "TTree.h"
+#include <TTree.h>
 #include <TGraph.h>
 #include <TGraphErrors.h>
 #include <TProfile2D.h>
@@ -124,18 +124,7 @@ static TH1D *h_tcoinc_combo = 0;
 static TH1D *h_minv = 0;
 static TH1D *h_minv_nocuts = 0;
 
-static int Nclusters = -99;
-static double Eseed[3] = {-99, -99, -99};
-static double Eclus[3] = {-99, -99, -99};
-static double Tseed[3]= {-99, -99, -99};
-static double Tclus[3]= {-99, -99, -99};
-static double Xseed[3]= {-99, -99, -99};
-static double Yseed[3]= {-99, -99, -99};
-static double Xclus[3]= {-99, -99, -99};
-static double Yclus[3]= {-99, -99, -99};
 
-
-static TTree *tout =0;
 
 //TimeWalk correction
 //static vector<TH2D *> CorrectionCurve;
