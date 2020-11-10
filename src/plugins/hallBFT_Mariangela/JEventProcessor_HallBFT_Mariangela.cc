@@ -239,20 +239,6 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEvent>& aEvent) {
 
 
-
-	 Nclusters = -999;
-	 for(int i=0; i<3; i++){
-	 Eseed[i] =-999;
-	 Eclus[i] =-999;
-	 Tseed[i]=-999;
-	 Tclus[i]=-999;
-	 Xseed[i]=-999;
-	 Yseed[i]=-999;
-	 Xclus[i]=-999;
-	 Yclus[i]=-999;
-	 }
-
-
 //Dichiarazione TriggerWord
 	vector<const TridasEvent*> tridas_events;
 	try {
@@ -285,6 +271,21 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 //lock
 	m_root_lock->acquire_write_lock();
+
+
+	 Nclusters = -999;
+	 for(int i=0; i<3; i++){
+	 Eseed[i] =-999;
+	 Eclus[i] =-999;
+	 Tseed[i]=-999;
+	 Tclus[i]=-999;
+	 Xseed[i]=-999;
+	 Yseed[i]=-999;
+	 Xclus[i]=-999;
+	 Yclus[i]=-999;
+	 }
+
+
 
 	/*	double dist_min = 1000000; //mm
 	 double dist_fid = 2. * 15. * sqrt(2.); //fiducial cut //mm
