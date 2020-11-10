@@ -1402,6 +1402,11 @@ void JEventProcessor_HallBFT_Mariangela::Finish(void) {
 				object->Write();
 				std::cout << "JEventProcessor_HallBFT_Mariangela::wrote " << object->GetName() << std::endl;
 			}
+			if (object->InheritsFrom(TTree::Class())){
+				fout->cd();
+				object->Write();
+				std::cout << "JEventProcessor_HallBFT_Mariangela::wrote " << object->GetName() << std::endl;
+			}
 		}
 
 		fout->Write();
