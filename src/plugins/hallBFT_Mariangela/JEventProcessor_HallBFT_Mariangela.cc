@@ -1360,6 +1360,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //						hPeak2Event->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
 //					}
 //					PeakEvents.push_back(hPeak2Event);
+	tout->Fill();
 	m_root_lock->release_lock();
 //unlock
 
