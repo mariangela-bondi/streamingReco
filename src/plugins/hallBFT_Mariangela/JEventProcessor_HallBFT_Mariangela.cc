@@ -54,6 +54,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
+#include "TTree.h"
 #include <TGraph.h>
 #include <TGraphErrors.h>
 #include <TProfile2D.h>
@@ -122,6 +123,8 @@ static TH1D *hTCSelectedInvariantMass = 0;
 static TH1D *h_tcoinc_combo = 0;
 static TH1D *h_minv = 0;
 static TH1D *h_minv_nocuts = 0;
+
+static TTree *tout =0;
 
 //TimeWalk correction
 //static vector<TH2D *> CorrectionCurve;
@@ -211,6 +214,20 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
                  }
 */
 
+	tout=new TTree("tout","tout");
+
+	tout->Branch("Nclusters",&Nclusters);
+	tout->Branch("Eseed", &Eseed, "Eseed[3]/D");
+	tout->Branch("Eclus", &Eclus, "Eclus[3]/D");
+	tout->Branch("Tseed", &Tseed, "Tseed[3]/D");
+	tout->Branch("Tclus", &Tclus, "Tclus[3]/D");
+	tout->Branch("Tseed", &Tseed, "Tseed[3]/D");
+	tout->Branch("Xseed", &Xseed, "Xseed[3]/D");
+	tout->Branch("Yseed", &Yseed, "Yseed[3]/D");
+	tout->Branch("Xclus", &Xclus, "Xclus[3]/D");
+	tout->Branch("Yclus", &Yclus, "Yclus[3]/D");
+
+
 	gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -220,6 +237,20 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 // Process
 //------------------
 void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEvent>& aEvent) {
+
+
+
+	 Nclusters = -999;
+	 Eseed[3] ={-999, -999, -999};
+	 Eclus[3] ={-999, -999, -999};
+	 Tseed[3]={-999, -999, -999};
+	 Tclus[3]={-999, -999, -999};
+	 Xseed[3]={-999, -999, -999};
+	 Yseed[3]={-999, -999, -999};
+	 Xclus[3]={-999, -999, -999};
+	 Yclus[3]={-999, -999, -999};
+
+
 
 //Dichiarazione TriggerWord
 	vector<const TridasEvent*> tridas_events;
@@ -314,7 +345,9 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDelayFromSeed->Fill(hit->getHitTime() - eventSeedTime);
 	}
 
+	Nclusters = clusters.size();
 	if (clusters.size() == 1) {
+
 		auto cluster = clusters[0];
 		auto seed = cluster->getHit(0);
 		hSCHitsMolt->Fill(cluster->getClusterSize());
@@ -330,8 +363,17 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		//hSCEnergyPosition->Fill((cluster->getX() + 170) / 15.4545 + 1, (cluster->getY() + 170) / 15.4545 + 1, cluster->getClusterFullEnergy());
 		hSCClusterPosition->Fill(cluster->getX(), cluster->getY());
 		hSCEnergyPosition->Fill(cluster->getX(), cluster->getY(), cluster->getClusterFullEnergy());
-
 		hSCClusterEnergyVsSeedEnergy->Fill(seed->getHitEnergy(), cluster->getClusterFullEnergy());
+
+		Eseed[0] = seed->getHitEnergy();
+		Eclus[0] = cluster->getClusterFullEnergy();
+		Tseed[0] = seed->getHitTime();
+		Tclus[0] = cluster->getClusterTime();
+		Xseed[0] = seed->getHitIX();
+		Yseed[0] = seed->getHitIY();
+		Xclus[0] = cluster->getX();
+		Yclus[0] = cluster->getY();
+
 	}
 
 	if (clusters.size() == 2) {
@@ -367,6 +409,25 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			double M = sqrt(2 * cluster0->getClusterFullEnergy() * cluster1->getClusterFullEnergy() * (1 - z));
 			hDCInvariantMass->Fill(M);
 		}
+
+		Eseed[0] = seed0->getHitEnergy();
+		Eclus[0] = cluster0->getClusterFullEnergy();
+		Tseed[0] = seed0->getHitTime();
+		Tclus[0] = cluster0->getClusterTime();
+		Xseed[0] = seed0->getHitIX();
+		Yseed[0] = seed0->getHitIY();
+		Xclus[0] = cluster0->getX();
+		Yclus[0] = cluster0->getY();
+
+		Eseed[1] = seed1->getHitEnergy();
+		Eclus[1] = cluster1->getClusterFullEnergy();
+		Tseed[1] = seed1->getHitTime();
+		Tclus[1] = cluster1->getClusterTime();
+		Xseed[1] = seed1->getHitIX();
+		Yseed[1] = seed1->getHitIY();
+		Xclus[1] = cluster1->getX();
+		Yclus[1] = cluster1->getY();
+
 	}
 
 	if (clusters.size() == 3) {
@@ -417,6 +478,34 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hTCInvariantMass->Fill(M12);
 
 		}
+
+		Eseed[0] = cluster0->getHit(0)->getHitEnergy();
+		Eclus[0] = cluster0->getClusterFullEnergy();
+		Tseed[0] = cluster0->getHit(0)->getHitTime();
+		Tclus[0] = cluster0->getClusterTime();
+		Xseed[0] = cluster0->getHit(0)->getHitIX();
+		Yseed[0] = cluster0->getHit(0)->getHitIY();
+		Xclus[0] = cluster0->getX();
+		Yclus[0] = cluster0->getY();
+
+		Eseed[1] = cluster1->getHit(0)->getHitEnergy();
+		Eclus[1] = cluster1->getClusterFullEnergy();
+		Tseed[1] = cluster1->getHit(0)->getHitTime();
+		Tclus[1] = cluster1->getClusterTime();
+		Xseed[1] = cluster1->getHit(0)->getHitIX();
+		Yseed[1] = cluster1->getHit(0)->getHitIY();
+		Xclus[1] = cluster1->getX();
+		Yclus[1] = cluster1->getY();
+
+		Eseed[2] = cluster2->getHit(0)->getHitEnergy();
+		Eclus[2] = cluster2->getClusterFullEnergy();
+		Tseed[2] = cluster2->getHit(0)->getHitTime();
+		Tclus[2] = cluster2->getClusterTime();
+		Xseed[2] = cluster2->getHit(0)->getHitIX();
+		Yseed[2] = cluster2->getHit(0)->getHitIY();
+		Xclus[2] = cluster2->getX();
+		Yclus[2] = cluster2->getY();
+
 	}
 
 	/*	if (hits.size() != 0 || hits_EneCorr.size() != 0 || hits_TimeCorr.size() != 0 || clusters.size() != 0 || clusters_EneCorr.size() != 0 || clusters_TimeCorr.size() != 0)
