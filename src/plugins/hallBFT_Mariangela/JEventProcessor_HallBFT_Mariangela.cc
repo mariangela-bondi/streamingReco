@@ -125,6 +125,10 @@ static TH1D *h_minv = 0;
 static TH1D *h_minv_nocuts = 0;
 
 
+// Check DC events with time cluster difference < -5 ns and >-15 ns
+
+static TH2D * hDCEneClus0vsEneClus1_DT=0
+static TH2D * hDCEneClus0vsEneClus1=0
 
 //TimeWalk correction
 //static vector<TH2D *> CorrectionCurve;
@@ -213,8 +217,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 		CorrectionCurve.push_back(hCorrectionCurve);
                  }
 */
-
-
+	hDCEneClus0vsEneClus1_DT = new TH2D("hDCEneClus0vsEneClus1_DT", "hDCEneClus0vsEneClus1_DT", 1500, 0, 15000, 1500, 0, 15000);
+	hDCEneClus0vsEneClus1 = new TH2D("hDCEneClus0vsEneClus1", "hDCEneClus0vsEneClus1", 1500, 0, 15000, 1500, 0, 15000);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -359,15 +363,15 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed0 = cluster0->getHit(0);
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
-
-		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-13 ){
+		hDCEneClus0vsEneClus1_DT->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
+		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
 
 			cout << "cluster 0"<<endl;
 			cout << "Time "<< cluster0->getClusterTime()<<"E tot "<< cluster0->getClusterFullEnergy()<<"X "<< cluster0->getX()<<" Y "<<cluster0->getY()<< endl;
 
 			cout << "cluster 1"<<endl;
 			cout << "Time "<< cluster1->getClusterTime()<<"E tot "<< cluster1->getClusterFullEnergy()<<"X "<< cluster1->getX()<<" Y "<<cluster1->getY()<< endl;
-
+			hDCEneClus0vsEneClus1_DT->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 
 		}
 
