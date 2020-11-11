@@ -127,9 +127,16 @@ static TH1D *h_minv_nocuts = 0;
 
 // Check DC events with time cluster difference < -5 ns and >-15 ns
 
-static TH2D * hDCEneClus0vsEneClus1_DT=0;
-static TH2D * hDCEneClus0vsEneClus1=0;
+static TH2D *hDCEneClus0vsEneClus1_DT=0;
+static TH2D *hDCEneClus0vsEneClus1=0;
 
+static TH2D *hDCEClus1vsEseedClus1_DT=0;
+static TH2D *hDCEClus1vsEseedClus1=0;
+
+
+static vector<TH2D*> XYDCPosClus1_DT;
+static vector<TH2D*> XYDCPosClus0_DT;
+int j=0;
 //TimeWalk correction
 //static vector<TH2D *> CorrectionCurve;
 
@@ -220,6 +227,16 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCEneClus0vsEneClus1_DT = new TH2D("hDCEneClus0vsEneClus1_DT", "hDCEneClus0vsEneClus1_DT", 1500, 0, 15000, 1500, 0, 15000);
 	hDCEneClus0vsEneClus1 = new TH2D("hDCEneClus0vsEneClus1", "hDCEneClus0vsEneClus1", 1500, 0, 15000, 1500, 0, 15000);
 
+	hDCEClus1vsEseedClus1_DT = new TH2D("hDCEClus1vsEseedClus1_DT", "hDCEClus1vsEseedClus1_DT", 3000, 0, 15000, 3000, 0, 15000);
+	hDCEClus1vsEseedClus1 = new TH2D("hDCEClus1vsEseedClus1", "hDCEClus1vsEseedClus1", 3000, 0, 15000, 3000, 0, 15000);
+	for (int j = 0; j < 30; j++) {
+
+		TH2D *hXYDCClus1 = new TH2D(Form("hXYDCClus1%d", j), Form("hXYDCClus1%d", j), 200, -200, 200, 200, -200, 200);
+		XYDCPosClus1_DT.push_back(hXYDCClus1);
+
+		TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 200, -200, 200, 200, -200, 200);
+		XYDCPosClus0_DT.push_back(hXYDCClus0);
+	}
 	gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -366,27 +383,35 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
 
-			cout << "cluster 0"<<endl;
-			cout << "Time "<< cluster0->getClusterTime()<<"E tot "<< cluster0->getClusterFullEnergy()<<"X "<< cluster0->getX()<<" Y "<<cluster0->getY()<< endl;
 
+
+		//	cout << "cluster 0"<<endl;
+		//	cout << "Time "<< cluster0->getClusterTime()<<"E tot "<< cluster0->getClusterFullEnergy()<<"X "<< cluster0->getX()<<" Y "<<cluster0->getY()<< endl;
+	         if(j<30){
 			for (int i = 0; i < cluster0->getClusterSize(); i++) {
 						auto hit = cluster0->getHit(i);
-			cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed0->getHitTime()<<endl;
-			cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<" "<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
+				XYDCPosClus0_DT[j]->Fill(hit->getHitIX(), hit->getHitIY());
+		//	cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed0->getHitTime()<<endl;
+		//	cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<" "<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
 			}
 
-			cout << "cluster 1"<<endl;
-			cout << "Time "<< cluster1->getClusterTime()<<"E tot "<< cluster1->getClusterFullEnergy()<<"X "<< cluster1->getX()<<" Y "<<cluster1->getY()<< endl;
+		//	cout << "cluster 1"<<endl;
+		//	cout << "Time "<< cluster1->getClusterTime()<<"E tot "<< cluster1->getClusterFullEnergy()<<"X "<< cluster1->getX()<<" Y "<<cluster1->getY()<< endl;
 
 			for (int i = 0; i < cluster1->getClusterSize(); i++) {
 						auto hit = cluster1->getHit(i);
-			cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed1->getHitTime()<<endl;
-			cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<" "<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
+		//	cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed1->getHitTime()<<endl;
+		//	cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<" "<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
+			XYDCPosClus1_DT[j]->Fill(hit->getHitIX(), hit->getHitIY());
 			}
-
+			j++;
+	         }
 
 			hDCEneClus0vsEneClus1_DT->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 
+		}
+		if(abs((cluster0->getClusterTime() - cluster1->getClusterTime()))<5){
+			hDCEClus1vsEseedClus1_DT->Fill(seed1->getHitEnergy(),cluster1->getClusterFullEnergy() );
 		}
 
 
