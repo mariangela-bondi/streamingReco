@@ -372,7 +372,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			for (int i = 0; i < cluster0->getClusterSize(); i++) {
 						auto hit = cluster0->getHit(i);
 			cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed0->getHitTime()<<endl;
-			cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
+			cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<" "<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
 			}
 
 			cout << "cluster 1"<<endl;
@@ -381,7 +381,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			for (int i = 0; i < cluster1->getClusterSize(); i++) {
 						auto hit = cluster1->getHit(i);
 			cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed1->getHitTime()<<endl;
-			cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
+			cout << "***** " <<hit->getHitTime()<< " "<< hit->getTimeWalkCorrection()<<" "<<hit->getHitTime() -hit->getTimeWalkCorrection()<<endl;
 			}
 
 
