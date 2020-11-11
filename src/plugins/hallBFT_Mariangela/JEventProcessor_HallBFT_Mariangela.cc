@@ -411,7 +411,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		}
 		if(abs((cluster0->getClusterTime() - cluster1->getClusterTime()))<5){
-			hDCEClus1vsEseedClus1_DT->Fill(seed1->getHitEnergy(),cluster1->getClusterFullEnergy() );
+			hDCEClus1vsEseedClus1->Fill(seed1->getHitEnergy(),cluster1->getClusterFullEnergy() );
 		}
 
 
