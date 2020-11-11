@@ -348,7 +348,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	}
 
 	//cout << "before"<< Nclusters<<endl;
-	Nclusters = clusters.size();
+
 	//cout << "after"<< Nclusters<<endl;
 	if (clusters.size() == 1) {
 
@@ -369,14 +369,6 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hSCEnergyPosition->Fill(cluster->getX(), cluster->getY(), cluster->getClusterFullEnergy());
 		hSCClusterEnergyVsSeedEnergy->Fill(seed->getHitEnergy(), cluster->getClusterFullEnergy());
 
-		Eseed[0] = seed->getHitEnergy();
-		Eclus[0] = cluster->getClusterFullEnergy();
-		Tseed[0] = seed->getHitTime();
-		Tclus[0] = cluster->getClusterTime();
-		Xseed[0] = seed->getHitIX();
-		Yseed[0] = seed->getHitIY();
-		Xclus[0] = cluster->getX();
-		Yclus[0] = cluster->getY();
 
 	}
 
@@ -392,6 +384,19 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed0 = cluster0->getHit(0);
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
+
+		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-13 ){
+
+			cout << "cluster 0"<<endl;
+			cout << "Time "<< cluster0->getClusterTime()<<"E tot "<< cluster0->getClusterFullEnergy()<<"X "<< cluster0->getX()<<" Y "<<cluster0->getY()<< endl;
+
+			cout << "cluster 1"<<endl;
+			cout << "Time "<< cluster1->getClusterTime()<<"E tot "<< cluster1->getClusterFullEnergy()<<"X "<< cluster1->getX()<<" Y "<<cluster1->getY()<< endl;
+
+
+		}
+
+
 		if (abs(cluster0->getClusterTime() - cluster1->getClusterTime()) < 2) {
 			hDCBigClusterMolt->Fill(cluster0->getClusterSize());
 			hDCSmallClusterMolt->Fill(cluster1->getClusterSize());
@@ -414,23 +419,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCInvariantMass->Fill(M);
 		}
 
-		Eseed[0] = seed0->getHitEnergy();
-		Eclus[0] = cluster0->getClusterFullEnergy();
-		Tseed[0] = seed0->getHitTime();
-		Tclus[0] = cluster0->getClusterTime();
-		Xseed[0] = seed0->getHitIX();
-		Yseed[0] = seed0->getHitIY();
-		Xclus[0] = cluster0->getX();
-		Yclus[0] = cluster0->getY();
 
-		Eseed[1] = seed1->getHitEnergy();
-		Eclus[1] = cluster1->getClusterFullEnergy();
-		Tseed[1] = seed1->getHitTime();
-		Tclus[1] = cluster1->getClusterTime();
-		Xseed[1] = seed1->getHitIX();
-		Yseed[1] = seed1->getHitIY();
-		Xclus[1] = cluster1->getX();
-		Yclus[1] = cluster1->getY();
 
 	}
 
@@ -483,32 +472,6 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		}
 
-		Eseed[0] = cluster0->getHit(0)->getHitEnergy();
-		Eclus[0] = cluster0->getClusterFullEnergy();
-		Tseed[0] = cluster0->getHit(0)->getHitTime();
-		Tclus[0] = cluster0->getClusterTime();
-		Xseed[0] = cluster0->getHit(0)->getHitIX();
-		Yseed[0] = cluster0->getHit(0)->getHitIY();
-		Xclus[0] = cluster0->getX();
-		Yclus[0] = cluster0->getY();
-
-		Eseed[1] = cluster1->getHit(0)->getHitEnergy();
-		Eclus[1] = cluster1->getClusterFullEnergy();
-		Tseed[1] = cluster1->getHit(0)->getHitTime();
-		Tclus[1] = cluster1->getClusterTime();
-		Xseed[1] = cluster1->getHit(0)->getHitIX();
-		Yseed[1] = cluster1->getHit(0)->getHitIY();
-		Xclus[1] = cluster1->getX();
-		Yclus[1] = cluster1->getY();
-
-		Eseed[2] = cluster2->getHit(0)->getHitEnergy();
-		Eclus[2] = cluster2->getClusterFullEnergy();
-		Tseed[2] = cluster2->getHit(0)->getHitTime();
-		Tclus[2] = cluster2->getClusterTime();
-		Xseed[2] = cluster2->getHit(0)->getHitIX();
-		Yseed[2] = cluster2->getHit(0)->getHitIY();
-		Xclus[2] = cluster2->getX();
-		Yclus[2] = cluster2->getY();
 
 	}
 
