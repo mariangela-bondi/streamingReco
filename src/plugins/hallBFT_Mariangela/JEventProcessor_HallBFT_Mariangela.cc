@@ -365,13 +365,24 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
-/*
+
 			cout << "cluster 0"<<endl;
 			cout << "Time "<< cluster0->getClusterTime()<<"E tot "<< cluster0->getClusterFullEnergy()<<"X "<< cluster0->getX()<<" Y "<<cluster0->getY()<< endl;
 
+			for (int i = 0; i < cluster0->getClusterSize(); i++) {
+						auto hit = cluster0->getHit(i);
+			cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed0->getHitTime()<<endl;
+			}
+
 			cout << "cluster 1"<<endl;
 			cout << "Time "<< cluster1->getClusterTime()<<"E tot "<< cluster1->getClusterFullEnergy()<<"X "<< cluster1->getX()<<" Y "<<cluster1->getY()<< endl;
-*/
+
+			for (int i = 0; i < cluster1->getClusterSize(); i++) {
+						auto hit = cluster1->getHit(i);
+			cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<hit->getHitTime()-seed1->getHitTime()<<endl;
+			}
+
+
 			hDCEneClus0vsEneClus1_DT->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 
 		}
