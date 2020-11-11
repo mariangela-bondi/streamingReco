@@ -363,7 +363,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed0 = cluster0->getHit(0);
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
-		hDCEneClus0vsEneClus1_DT->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
+		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
 /*
 			cout << "cluster 0"<<endl;
