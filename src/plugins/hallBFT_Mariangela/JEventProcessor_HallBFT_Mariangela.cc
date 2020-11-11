@@ -214,18 +214,6 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
                  }
 */
 
-	tout=new TTree("tout","tout");
-
-	tout->Branch("Nclusters",&Nclusters);
-	tout->Branch("Eseed", &Eseed, "Eseed[3]/D");
-	tout->Branch("Eclus", &Eclus, "Eclus[3]/D");
-	tout->Branch("Tseed", &Tseed, "Tseed[3]/D");
-	tout->Branch("Tclus", &Tclus, "Tclus[3]/D");
-	tout->Branch("Tseed", &Tseed, "Tseed[3]/D");
-	tout->Branch("Xseed", &Xseed, "Xseed[3]/D");
-	tout->Branch("Yseed", &Yseed, "Yseed[3]/D");
-	tout->Branch("Xclus", &Xclus, "Xclus[3]/D");
-	tout->Branch("Yclus", &Yclus, "Yclus[3]/D");
 
 
 	gDirectory->cd();
@@ -1326,7 +1314,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //						hPeak2Event->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
 //					}
 //					PeakEvents.push_back(hPeak2Event);
-	tout->Fill();
+
 	m_root_lock->release_lock();
 //unlock
 
