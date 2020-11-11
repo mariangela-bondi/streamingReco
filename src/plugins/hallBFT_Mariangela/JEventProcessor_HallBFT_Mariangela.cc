@@ -127,8 +127,8 @@ static TH1D *h_minv_nocuts = 0;
 
 // Check DC events with time cluster difference < -5 ns and >-15 ns
 
-static TH2D * hDCEneClus0vsEneClus1_DT=0
-static TH2D * hDCEneClus0vsEneClus1=0
+static TH2D * hDCEneClus0vsEneClus1_DT=0;
+static TH2D * hDCEneClus0vsEneClus1=0;
 
 //TimeWalk correction
 //static vector<TH2D *> CorrectionCurve;
