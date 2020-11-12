@@ -231,10 +231,10 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCEClus1vsEseedClus1 = new TH2D("hDCEClus1vsEseedClus1", "hDCEClus1vsEseedClus1", 3000, 0, 15000, 3000, 0, 15000);
 	for (int j = 0; j < 30; j++) {
 
-		TH2D *hXYDCClus1 = new TH2D(Form("hXYDCClus1%d", j), Form("hXYDCClus1%d", j), 200, -200, 200, 200, -200, 200);
+		TH2D *hXYDCClus1 = new TH2D(Form("hXYDCClus1%d", j), Form("hXYDCClus1%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 		XYDCPosClus1_DT.push_back(hXYDCClus1);
 
-		TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 200, -200, 200, 200, -200, 200);
+		TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 		XYDCPosClus0_DT.push_back(hXYDCClus0);
 	}
 	gDirectory->cd();
