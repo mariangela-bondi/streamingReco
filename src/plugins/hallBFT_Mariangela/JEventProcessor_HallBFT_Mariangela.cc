@@ -133,6 +133,8 @@ static TH2D *hDCEneClus0vsEneClus1=0;
 static TH2D *hDCEClus1vsEseedClus1_DT=0;
 static TH2D *hDCEClus1vsEseedClus1=0;
 
+static TH1D * hDT_Hit_seed_fake2Cluster=0;
+
 
 static vector<TH2D*> XYDCPosClus1_DT;
 static vector<TH2D*> XYDCPosClus0_DT;
@@ -224,6 +226,9 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 		CorrectionCurve.push_back(hCorrectionCurve);
                  }
 */
+
+	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 200, -100, 100);
+
 	hDCEneClus0vsEneClus1_DT = new TH2D("hDCEneClus0vsEneClus1_DT", "hDCEneClus0vsEneClus1_DT", 1500, 0, 15000, 1500, 0, 15000);
 	hDCEneClus0vsEneClus1 = new TH2D("hDCEneClus0vsEneClus1", "hDCEneClus0vsEneClus1", 1500, 0, 15000, 1500, 0, 15000);
 
@@ -381,6 +386,16 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
+
+		if(clusters_noCorr.size() ==1){
+
+			for (auto hit : hits) {
+				hDT_Hit_seed_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime());
+			}
+
+
+		}
+		/*
 		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-6 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
 			cout <<clusters_noCorr.size()<<" "<<clusters.size()<<endl;
             cout<< "******** No Corr ****"<<endl;
@@ -420,10 +435,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCEneClus0vsEneClus1_DT->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 			hDCEClus1vsEseedClus1_DT->Fill(seed1->getHitEnergy(),cluster1->getClusterFullEnergy() );
 		}
+
 		if(abs((cluster0->getClusterTime() - cluster1->getClusterTime()))<5){
 			hDCEClus1vsEseedClus1->Fill(seed1->getHitEnergy(),cluster1->getClusterFullEnergy() );
 		}
-
+*/
 
 		if (abs(cluster0->getClusterTime() - cluster1->getClusterTime()) < 2) {
 			hDCBigClusterMolt->Fill(cluster0->getClusterSize());
