@@ -133,7 +133,8 @@ static TH2D *hDCEneClus0vsEneClus1=0;
 static TH2D *hDCEClus1vsEseedClus1_DT=0;
 static TH2D *hDCEClus1vsEseedClus1=0;
 
-static TH1D * hDT_Hit_seed_fake2Cluster=0;
+static TH1D *hDT_Hit_seed_fake2Cluster=0;
+static TH2D *hDT_Hit_seed_Vs_component_fake2Cluster=0;
 
 
 static vector<TH2D*> XYDCPosClus1_DT;
@@ -228,6 +229,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 */
 
 	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 200, -100, 100);
+	hDT_Hit_seed_Vs_component_fake2Cluster = new TH2D("hDT_Hit_seed_Vs_component_fake2Cluster", "hDT_Hit_seed_Vs_component_fake2Cluster", 200, -50., 50., 500, 0., 500);
 
 	hDCEneClus0vsEneClus1_DT = new TH2D("hDCEneClus0vsEneClus1_DT", "hDCEneClus0vsEneClus1_DT", 1500, 0, 15000, 1500, 0, 15000);
 	hDCEneClus0vsEneClus1 = new TH2D("hDCEneClus0vsEneClus1", "hDCEneClus0vsEneClus1", 1500, 0, 15000, 1500, 0, 15000);
@@ -391,6 +393,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 			for (auto hit : hits) {
 				hDT_Hit_seed_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime());
+				hDT_Hit_seed_Vs_component_fake2Cluster->Fill(hit->m_channel.componen,hit->getHitTime() - seed0->getHitTime());
 			}
 
 
