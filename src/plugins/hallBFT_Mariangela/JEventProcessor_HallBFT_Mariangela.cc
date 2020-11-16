@@ -268,7 +268,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //	auto hits_TimeCorr = aEvent->Get<FTCalHitTimeCorr>();
 
 //Clusters dell'evento
-//	auto clusters = aEvent->Get<FTCalCluster>();
+	auto clusters_noCorr = aEvent->Get<FTCalCluster>();
 	auto clusters = aEvent->Get < FTCalCluster > ("EneCorr");
 //	auto clusters_TimeCorr = aEvent->Get < FTCalCluster > ("TimeCorr");
 //	auto clusters_EneCorr = aEvent->Get < FTCalCluster > ("EneCorr"); //vector dei clusters dell'evento con correzione sull'energia degli hit
@@ -381,8 +381,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
-		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-5 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
-
+		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-6 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
+			cout <<clusters_noCorr.size()<<" "<<clusters.size()<<endl;
 
 
 		//	cout << "cluster 0"<<endl;
