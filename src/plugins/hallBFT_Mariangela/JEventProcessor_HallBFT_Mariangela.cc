@@ -393,7 +393,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 			for (auto hit : hits) {
 				hDT_Hit_seed_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime());
-				hDT_Hit_seed_Vs_component_fake2Cluster->Fill(hit->m_channel.component,hit->getHitTime() - seed0->getHitTime());
+				hDT_Hit_seed_Vs_component_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime(), hit->m_channel.component);
 			}
 
 
