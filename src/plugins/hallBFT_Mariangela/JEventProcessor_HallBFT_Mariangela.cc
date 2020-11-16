@@ -387,7 +387,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
            for(int c=0; c<clusters_noCorr.size(); c++){
         	   auto cluster_noCorr = clusters_noCorr[c];
         	   for (int i = 0; i < cluster_noCorr->getClusterSize(); i++) {
-        		   auto hit = cluster0->getHit(i);
+        		   auto hit = cluster_noCorr->getHit(i);
           cout << hit->m_channel.component<< " "<<hit->getHitEnergy()<< " "<<hit->getHitTime()<< " "<<endl;
         	   }
 
