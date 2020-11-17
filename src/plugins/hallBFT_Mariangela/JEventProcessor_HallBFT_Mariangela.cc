@@ -141,7 +141,7 @@ static vector<TH2D*> XYDCPosClus1_DT;
 static vector<TH2D*> XYDCPosClus0_DT;
 int j=0;
 //TimeWalk correction
-//static vector<TH2D *> CorrectionCurve;
+static vector<TH2D *> CorrectionCurve;
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -221,12 +221,12 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hTCClustersDeltaTime = new TH2D("hTCClustersDeltaTime", "hTCClustersDeltaTime", 201, -0.5, 200.5, 201, -0.5, 200.5);
 	hTCInvariantMass = new TH1D("hTCInvariantMass", "hTCInvariantMass", 500, 0, 500);
 	hTCSelectedInvariantMass = new TH1D("hTCSelectedInvariantMass", "hTCSelectedInvariantMass", 500, 0, 500);
-/*
+
 	for (int j = 0; j < 500; j++) {
-	 TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 60, -25.5, 34.5);
+	 TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 60, -5.5, 54.5);
 		CorrectionCurve.push_back(hCorrectionCurve);
                  }
-*/
+
 
 	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 200, -100, 100);
 	hDT_Hit_seed_Vs_component_fake2Cluster = new TH2D("hDT_Hit_seed_Vs_component_fake2Cluster", "hDT_Hit_seed_Vs_component_fake2Cluster", 200, -50., 50., 500, 0., 500);
@@ -839,15 +839,15 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 }*/
 
 //Riempe CorrectionCurve, TH2D ritardo hit (rispetto al seed) vs energy hit, uno diverso per ogni component, da cui ricavare la curva di correzione
-/*
-	if (clusters.size() == 1) {
-	 auto seed = clusters[0]->getHit(0);
-	 for (int i = 1; i < clusters[0]->getClusterSize(); i++) {
-	 auto hit = clusters[0]->getHit(i);
+
+	if (clusters_noCorr.size() == 1) {
+	 auto seed = clusters_noCorr[0]->getHit(0);
+	 for (int i = 1; i < clusters_noCorr[0]->getClusterSize(); i++) {
+	 auto hit = clusters_noCorr[0]->getHit(i);
 	 CorrectionCurve[hit->m_channel.component]->Fill(hit->getHitEnergy(), hit->getHitTime() - seed->getHitTime());
 	 }
 	 }
-*/
+
 //Riempe CorrectionCurve, per cluster non corretti, TH2D ritardo hit (rispetto al seed) vs energy hit, uno diverso per ogni component, da cui ricavare la curva di correzione
 	/*	if (eventNumber > 1000000) {
 	 if (clusters.size() == 1) {
