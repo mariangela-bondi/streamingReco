@@ -137,12 +137,13 @@ static TH1D *hDT_Hit_seed_fake2Cluster=0;
 static TH2D *hDT_Hit_seed_Vs_component_fake2Cluster=0;
 
 
-static vector<TH2D*> XYDCPosClus1_DT;
-static vector<TH2D*> XYDCPosClus0_DT;
+//static vector<TH2D*> XYDCPosClus1_DT;
+//static vector<TH2D*> XYDCPosClus0_DT;
 int j=0;
 //TimeWalk correction
 static vector<TH2D *> CorrectionCurve;
 static vector<TH1D *> DT_Hit_seed;
+static vector<TH2D *> DT_Hit_seed_ene;
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -227,12 +228,15 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	 TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 60, -5.5, 54.5);
 		CorrectionCurve.push_back(hCorrectionCurve);
 
-		TH1D *hDT_Hit_seed = new TH1D(Form("hDT_Hit_seed%d", j), Form("hDT_Hit_seed%d", j), 400, -100, 100);
+		TH1D *hDT_Hit_seed = new TH1D(Form("hDT_Hit_seed%d", j), Form("hDT_Hit_seed%d", j), 200, -30, 30);
 		DT_Hit_seed.push_back(hDT_Hit_seed);
+
+		TH2D *hDT_Hit_seed_ene = new TH2D(Form("hDT_Hit_seed_ene%d", j), Form("hDT_Hit_seed_ene%d", j), 1000, 0, 10000, 200, -30, 30);
+		DT_Hit_seed_ene.push_back(hDT_Hit_seed_ene);
                  }
 
 
-	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 400, -100, 100);
+	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 200, -30, 30);
 	hDT_Hit_seed_Vs_component_fake2Cluster = new TH2D("hDT_Hit_seed_Vs_component_fake2Cluster", "hDT_Hit_seed_Vs_component_fake2Cluster", 200, -50., 50., 500, 0., 500);
 
 	hDCEneClus0vsEneClus1_DT = new TH2D("hDCEneClus0vsEneClus1_DT", "hDCEneClus0vsEneClus1_DT", 1500, 0, 15000, 1500, 0, 15000);
@@ -242,11 +246,11 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCEClus1vsEseedClus1 = new TH2D("hDCEClus1vsEseedClus1", "hDCEClus1vsEseedClus1", 3000, 0, 15000, 3000, 0, 15000);
 	for (int j = 0; j < 30; j++) {
 
-		TH2D *hXYDCClus1 = new TH2D(Form("hXYDCClus1%d", j), Form("hXYDCClus1%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
-		XYDCPosClus1_DT.push_back(hXYDCClus1);
+	//	TH2D *hXYDCClus1 = new TH2D(Form("hXYDCClus1%d", j), Form("hXYDCClus1%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
+	//	XYDCPosClus1_DT.push_back(hXYDCClus1);
 
-		TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
-		XYDCPosClus0_DT.push_back(hXYDCClus0);
+	//	TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
+	//	XYDCPosClus0_DT.push_back(hXYDCClus0);
 	}
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -396,10 +400,13 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		if(clusters_noCorr.size() ==1){
 
 			for (auto hit : hits) {
+				if(cluster0->getHit(0)->m_channel.component != hit->m_channel.component ){;
 				DT_Hit_seed[hit->m_channel.component]->Fill(hit->getHitTime() - seed0->getHitTime());
+				DT_Hit_seed_ene[hit->m_channel.component]->Fill(hit->getHitEnergy(), hit->getHitTime() - seed0->getHitTime());
 				hDT_Hit_seed_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime());
 				hDT_Hit_seed_Vs_component_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime(), hit->m_channel.component);
-			}
+				}
+				}
 
 
 		}
