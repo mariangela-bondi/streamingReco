@@ -227,7 +227,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	 TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 60, -5.5, 54.5);
 		CorrectionCurve.push_back(hCorrectionCurve);
 
-		TH1D *hDT_Hit_seed = new TH2D(Form("hDT_Hit_seed%d", j), Form("hDT_Hit_seed%d", j), 400, -100, 100);
+		TH1D *hDT_Hit_seed = new TH1D(Form("hDT_Hit_seed%d", j), Form("hDT_Hit_seed%d", j), 400, -100, 100);
 		DT_Hit_seed.push_back(hDT_Hit_seed);
                  }
 
