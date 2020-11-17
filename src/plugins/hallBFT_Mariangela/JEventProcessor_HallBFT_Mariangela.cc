@@ -400,11 +400,13 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		if(clusters_noCorr.size() ==1){
 
 			for (auto hit : hits) {
-				if(cluster0->getHit(0)->m_channel.component != hit->m_channel.component ){;
+				if(cluster0->getHit(0)->m_channel.component != hit->m_channel.component ){
+                  if(std::fabs(hit->getHitIX() - cluster0->getHit(0)->getHitIX())<1 && std::fabs(hit->getHitIY() - cluster0->getHit(0)->->getHitIY())<1 ){
 				DT_Hit_seed[hit->m_channel.component]->Fill(hit->getHitTime() - seed0->getHitTime());
 				DT_Hit_seed_ene[hit->m_channel.component]->Fill(hit->getHitEnergy(), hit->getHitTime() - seed0->getHitTime());
 				hDT_Hit_seed_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime());
 				hDT_Hit_seed_Vs_component_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime(), hit->m_channel.component);
+                  }
 				}
 				}
 
