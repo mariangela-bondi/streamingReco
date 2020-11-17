@@ -44,8 +44,10 @@
 
 //Need file of constant!!!!!!!!!!
 int minClusterSize = 3; //Need size >= to min for accept cluster.
-double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
-double minSeedEnergy = 10;
+//double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
+//double minSeedEnergy = 10;
+double minClusterEnergy = 60; //Need size > to min for accept cluster. Not >=.
+double minSeedEnergy = 50;
 int time_window = 50; //ns
 //int time_max= 30; //Temporary modify of cluster definition.
 //int time_min = -5;
