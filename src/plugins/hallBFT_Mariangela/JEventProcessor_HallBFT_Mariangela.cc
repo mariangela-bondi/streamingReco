@@ -142,6 +142,7 @@ static vector<TH2D*> XYDCPosClus0_DT;
 int j=0;
 //TimeWalk correction
 static vector<TH2D *> CorrectionCurve;
+static vector<TH1D *> DT_Hit_seed;
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -225,10 +226,13 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	for (int j = 0; j < 500; j++) {
 	 TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 60, -5.5, 54.5);
 		CorrectionCurve.push_back(hCorrectionCurve);
+
+		TH1D *hDT_Hit_seed = new TH2D(Form("hDT_Hit_seed%d", j), Form("hDT_Hit_seed%d", j), 400, -100, 100);
+		DT_Hit_seed.push_back(hDT_Hit_seed);
                  }
 
 
-	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 200, -100, 100);
+	hDT_Hit_seed_fake2Cluster = new TH1D("hDT_Hit_seed_fake2Cluster", "hDT_Hit_seed_fake2Cluster", 400, -100, 100);
 	hDT_Hit_seed_Vs_component_fake2Cluster = new TH2D("hDT_Hit_seed_Vs_component_fake2Cluster", "hDT_Hit_seed_Vs_component_fake2Cluster", 200, -50., 50., 500, 0., 500);
 
 	hDCEneClus0vsEneClus1_DT = new TH2D("hDCEneClus0vsEneClus1_DT", "hDCEneClus0vsEneClus1_DT", 1500, 0, 15000, 1500, 0, 15000);
@@ -392,6 +396,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		if(clusters_noCorr.size() ==1){
 
 			for (auto hit : hits) {
+				DT_Hit_seed[hit->m_channel.component]->Fill(hit->getHitTime() - seed0->getHitTime());
 				hDT_Hit_seed_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime());
 				hDT_Hit_seed_Vs_component_fake2Cluster->Fill(hit->getHitTime() - seed0->getHitTime(), hit->m_channel.component);
 			}
