@@ -148,7 +148,24 @@ int j=0;
 
 // HODO HIT histo
 static TH2D *hHitsHODOPosition = 0;
-static TH1D *hEneHitHODO[2][8][20];
+static vector<TH1D *> EneHitHODO_layer1_sector1;
+static vector<TH1D *> EneHitHODO_layer1_sector2;
+static vector<TH1D *> EneHitHODO_layer1_sector3;
+static vector<TH1D *> EneHitHODO_layer1_sector4;
+static vector<TH1D *> EneHitHODO_layer1_sector5;
+static vector<TH1D *> EneHitHODO_layer1_sector6;
+static vector<TH1D *> EneHitHODO_layer1_sector7;
+static vector<TH1D *> EneHitHODO_layer1_sector8;
+
+static vector<TH1D *> EneHitHODO_layer2_sector1;
+static vector<TH1D *> EneHitHODO_layer2_sector2;
+static vector<TH1D *> EneHitHODO_layer2_sector3;
+static vector<TH1D *> EneHitHODO_layer2_sector4;
+static vector<TH1D *> EneHitHODO_layer2_sector5;
+static vector<TH1D *> EneHitHODO_layer2_sector6;
+static vector<TH1D *> EneHitHODO_layer2_sector7;
+static vector<TH1D *> EneHitHODO_layer2_sector8;
+
 
 
 //---------------------------------
@@ -261,19 +278,59 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 	hHitsHODOPosition = new TH2D("hHitsHODOPosition", "hHitsHODOPosition", 400, -200, 200, 400, -200, 200);
 
-	for(int i=0; i<=1; i++){
-		for(int j=0; j<8; j++){
-			for(int w=0; w<20; w++){
+         for(int w=0; w<20; w++){
+           TH1D *hEneHitHODO_layer1_sector1 = new TH1D(Form("hEneHitHODO_layer1_sector1_%d",w), Form("hEneHitHODO_layer1_sector1_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector1.push_back(hEneHitHODO_layer1_sector1);
 
-			hEneHitHODO[i][j][w] = new TH1D(Form("hEneHitHODO%d_%d_%d", i,j,w), Form("hEneHitHODO%d_%d_%d", i,j,w), 1000, 0,100);
+           TH1D *hEneHitHODO_layer1_sector2 = new TH1D(Form("hEneHitHODO_layer1_sector2_%d",w), Form("hEneHitHODO_layer1_sector2_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector2.push_back(hEneHitHODO_layer1_sector2);
+
+           TH1D *hEneHitHODO_layer1_sector3 = new TH1D(Form("hEneHitHODO_layer1_sector3_%d",w), Form("hEneHitHODO_layer1_sector3_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector3.push_back(hEneHitHODO_layer1_sector3);
+
+           TH1D *hEneHitHODO_layer1_sector4 = new TH1D(Form("hEneHitHODO_layer1_sector4_%d",w), Form("hEneHitHODO_layer1_sector4_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector4.push_back(hEneHitHODO_layer1_sector4);
+
+           TH1D *hEneHitHODO_layer1_sector5 = new TH1D(Form("hEneHitHODO_layer1_sector5_%d",w), Form("hEneHitHODO_layer1_sector5_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector5.push_back(hEneHitHODO_layer1_sector5);
+
+           TH1D *hEneHitHODO_layer1_sector6 = new TH1D(Form("hEneHitHODO_layer1_sector6_%d",w), Form("hEneHitHODO_layer1_sector6_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector6.push_back(hEneHitHODO_layer1_sector6);
+
+           TH1D *hEneHitHODO_layer1_sector7 = new TH1D(Form("hEneHitHODO_layer1_sector7_%d",w), Form("hEneHitHODO_layer1_sector7_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector7.push_back(hEneHitHODO_layer1_sector7);
+
+           TH1D *hEneHitHODO_layer1_sector8 = new TH1D(Form("hEneHitHODO_layer1_sector8_%d",w), Form("hEneHitHODO_layer1_sector8_%d",w), 1000, 0,100);
+           EneHitHODO_layer1_sector8.push_back(hEneHitHODO_layer1_sector8);
+
+
+
+           TH1D *hEneHitHODO_layer2_sector1 = new TH1D(Form("hEneHitHODO_layer2_sector1_%d",w), Form("hEneHitHODO_layer2_sector1_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector1.push_back(hEneHitHODO_layer2_sector1);
+
+           TH1D *hEneHitHODO_layer2_sector2 = new TH1D(Form("hEneHitHODO_layer2_sector2_%d",w), Form("hEneHitHODO_layer2_sector2_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector2.push_back(hEneHitHODO_layer2_sector2);
+
+           TH1D *hEneHitHODO_layer2_sector3 = new TH1D(Form("hEneHitHODO_layer2_sector3_%d",w), Form("hEneHitHODO_layer2_sector3_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector3.push_back(hEneHitHODO_layer2_sector3);
+
+           TH1D *hEneHitHODO_layer2_sector4 = new TH1D(Form("hEneHitHODO_layer2_sector4_%d",w), Form("hEneHitHODO_layer2_sector4_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector4.push_back(hEneHitHODO_layer2_sector4);
+
+           TH1D *hEneHitHODO_layer2_sector5 = new TH1D(Form("hEneHitHODO_layer2_sector5_%d",w), Form("hEneHitHODO_layer2_sector5_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector5.push_back(hEneHitHODO_layer2_sector5);
+
+           TH1D *hEneHitHODO_layer2_sector6 = new TH1D(Form("hEneHitHODO_layer2_sector6_%d",w), Form("hEneHitHODO_layer2_sector6_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector6.push_back(hEneHitHODO_layer2_sector6);
+
+           TH1D *hEneHitHODO_layer2_sector7 = new TH1D(Form("hEneHitHODO_layer2_sector7_%d",w), Form("hEneHitHODO_layer2_sector7_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector7.push_back(hEneHitHODO_layer2_sector7);
+
+           TH1D *hEneHitHODO_layer2_sector8 = new TH1D(Form("hEneHitHODO_layer2_sector8_%d",w), Form("hEneHitHODO_layer2_sector8_%d",w), 1000, 0,100);
+           EneHitHODO_layer2_sector8.push_back(hEneHitHODO_layer2_sector8);
 
 			}
 
-		}
-
-
-
-	}
 	gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -372,7 +429,28 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	for (auto hit_hodo : hits_hodo) {
 
 		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
-		hEneHitHODO[hit_hodo->m_channel.sector - 1][hit_hodo->m_channel.layer - 1][hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+		if(hit_hodo->m_channel.layer == 1){
+			if(hit_hodo->m_channel.sector == 1)	EneHitHODO_layer1_sector1[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 2)	EneHitHODO_layer1_sector2[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 3)	EneHitHODO_layer1_sector3[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 4)	EneHitHODO_layer1_sector4[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 5)	EneHitHODO_layer1_sector5[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 6)	EneHitHODO_layer1_sector6[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 7)	EneHitHODO_layer1_sector7[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 8)	EneHitHODO_layer1_sector8[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+		}
+
+		if(hit_hodo->m_channel.layer == 2){
+			if(hit_hodo->m_channel.sector == 1)	EneHitHODO_layer2_sector1[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 2)	EneHitHODO_layer2_sector2[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 3)	EneHitHODO_layer2_sector3[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 4)	EneHitHODO_layer2_sector4[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 5)	EneHitHODO_layer2_sector5[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 6)	EneHitHODO_layer2_sector6[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 7)	EneHitHODO_layer2_sector7[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+			if(hit_hodo->m_channel.sector == 8)	EneHitHODO_layer2_sector8[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+		}
+
 	}
 
 
