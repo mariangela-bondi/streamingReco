@@ -370,7 +370,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 	for (auto hit_hodo : hits_hodo) {
 
-		hHitsHODOPosition->Fill(hit_hodo->getHitDx,hit_hodo->getHitDy);
+		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
 		hEneHitHODO[hit_hodo->m_channel.sector - 1][hit_hodo->m_channel.layer - 1][hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
 	}
 
@@ -576,7 +576,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 //Riempe CorrectionCurve, TH2D ritardo hit (rispetto al seed) vs energy hit, uno diverso per ogni component, da cui ricavare la curva di correzione
-
+/*
 	if (clusters_noCorr.size() == 1) {
 	 auto seed = clusters_noCorr[0]->getHit(0);
 	 for (int i = 1; i < clusters_noCorr[0]->getClusterSize(); i++) {
@@ -584,7 +584,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 CorrectionCurve[hit->m_channel.component]->Fill(hit->getHitEnergy(), hit->getHitTime() - seed->getHitTime());
 	 }
 	 }
-
+*/
 
 
 
