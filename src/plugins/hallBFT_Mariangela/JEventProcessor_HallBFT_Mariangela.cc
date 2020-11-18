@@ -279,28 +279,28 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hHitsHODOPosition = new TH2D("hHitsHODOPosition", "hHitsHODOPosition", 200, -200, 200, 200, -200, 200);
 
          for(int w=0; w<20; w++){
-           TH1D *hEneHitHODO_layer1_sector1 = new TH1D(Form("hEneHitHODO_layer1_sector1_%d",w), Form("hEneHitHODO_layer1_sector1_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector1 = new TH1D(Form("hEneHitHODO_layer1_sector1_%d",w), Form("hEneHitHODO_layer1_sector1_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector1.push_back(hEneHitHODO_layer1_sector1);
 
-           TH1D *hEneHitHODO_layer1_sector2 = new TH1D(Form("hEneHitHODO_layer1_sector2_%d",w), Form("hEneHitHODO_layer1_sector2_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector2 = new TH1D(Form("hEneHitHODO_layer1_sector2_%d",w), Form("hEneHitHODO_layer1_sector2_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector2.push_back(hEneHitHODO_layer1_sector2);
 
-           TH1D *hEneHitHODO_layer1_sector3 = new TH1D(Form("hEneHitHODO_layer1_sector3_%d",w), Form("hEneHitHODO_layer1_sector3_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector3 = new TH1D(Form("hEneHitHODO_layer1_sector3_%d",w), Form("hEneHitHODO_layer1_sector3_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector3.push_back(hEneHitHODO_layer1_sector3);
 
-           TH1D *hEneHitHODO_layer1_sector4 = new TH1D(Form("hEneHitHODO_layer1_sector4_%d",w), Form("hEneHitHODO_layer1_sector4_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector4 = new TH1D(Form("hEneHitHODO_layer1_sector4_%d",w), Form("hEneHitHODO_layer1_sector4_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector4.push_back(hEneHitHODO_layer1_sector4);
 
-           TH1D *hEneHitHODO_layer1_sector5 = new TH1D(Form("hEneHitHODO_layer1_sector5_%d",w), Form("hEneHitHODO_layer1_sector5_%d",w),  1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector5 = new TH1D(Form("hEneHitHODO_layer1_sector5_%d",w), Form("hEneHitHODO_layer1_sector5_%d",w),  200, 0, 20);
            EneHitHODO_layer1_sector5.push_back(hEneHitHODO_layer1_sector5);
 
-           TH1D *hEneHitHODO_layer1_sector6 = new TH1D(Form("hEneHitHODO_layer1_sector6_%d",w), Form("hEneHitHODO_layer1_sector6_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector6 = new TH1D(Form("hEneHitHODO_layer1_sector6_%d",w), Form("hEneHitHODO_layer1_sector6_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector6.push_back(hEneHitHODO_layer1_sector6);
 
-           TH1D *hEneHitHODO_layer1_sector7 = new TH1D(Form("hEneHitHODO_layer1_sector7_%d",w), Form("hEneHitHODO_layer1_sector7_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector7 = new TH1D(Form("hEneHitHODO_layer1_sector7_%d",w), Form("hEneHitHODO_layer1_sector7_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector7.push_back(hEneHitHODO_layer1_sector7);
 
-           TH1D *hEneHitHODO_layer1_sector8 = new TH1D(Form("hEneHitHODO_layer1_sector8_%d",w), Form("hEneHitHODO_layer1_sector8_%d",w), 1500, 0, 15000);
+           TH1D *hEneHitHODO_layer1_sector8 = new TH1D(Form("hEneHitHODO_layer1_sector8_%d",w), Form("hEneHitHODO_layer1_sector8_%d",w), 200, 0, 20);
            EneHitHODO_layer1_sector8.push_back(hEneHitHODO_layer1_sector8);
 
 
