@@ -47,8 +47,8 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	if (hasLoaded == 0) {
 		auto jcalib_manager = japp->GetService<JCalibrationManager>();
-		//auto jcalib = jcalib_manager->GetJCalibration(aEvent->GetEventNumber());
-		auto jcalib = jcalib_manager->GetJCalibration(13000);
+		auto jcalib = jcalib_manager->GetJCalibration(aEvent->GetEventNumber());
+
 		//Load FT-HODO
 		std::vector<std::vector<double>> data;
 		jcalib->Get("/geometry/ft/fthodo", data);
@@ -65,10 +65,11 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 
 
-/*
+
 		//Load FT-HODO
 		std::vector<std::vector<double>> data_calib;
-		jcalib->Get("/calibration/ft/fthodo/charge_to_energy", data_calib);
+		auto jcalib_calib = jcalib_manager->GetJCalibration(13000);
+		jcalib_calib->Get("/calibration/ft/fthodo/charge_to_energy", data_calib);
 
 		for (auto row : data_calib) {
 			//sector - layer - component - mips_charge - mips_energy - fadc_to_charge - preamp_gain - apd_gain
@@ -80,7 +81,7 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 		//	cout << sector<< " "<<layer<<" "<<" "<<layer<<" "<<mips_charge[component]<<endl;
 		}
 
-*/
+
 
 		daq_gain[2][3][0] = 0.020601;
 		daq_gain[2][3][1] = 0.021433;
