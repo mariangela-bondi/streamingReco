@@ -439,7 +439,7 @@ void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
 
-			auto charge = faHit->m_charge / daq_gain[theCrate][faHit->m_channel.slot][faHit->m_channel.channel];
+			auto charge = faHit->m_charge / daq_gain[2][faHit->m_channel.slot][faHit->m_channel.channel];
 
 			charge = charge *fadc_to_charge;
 
