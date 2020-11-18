@@ -148,7 +148,7 @@ int j=0;
 
 // HODO HIT histo
 static TH2D *hHitsHODOPosition = 0;
-static TH1D* hEneHitHODO[2][8][20] =0;
+static TH1D* hEneHitHODO[2][8][20];
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -313,7 +313,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 // Hits Hodo
-	auto hits_hodo = aEvent->Get<FTHodoHit>;
+	auto hits_hodo = aEvent->Get<FTHodoHit>();
 
 
 //Numero dell'evento
@@ -430,7 +430,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
-
+/*
 		if(clusters_noCorr.size() ==1){
 
 			for (auto hit : hits) {
@@ -448,6 +448,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 		}
+		*/
 		/*
 		if((cluster0->getClusterTime() - cluster1->getClusterTime())<-6 &&(cluster0->getClusterTime() - cluster1->getClusterTime())>-15 ){
 			cout <<clusters_noCorr.size()<<" "<<clusters.size()<<endl;
