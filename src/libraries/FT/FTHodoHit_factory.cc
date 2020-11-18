@@ -438,7 +438,7 @@ void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 			//Assign the energy
 			//TODO: eventually apply another correction, here I just take the energy as provided by VTP
-
+/*
 			auto charge = faHit->m_charge / daq_gain[2][faHit->m_channel.slot][faHit->m_channel.channel];
 
 			charge = charge *fadc_to_charge;
@@ -446,7 +446,7 @@ void FTHodoHit_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 			auto ene = charge * mips_energy_hodo[ftHodoHit->m_channel.sector - 1][ftHodoHit->m_channel.layer - 1][ftHodoHit->m_channel.component - 1];
 			 ene = ene/mips_charge_hodo[ftHodoHit->m_channel.sector - 1][ftHodoHit->m_channel.layer - 1][ftHodoHit->m_channel.component - 1];
 			 ftHodoHit->setHitEnergy(ene);
-
+*/
 		//	ftHodoHit->setHitEnergy(faHit->m_charge);
 
 			//Set the hit position
