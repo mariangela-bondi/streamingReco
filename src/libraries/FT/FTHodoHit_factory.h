@@ -29,7 +29,7 @@ private:
 
 
 	TranslationTable const *m_tt;
-	double daq_gain[2][22][16];
+	double daq_gain[3][22][16];
 
 	double mips_charge_hodo[8][2][20];
 	double mips_energy_hodo[8][2][20];
