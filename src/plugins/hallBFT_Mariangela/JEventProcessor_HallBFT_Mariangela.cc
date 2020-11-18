@@ -148,7 +148,16 @@ int j=0;
 
 // HODO HIT histo
 static TH2D *hHitsHODOPosition = 0;
-static TH1D* hEneHitHODO[2][8][20] = { 0 };
+TH1D* hEneHitHODO[2][8][20];
+
+for(int i=0; i<=1; i++){
+	for(int j=0; j<8; j++){
+		for(int w=0; w<20; w++){
+
+			hEneHitHODO[i][j][w]=0;
+		}
+	}
+}
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
