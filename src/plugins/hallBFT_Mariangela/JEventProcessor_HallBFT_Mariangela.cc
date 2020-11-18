@@ -148,7 +148,7 @@ int j=0;
 
 // HODO HIT histo
 static TH2D *hHitsHODOPosition = 0;
-static TH1D* hEneHitHODO[2][8][20];
+//static TH1D* hEneHitHODO[2][8][20];
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -264,7 +264,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 		for(int j=0; j<8; j++){
 			for(int w=0; w<20; w++){
 
-			hEneHitHODO[i][j][w] = new TH1D(Form("hEneHitHODO%d_%d_%d", i,j,w), Form("hEneHitHODO%d_%d_%d", i,j,w), 1000, 0,100);
+		//	hEneHitHODO[i][j][w] = new TH1D(Form("hEneHitHODO%d_%d_%d", i,j,w), Form("hEneHitHODO%d_%d_%d", i,j,w), 1000, 0,100);
 
 			}
 
@@ -371,7 +371,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	for (auto hit_hodo : hits_hodo) {
 
 		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
-		hEneHitHODO[hit_hodo->m_channel.sector - 1][hit_hodo->m_channel.layer - 1][hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
+	//	hEneHitHODO[hit_hodo->m_channel.sector - 1][hit_hodo->m_channel.layer - 1][hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
 	}
 
 
