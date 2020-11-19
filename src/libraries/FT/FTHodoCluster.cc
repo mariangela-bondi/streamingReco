@@ -252,6 +252,10 @@ double FTHodoCluster::getPhi() const {
 	return _clusPhi;
 }
 
+const FTHodoHit* FTHodoCluster::getHit(int i) const {
+	return hits[i];
+}
+
 bool FTHodoCluster::isGoodCluster() const {
 	return _goodCluster;
 }

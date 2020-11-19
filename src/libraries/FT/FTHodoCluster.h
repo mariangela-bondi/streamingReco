@@ -97,6 +97,8 @@ public:
 
 	double getPhi() const;
 
+	const FTHodoHit* getHit(int i) const;
+
 	bool isGoodCluster() const;
 
 	//Controlla se l'hit analizzato e' contenuto nel cluster.

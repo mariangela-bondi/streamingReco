@@ -57,6 +57,7 @@ public:
 		this->Dz=value;
 	}
 
+
 	TranslationTable::FTHODO_Index_t m_channel;
 
 protected:
