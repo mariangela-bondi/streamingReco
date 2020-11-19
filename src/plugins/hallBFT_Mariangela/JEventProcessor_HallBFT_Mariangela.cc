@@ -72,6 +72,10 @@
 
 using namespace std;
 
+bool compareHits(const FTHodoHit* a, const FTHodoHit* b) {
+	return (a->getHitEnergy() > b->getHitEnergy());
+}
+
 /*Here goes the histograms*/
 static TH1D *hTest = 0;
 
@@ -167,7 +171,7 @@ static vector<TH1D *> EneHitHODO_layer2_sector6;
 static vector<TH1D *> EneHitHODO_layer2_sector7;
 static vector<TH1D *> EneHitHODO_layer2_sector8;
 
-static TH2D *hHitsHODOTime = 0;
+static TH1D *hHitsHODOTime = 0;
 
 
 
@@ -429,11 +433,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 } //-------photon2
 	 } //------photon1*/
 
-	std::sort(hits.begin(), hits.end(), FTHodoCluster_factory::compareHits);
+	std::sort(hits.begin(), hits.end(), compareHits);
 
+	 auto seed_hodo = hit_hodo.at(0);
 
 	for (auto hit_hodo : hits_hodo) {
-          if(hits_hodo.begin()) auto seed_hodo = hit_hodo;
 
 		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
 		if(hit_hodo->m_channel.layer == 1){
