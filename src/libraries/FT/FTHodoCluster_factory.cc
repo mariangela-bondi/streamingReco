@@ -15,7 +15,7 @@
 #include <functional>
 
 //this will set the hits in DESCENDING order wrt energy
-bool compareHits(const FTHodoHit* a, const FTHodoHit* b) {
+bool FTHodoCluster_factory::compareHits(const FTHodoHit* a, const FTHodoHit* b) {
 	return (a->getHitEnergy() > b->getHitEnergy());
 }
 
@@ -38,7 +38,7 @@ void FTHodoCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent)
 
 	//Loop su gli hits di un evento
 	std::vector<const FTHodoHit*> hits = aEvent->Get<const FTHodoHit>();
-	std::sort(hits.begin(), hits.end(), compareHits);
+	std::sort(hits.begin(), hits.end(), FTHodoCluster_factory::compareHits);
 	std::vector<FTHodoCluster*> clusters;
 
 	for (auto hit : hits) {

@@ -20,6 +20,7 @@ public:
 	virtual void Init();
 	virtual void ChangeRun(const std::shared_ptr<const JEvent> &aEvent);
 	virtual void Process(const std::shared_ptr<const JEvent> &aEvent);
+	static bool compareHits(const FTHodoHit* a, const FTHodoHit* b);
 };
 
 #endif /* SRC_LIBRARIES_FT_FTHODOCluster_FACTORY_H_ */

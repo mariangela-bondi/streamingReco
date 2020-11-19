@@ -44,6 +44,7 @@
 #include "FT/FTCalHitTimeCorr.h"
 #include "FT/FTHodoHit.h"
 #include "FT/FTCalCluster.h"
+#include "FT/FTHodoCluster.h"
 
 #include "JANA/Services/JGlobalRootLock.h"
 #include "JANA/JApplication.h"
@@ -165,6 +166,8 @@ static vector<TH1D *> EneHitHODO_layer2_sector5;
 static vector<TH1D *> EneHitHODO_layer2_sector6;
 static vector<TH1D *> EneHitHODO_layer2_sector7;
 static vector<TH1D *> EneHitHODO_layer2_sector8;
+
+static TH2D *hHitsHODOTime = 0;
 
 
 
@@ -330,6 +333,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
            EneHitHODO_layer2_sector8.push_back(hEneHitHODO_layer2_sector8);
 
 			}
+         hHitsHODOTime = new TH1D("hHitsHODOTime", "hHitsHODOTime", 300, -50, 50);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -425,8 +429,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 } //-------photon2
 	 } //------photon1*/
 
+	std::sort(hits.begin(), hits.end(), FTHodoCluster_factory::compareHits);
+
 
 	for (auto hit_hodo : hits_hodo) {
+          if(hits_hodo.begin()) auto seed_hodo = hit_hodo;
 
 		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
 		if(hit_hodo->m_channel.layer == 1){
@@ -451,6 +458,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			if(hit_hodo->m_channel.sector == 8)	EneHitHODO_layer2_sector8[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
 		}
 
+		if(seed_hodo->getHitEnergy()>=0.5) hHitsHODOTime->Fill(hit_hodo->getHitTime() - seed_hodo->getHitTime());
 	}
 
 
