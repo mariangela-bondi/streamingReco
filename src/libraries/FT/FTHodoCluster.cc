@@ -176,7 +176,7 @@ void FTHodoCluster::computeCluster() {
 		if (hit->m_channel.layer == 2) layer2 = true;
 	}
 
-	if (_clusSize > minClusterSize_hodo && _clusEnergy > minClusterEnergy_hodo && layer1 == true && layer2 == true)
+	if (_clusSize >= minClusterSize_hodo && _clusEnergy >= minClusterEnergy_hodo && layer1 == true && layer2 == true)
 		_goodCluster = true;
 	else
 		_goodCluster = false;
