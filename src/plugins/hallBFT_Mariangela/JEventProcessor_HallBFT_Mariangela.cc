@@ -437,7 +437,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
 
 
-   auto seed_hodo = *(hits_hodo.begin());
+   auto* seed_hodo = *(hits_hodo.begin());
    cout<< seed_hodo->getHitEnergy()<<endl;
 
 	for (auto hit_hodo : hits_hodo) {
