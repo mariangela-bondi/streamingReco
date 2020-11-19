@@ -12,7 +12,7 @@
 #include "TT/TranslationTable.h"
 #include "DAQ/chronoTypeDef.h"
 
-double EN_THRES = 0.25 ;
+
 class FTHodoHit: public JObject {
 public:
 	FTHodoHit();
