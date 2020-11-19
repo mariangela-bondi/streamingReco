@@ -437,7 +437,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
 
 
-	auto seed_hodo = hits_hodo.begin();
+   auto seed_hodo = hits_hodo.begin();
+
 	for (auto hit_hodo : hits_hodo) {
 		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
 		if(hit_hodo->m_channel.layer == 1){
@@ -462,7 +463,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			if(hit_hodo->m_channel.sector == 8)	EneHitHODO_layer2_sector8[hit_hodo->m_channel.component - 1]->Fill(hit_hodo->getHitEnergy());
 		}
 
-		if(seed_hodo->getHitEnergy()>=0.5) hHitsHODOTime->Fill(hit_hodo->getHitTime() - seed_hodo->getHitTime());
+		if(*seed_hodo->getHitEnergy()>=0.5) hHitsHODOTime->Fill(hit_hodo->getHitTime() - *seed_hodo->getHitTime());
 	}
 
 
