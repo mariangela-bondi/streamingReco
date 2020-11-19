@@ -495,6 +495,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		  auto cluster_hodo = clusters_hodo[i];
 		  hClustHODOHitmult->Fill(cluster_hodo->getClusterSize());
 		  hClustHODOEne->Fill(cluster_hodo->getClusterFullEnergy());
+		  hClustHODOPosition->Fill(cluster_hodo->getX(), cluster_hodo->getY());
 		  auto seed_hodo = 	cluster_hodo->getHit(0);
 		  for(int i = 1; i < cluster_hodo->getClusterSize(); i++){
 			    auto hit_hodo = cluster_hodo->getHit(i);
