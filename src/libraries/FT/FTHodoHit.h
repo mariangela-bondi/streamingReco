@@ -58,14 +58,7 @@ public:
 		this->Dz=value;
 	}
 
-  bool passHitSelection(const FTHodoHit* hit) {
-	// a selection cut to pass the hit.
-	if(hit->getHitEnergy() > EN_THRES) {
-		return true;
-	} else {
-		return false;
-	}
-}
+
 
 	TranslationTable::FTHODO_Index_t m_channel;
 

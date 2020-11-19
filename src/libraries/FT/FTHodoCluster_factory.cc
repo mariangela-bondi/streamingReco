@@ -19,6 +19,15 @@ bool FTHodoCluster_factory::compareHits(const FTHodoHit* a, const FTHodoHit* b) 
 	return (a->getHitEnergy() > b->getHitEnergy());
 }
 
+bool passHitSelection(const FTHodoHit *hit) {
+	// a selection cut to pass the hit.
+	if(hit->getHitEnergy() > EN_THRES) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 FTHodoCluster_factory::FTHodoCluster_factory() {
 	// TODO Auto-generated constructor stub
 
@@ -41,7 +50,7 @@ void FTHodoCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent)
 	std::vector<const FTHodoHit*> hits;
 
 	for (auto hit : hits_hodo) {
-		if(FTHodoHit::passHitSelection(hit)) {
+		if(passHitSelection(hit)) {
 		           hits.push_back(hit);
 		                }
 	               }
