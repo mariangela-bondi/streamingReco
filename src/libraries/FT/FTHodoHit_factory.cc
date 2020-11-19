@@ -64,8 +64,8 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 		}
 
 
+        cout << "sono a meta"<<endl;
 
-/*
 		//Load FT-HODO
 		std::vector<std::vector<double>> data_calib;
 		auto jcalib_calib = jcalib_manager->GetJCalibration(13000);
@@ -81,7 +81,7 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 		//	cout << sector<< " "<<layer<<" "<<" "<<layer<<" "<<mips_charge[component]<<endl;
 		}
 
-*/
+        cout << "sono quq"<<endl;
 
 		daq_gain[2][3][0] = 0.020601;
 		daq_gain[2][3][1] = 0.021433;
