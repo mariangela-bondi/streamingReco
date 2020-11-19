@@ -178,7 +178,7 @@ static TH1D *hClustHODOTimeSeed_hit=0;
 static TH2D *hClustHODOTimeSeedEne_hit =0;
 static TH1D *hClustHODOHitmult =0;
 static TH1D *hClustHODOEne =0;
-static TH1D *hClustHODOPosition =0;
+static TH2D *hClustHODOPosition =0;
 
 
 
