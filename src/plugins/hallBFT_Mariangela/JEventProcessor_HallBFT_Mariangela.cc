@@ -438,7 +438,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 
-   cout<< hits_hodo.size()<<endl;
+  if(hits_hodo.size()>0) cout<< hits_hodo[0]->getHitEnergy()<<endl;
 
 	for (auto hit_hodo : hits_hodo) {
 		hHitsHODOPosition->Fill(hit_hodo->getHitDx(),hit_hodo->getHitDy());
