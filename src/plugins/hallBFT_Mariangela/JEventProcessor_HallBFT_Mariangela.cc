@@ -433,7 +433,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	 } //-------photon2
 	 } //------photon1*/
 
-	std::sort(hits.begin(), hits.end(), compareHits);
+	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
 
 	 auto seed_hodo = hits_hodo.at(0);
 
