@@ -47,8 +47,8 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 
 	if (hasLoaded == 0) {
 		auto jcalib_manager = japp->GetService<JCalibrationManager>();
-		auto jcalib = jcalib_manager->GetJCalibration(aEvent->GetEventNumber());
-
+	//	auto jcalib = jcalib_manager->GetJCalibration(aEvent->GetEventNumber());
+		auto jcalib = jcalib_manager->GetJCalibration(13000);
 		//Load FT-HODO
 		std::vector<std::vector<double>> data;
 		jcalib->Get("/geometry/ft/fthodo", data);
