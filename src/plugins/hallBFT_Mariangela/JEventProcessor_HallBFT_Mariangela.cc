@@ -437,7 +437,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
 
 
-     FTHodoHit* seed_hodo = *hits_hodo.begin();
+    const FTHodoHit* seed_hodo = *hits_hodo.begin();
    cout<< "sono qua"<<endl;
 
 	for (auto hit_hodo : hits_hodo) {
