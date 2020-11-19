@@ -345,7 +345,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
          hClustHODOmult =new TH1D("hClustHODOmult", "hClustHODOmult", 20, -0.5, 19.5);
          hClustHODOTimeSeed_hit=new TH1D("hHitsHODOTime", "hHitsHODOTime", 300, -50, 50);
-         hClustHODOTimeSeedEne_hit = new TH1D("hClustHODOTimeSeedEne_hit", "hClustHODOTimeSeedEne_hit",400, 0, 10., 300, -50, 50);
+         hClustHODOTimeSeedEne_hit = new TH2D("hClustHODOTimeSeedEne_hit", "hClustHODOTimeSeedEne_hit",400, 0, 10., 300, -50, 50);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
