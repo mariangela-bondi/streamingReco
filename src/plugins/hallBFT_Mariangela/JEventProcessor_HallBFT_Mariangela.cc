@@ -175,6 +175,7 @@ static TH1D *hHitsHODOTime = 0;
 
 static TH1D *hClustHODOmult =0;
 static TH1D *hClustHODOTimeSeed_hit=0;
+static TH2D *hClustHODOTimeSeedEne_hit =0;
 
 
 
@@ -344,6 +345,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
          hClustHODOmult =new TH1D("hClustHODOmult", "hClustHODOmult", 20, -0.5, 19.5);
          hClustHODOTimeSeed_hit=new TH1D("hHitsHODOTime", "hHitsHODOTime", 300, -50, 50);
+         hClustHODOTimeSeedEne_hit = new TH1D("hClustHODOTimeSeedEne_hit", "hClustHODOTimeSeedEne_hit",400, 0, 10., 300, -50, 50);
 
 	gDirectory->cd();
 	m_root_lock->release_lock();
@@ -487,6 +489,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		  for(int i = 1; i < cluster_hodo->getClusterSize(); i++){
 			    auto hit_hodo = cluster_hodo->getHit(i);
 	     	hClustHODOTimeSeed_hit->Fill(hit_hodo->getHitTime() - seed_hodo->getHitTime());
+	     	hClustHODOTimeSeedEne_hit->Fill(hit_hodo->getHitEnergy(), hit_hodo->getHitTime() - seed_hodo->getHitTime());
 		  }
 	}
 	}
