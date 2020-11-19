@@ -178,6 +178,10 @@ static TH1D *hClustHODOTimeSeed_hit=0;
 static TH2D *hClustHODOTimeSeedEne_hit =0;
 static TH1D *hClustHODOHitmult =0;
 static TH1D *hClustHODOEne =0;
+static TH1D *hClustHODOEneHit_layer1 =0;
+static TH1D *hClustHODOEneHit_layer2 =0;
+static TH1D *hClustHODOEne_layer1 =0;
+static TH1D *hClustHODOEne_layer2 =0;
 static TH2D *hClustHODOPosition =0;
 
 
@@ -355,6 +359,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hClustHODOHitmult = new TH1D("hClustHODOHitmult", "hClustHODOHitmult", 20, -0.5, 19.5);
          hClustHODOEne =new TH1D("hClustHODOEne", "hClustHODOEne", 400, -0.5, 20.5);
          hClustHODOPosition = new TH2D("hClustHODOPosition", "hClustHODOPosition", 200, -200, 200, 200, -200, 200);
+         hClustHODOEneHit_layer1 = new TH1D("hClustHODOEneHit_layer1", "hClustHODOEneHit_layer1", 300, 0., 10);
+         hClustHODOEneHit_layer2 = new TH1D("hClustHODOEneHit_layer2", "hClustHODOEneHit_layer2", 300, 0., 10);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -496,11 +502,15 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		  hClustHODOHitmult->Fill(cluster_hodo->getClusterSize());
 		  hClustHODOEne->Fill(cluster_hodo->getClusterFullEnergy());
 		  hClustHODOPosition->Fill(cluster_hodo->getX(), cluster_hodo->getY());
+
+
 		  auto seed_hodo = 	cluster_hodo->getHit(0);
 		  for(int i = 1; i < cluster_hodo->getClusterSize(); i++){
 			    auto hit_hodo = cluster_hodo->getHit(i);
 	     	hClustHODOTimeSeed_hit->Fill(hit_hodo->getHitTime() - seed_hodo->getHitTime());
 	     	hClustHODOTimeSeedEne_hit->Fill(hit_hodo->getHitEnergy(), hit_hodo->getHitTime() - seed_hodo->getHitTime());
+	     	if(hit_hodo->m_channel.layer == 1) hClustHODOEneHit_layer1 = Fill(hit_hodo->getHitEnergy());
+	     	if(hit_hodo->m_channel.layer == 2) hClustHODOEneHit_layer2 = Fill(hit_hodo->getHitEnergy());
 		  }
 	}
 	}

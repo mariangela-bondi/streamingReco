@@ -44,7 +44,7 @@
 
 int minClusterSize_hodo = 2; //Need size > to min for accept cluster. Not >=.
 double minClusterEnergy_hodo = 1; //Need size > to min for accept cluster. Not >=.
-double time_window_hodo = 50;
+double time_window_hodo = 15;
 double x_window_hodo = 30; //Need to set it
 double y_window_hodo = 30; //Need to set it
 //double tabledHitZ = 1;
