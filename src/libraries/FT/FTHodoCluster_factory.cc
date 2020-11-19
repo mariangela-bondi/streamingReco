@@ -37,7 +37,14 @@ void FTHodoCluster_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEven
 void FTHodoCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	//Loop su gli hits di un evento
-	std::vector<const FTHodoHit*> hits = aEvent->Get<const FTHodoHit>();
+	std::vector<const FTHodoHit*> hits_hodo = aEvent->Get<const FTHodoHit>();
+	std::vector<const FTHodoHit*> hits;
+
+	for (auto hit : hits_hodo) {
+		if(FTHodoHit::passHitSelection(hit)) {
+		           hits.push_back(hit);
+		                }
+	               }
 
 	std::sort(hits.begin(), hits.end(), FTHodoCluster_factory::compareHits);
 	std::vector<FTHodoCluster*> clusters;

@@ -60,7 +60,7 @@ public:
 
   bool passHitSelection(const FTHodoHit* hit) {
 	// a selection cut to pass the hit.
-	if(hit.getHitEnergy() > EN_THRES) {
+	if(hit->getHitEnergy() > EN_THRES) {
 		return true;
 	} else {
 		return false;
