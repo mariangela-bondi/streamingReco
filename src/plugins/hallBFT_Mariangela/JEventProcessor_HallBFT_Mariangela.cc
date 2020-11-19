@@ -509,8 +509,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			    auto hit_hodo = cluster_hodo->getHit(i);
 	     	hClustHODOTimeSeed_hit->Fill(hit_hodo->getHitTime() - seed_hodo->getHitTime());
 	     	hClustHODOTimeSeedEne_hit->Fill(hit_hodo->getHitEnergy(), hit_hodo->getHitTime() - seed_hodo->getHitTime());
-	     	if(hit_hodo->m_channel.layer == 1) hClustHODOEneHit_layer1 = Fill(hit_hodo->getHitEnergy());
-	     	if(hit_hodo->m_channel.layer == 2) hClustHODOEneHit_layer2 = Fill(hit_hodo->getHitEnergy());
+	     	if(hit_hodo->m_channel.layer == 1) hClustHODOEneHit_layer1 -> Fill(hit_hodo->getHitEnergy());
+	     	if(hit_hodo->m_channel.layer == 2) hClustHODOEneHit_layer2 -> Fill(hit_hodo->getHitEnergy());
 		  }
 	}
 	}
