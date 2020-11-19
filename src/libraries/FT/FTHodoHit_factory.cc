@@ -64,7 +64,7 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 		}
 
 
-        cout << "sono a meta"<<endl;
+
 
 		//Load FT-HODO
 		std::vector<std::vector<double>> data_calib;
@@ -80,8 +80,6 @@ void FTHodoHit_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) {
 			mips_energy_hodo[sector - 1][layer - 1][component - 1] = row[4];
 		//	cout << sector<< " "<<layer<<" "<<" "<<layer<<" "<<mips_charge[component]<<endl;
 		}
-
-        cout << "sono quq"<<endl;
 
 		daq_gain[2][3][0] = 0.020601;
 		daq_gain[2][3][1] = 0.021433;
