@@ -178,6 +178,10 @@ static TH1D *hClustHODOTimeSeed_hit=0;
 static TH2D *hClustHODOTimeSeedEne_hit =0;
 static TH1D *hClustHODOHitmult =0;
 static TH1D *hClustHODOEne =0;
+static TH1D *hClustHODOPosition =0;
+
+
+
 
 
 
@@ -349,8 +353,9 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hClustHODOTimeSeed_hit=new TH1D("hHitsHODOTime", "hHitsHODOTime", 300, -50, 50);
          hClustHODOTimeSeedEne_hit = new TH2D("hClustHODOTimeSeedEne_hit", "hClustHODOTimeSeedEne_hit",400, 0, 10., 300, -50, 50);
          hClustHODOHitmult = new TH1D("hClustHODOHitmult", "hClustHODOHitmult", 20, -0.5, 19.5);
-         hClustHODOEne =new TH1D("hClustHODOEne", "hClustHODOEne", 400, -0.5, 10.5);
-	gDirectory->cd();
+         hClustHODOEne =new TH1D("hClustHODOEne", "hClustHODOEne", 400, -0.5, 20.5);
+         hClustHODOPosition = new TH2D("hClustHODOPosition", "hClustHODOPosition", 200, -200, 200, 200, -200, 200);
+         gDirectory->cd();
 	m_root_lock->release_lock();
 
 }
