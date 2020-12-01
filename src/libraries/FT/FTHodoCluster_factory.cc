@@ -58,8 +58,9 @@ void FTHodoCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent)
 
 	std::sort(hits.begin(), hits.end(), FTHodoCluster_factory::compareHits);
 	std::vector<FTHodoCluster*> clusters;
-
+    cout << "new "<<endl;
 	for (auto hit : hits) {
+		cout <<hit->m_channel.layer<<" "<<hit->getHitDx()<< " "<<hit->getHitDy()<< " "<< hit->getHitTime()<< " "<<hit->getHitEnergy()<<endl;
 		bool flag = false;
 		if (flag == false) {
 			for (int j = 0; j < clusters.size(); j++) {
