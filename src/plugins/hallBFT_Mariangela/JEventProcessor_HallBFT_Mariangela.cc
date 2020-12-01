@@ -193,6 +193,8 @@ static TH2D *hClustHODO_DTSeedvsSeed2_seed1th=0;
 static TH1D *hmatch_diffX=0;
 static TH1D *hmatch_diffY=0;
 static TH1D *hmatch_diffT=0;
+static TH2D *hmatch_diffX_diffY=0;
+static TH1D *hmatch_diffT_cut=0;
 
 
 
@@ -376,8 +378,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hmatch_diffX= new TH1D("hmatch_diffX", "hmatch_diffX", 200, -100, 100);
          hmatch_diffY= new TH1D("hmatch_diffY", "hmatch_diffY", 200, -100, 100);
          hmatch_diffT= new TH1D("hmatch_diffT", "hmatch_diffT", 200, -100, 100);
-
-
+         hmatch_diffX_diffY=new TH2D("hmatch_diffX_diffY", "hmatch_diffX_diffY", 200, -100, 100, 200, -100, 100);
+         hmatch_diffT_cut= new TH1D("hmatch_diffT_cut", "hmatch_diffT_cut", 200, -100, 100);
 
          gDirectory->cd();
 	m_root_lock->release_lock();
@@ -576,6 +578,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	        hmatch_diffX->Fill(diffX);
 	        hmatch_diffY->Fill(diffY);
 	        hmatch_diffT->Fill(difft);
+	        hmatch_diffX_diffY->Fill(diffX,diffY);
+	        if(fabs(diffX)<=30 && fabs(diffY)<=30) hmatch_diffT_cut->Fill(difft);
 		}
 
 
