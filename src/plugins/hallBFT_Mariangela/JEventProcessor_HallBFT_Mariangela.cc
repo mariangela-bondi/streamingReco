@@ -568,7 +568,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 	for (auto cluster : clusters) {
 
-		for (auto hodoscope : hodoscopes) {
+		for (auto hodoscope : clusters_hodo) {
 			auto diffX = (hodoscope->getX() - cluster->getX());
 			auto diffY = (hodoscope->getY() - cluster->getY());
 	        auto difft = (hodoscope->getClusterTime() - cluster->getClusterTime());
