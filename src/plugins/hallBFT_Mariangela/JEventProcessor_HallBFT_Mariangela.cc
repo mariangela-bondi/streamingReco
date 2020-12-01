@@ -188,6 +188,12 @@ static TH2D *hClustHODOSeed1vsSeed2=0;
 static TH2D *hClustHODO_DTSeedvsSeed2=0;
 static TH2D *hClustHODO_DTSeedvsSeed2_seed1th=0;
 
+// study matching HODO CAL
+
+static TH1D *hmatch_diffX=0;
+static TH1D *hmatch_diffY=0;
+static TH1D *hmatch_diffT=0;
+
 
 
 //---------------------------------
@@ -365,6 +371,14 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hClustHODOSeed1vsSeed2 = new TH2D("hClustHODOSeed1vsSeed2", "hClustHODOSeed1vsSeed2", 300, 0., 10, 300, 0., 10);
          hClustHODO_DTSeedvsSeed2= new TH2D("hClustHODO_DTSeedvsSeed2", "hClustHODO_DTSeedvsSeed2", 300, -30., 30, 300, 0., 10);
          hClustHODO_DTSeedvsSeed2_seed1th=new TH2D("hClustHODO_DTSeedvsSeed2_seed1th", "hClustHODO_DTSeedvsSeed2_seed1th", 300, -30., 30, 300, 0., 10);
+
+
+         hmatch_diffX= new TH1D("hmatch_diffX", "hmatch_diffX", 200, -100, 100);
+         hmatch_diffY= new TH1D("hmatch_diffY", "hmatch_diffY", 200, -100, 100);
+         hmatch_diffT= new TH1D("hmatch_diffT", "hmatch_diffT", 200, -100, 100);
+
+
+
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -547,6 +561,28 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		  if(seed_layer1_ene<0.5) hClustHODO_DTSeedvsSeed2_seed1th->Fill(seed_layer2_t-seed_layer1_t,seed_layer2_ene);
 	}
 	}
+
+
+	// STUDIO per match con HODO
+
+
+	for (auto cluster : clusters) {
+
+		for (auto hodoscope : hodoscopes) {
+			auto diffX = (hodoscope->getX() - particle->getParticleDx());
+			auto diffY = (hodoscope->getY() - particle->getParticleDy());
+	        auto difft = (hodoscope->getClusterTime() - particle->getParticleTime());
+
+	        hmatch_diffX->Fill(diffX);
+	        hmatch_diffY->Fill(diffY);
+	        hmatch_diffT->Fill(difft);
+		}
+
+
+	}
+
+
+
 
 	//Analisi sull'evento
 	double eventSeedTime = 1e20;

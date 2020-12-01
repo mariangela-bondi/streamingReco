@@ -39,8 +39,8 @@ void FTParticle_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 	std::vector<const FTCalCluster*> clusters = aEvent->Get<const FTCalCluster>();
 	std::vector<const FTHodoCluster*> hodoscopes = aEvent->Get<const FTHodoCluster>();
 
-   cout << "cluster size Cal "<< clusters.size()<<endl;
-   cout << "cluster size Hodo "<< hodoscopes.size()<<endl;
+//  cout << "cluster size Cal "<< clusters.size()<<endl;
+ //  cout << "cluster size Hodo "<< hodoscopes.size()<<endl;
 
 	for (auto cluster : clusters) {
 		FTParticle* particle = new FTParticle();
@@ -54,12 +54,12 @@ void FTParticle_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 		//Electrical charge is automatically assigned 0.
 		//HodoIndex is -1 if particle is photon.
 		for (auto hodoscope : hodoscopes) {
-	cout << "cluster HODO T:"<< hodoscope->getClusterTime()<< " X:"<<hodoscope->getX()<< " Y:"<<hodoscope->getY()<<endl;
+//	cout << "cluster HODO T:"<< hodoscope->getClusterTime()<< " X:"<<hodoscope->getX()<< " Y:"<<hodoscope->getY()<<endl;
 			auto diffX = fabs(hodoscope->getX() - particle->getParticleDx());
 			auto diffY = fabs(hodoscope->getY() - particle->getParticleDy());
 			auto difft = fabs(hodoscope->getClusterTime() - particle->getParticleTime());
 
-			cout << "diffX "<<diffX<<" diffY "<< diffY<< " difft "<< difft<<endl;
+	//		cout << "diffX "<<diffX<<" diffY "<< diffY<< " difft "<< difft<<endl;
 			//If cluster and hodoscope signals are close enough, particle is an electron
 			if (diffX < deltaX && diffY < deltaY && difft < deltat) {
 				particle->setParticleCharge(-1);
