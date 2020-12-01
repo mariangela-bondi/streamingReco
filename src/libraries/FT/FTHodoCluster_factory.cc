@@ -87,7 +87,7 @@ void FTHodoCluster_factory::Process(const std::shared_ptr<const JEvent> &aEvent)
 		clusters[i]->computeCluster();
 		if (clusters[i]->isGoodCluster() == true) {
 			mData.push_back(clusters[i]);
-			cout<< clusters[i]->getX()<< " "<<clusters[i]->getY()<<endl; ;
+			cout<< clusters[i]->getX()<< " "<<clusters[i]->getY()<<endl;
 		}else{
 			delete clusters[i];
 		}
