@@ -14,6 +14,8 @@
 #include <iostream>
 #include <functional>
 
+using namespace std;
+
 double EN_THRES = 0.25;
 //this will set the hits in DESCENDING order wrt energy
 bool FTHodoCluster_factory::compareHits(const FTHodoHit* a, const FTHodoHit* b) {
