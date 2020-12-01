@@ -45,6 +45,7 @@
 #include "FT/FTHodoHit.h"
 #include "FT/FTCalCluster.h"
 #include "FT/FTHodoCluster.h"
+#include "FT/FTParticle.h"
 
 #include "JANA/Services/JGlobalRootLock.h"
 #include "JANA/JApplication.h"
