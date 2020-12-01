@@ -408,6 +408,9 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	auto hits_hodo = aEvent->Get<FTHodoHit>();
 	auto clusters_hodo = aEvent->Get<FTHodoCluster>();
 
+	// Hits Particle
+	auto particles = aEvent->Get<FTParticle>();
+
 
 //Numero dell'evento
 	auto eventNumber = aEvent->GetEventNumber();
