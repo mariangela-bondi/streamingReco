@@ -183,7 +183,7 @@ static TH1D *hClustHODOEneHit_layer2 =0;
 static TH1D *hClustHODOEne_layer1 =0;
 static TH1D *hClustHODOEne_layer2 =0;
 static TH2D *hClustHODOPosition =0;
-
+static TH2D *hClustHODOSeed1vsSeed2=0;
 
 
 
@@ -361,6 +361,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hClustHODOPosition = new TH2D("hClustHODOPosition", "hClustHODOPosition", 200, -200, 200, 200, -200, 200);
          hClustHODOEneHit_layer1 = new TH1D("hClustHODOEneHit_layer1", "hClustHODOEneHit_layer1", 300, 0., 10);
          hClustHODOEneHit_layer2 = new TH1D("hClustHODOEneHit_layer2", "hClustHODOEneHit_layer2", 300, 0., 10);
+         hClustHODOSeed1vsSeed2 = new TH2D("hClustHODOSeed1vsSeed2", "hClustHODOSeed1vsSeed2", 300, 0., 10, 300, 0., 10);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -512,6 +513,17 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	     	if(hit_hodo->m_channel.layer == 1) hClustHODOEneHit_layer1 -> Fill(hit_hodo->getHitEnergy());
 	     	if(hit_hodo->m_channel.layer == 2) hClustHODOEneHit_layer2 -> Fill(hit_hodo->getHitEnergy());
 		  }
+
+		  auto seed_layer1_ene =0;
+		  auto seed_layer2_ene =0;
+		  for(int i = 0; i < cluster_hodo->getClusterSize(); i++){
+			    auto hit_hodo = cluster_hodo->getHit(i);
+
+			    if(hit_hodo->m_channel.layer == 1 && hit_hodo->getHitEnergy() > seed_layer1_ene) seed_layer1_ene = hit_hodo->getHitEnergy();
+			    if(hit_hodo->m_channel.layer == 2 && hit_hodo->getHitEnergy() > seed_layer2_ene) seed_layer2_ene = hit_hodo->getHitEnergy();
+		  }
+		  hClustHODOSeed1vsSeed2->Fill(seed_layer1_ene,seed_layer2_ene);
+
 	}
 	}
 
