@@ -50,7 +50,7 @@ void FTParticle_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 		particle->setParticleDy(cluster->getY());
 		particle->setParticleDz(cluster->getZ());
 		particle->setParticleClusIndex(cluster->getClusterId());
-		cout << "cluster Cal E: "<< cluster->getClusterEnergy()<< " T:"<< cluster->getClusterTime()<< " X:"<<cluster->getX()<< " Y:"<<cluster->getY()<<endl;
+		//cout << "cluster Cal E: "<< cluster->getClusterEnergy()<< " T:"<< cluster->getClusterTime()<< " X:"<<cluster->getX()<< " Y:"<<cluster->getY()<<endl;
 		//Electrical charge is automatically assigned 0.
 		//HodoIndex is -1 if particle is photon.
 		for (auto hodoscope : hodoscopes) {
