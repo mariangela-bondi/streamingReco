@@ -498,6 +498,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	hClustHODOmult->Fill(clusters_hodo.size());
 
 	if(clusters_hodo.size()>0){
+		cout << "new cluster hodo" << " "<< clusters_hodo.size()<<endl;
 		for(int i=0; i<clusters_hodo.size(); i++){
 		  auto cluster_hodo = clusters_hodo[i];
 		  hClustHODOHitmult->Fill(cluster_hodo->getClusterSize());
@@ -522,6 +523,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			    if(hit_hodo->m_channel.layer == 1 && hit_hodo->getHitEnergy() > seed_layer1_ene) seed_layer1_ene = hit_hodo->getHitEnergy();
 			    if(hit_hodo->m_channel.layer == 2 && hit_hodo->getHitEnergy() > seed_layer2_ene) seed_layer2_ene = hit_hodo->getHitEnergy();
 		  }
+		  cout << seed_layer1_ene<< " "<<seed_layer2_ene<<endl;
 		  hClustHODOSeed1vsSeed2->Fill(seed_layer1_ene,seed_layer2_ene);
 
 	}
