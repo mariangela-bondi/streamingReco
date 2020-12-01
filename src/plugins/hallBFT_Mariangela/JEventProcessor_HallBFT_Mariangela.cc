@@ -523,8 +523,6 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		  double seed_layer1_t =0;
 		  double seed_layer2_t =0;
 
-		  double seed_layer1_ene =0;
-		  double seed_layer2_ene =0;
 
 		  for(int i = 0; i < cluster_hodo->getClusterSize(); i++){
 			    auto hit_hodo = cluster_hodo->getHit(i);
