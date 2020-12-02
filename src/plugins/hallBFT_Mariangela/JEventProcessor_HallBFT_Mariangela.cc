@@ -195,6 +195,7 @@ static TH1D *hmatch_diffY=0;
 static TH1D *hmatch_diffT=0;
 static TH2D *hmatch_diffX_diffY=0;
 static TH1D *hmatch_diffT_cut=0;
+static TH1D *hTimeSeedcal_hodohit=0;
 
 
 
@@ -381,6 +382,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hmatch_diffX_diffY=new TH2D("hmatch_diffX_diffY", "hmatch_diffX_diffY", 200, -100, 100, 200, -100, 100);
          hmatch_diffT_cut= new TH1D("hmatch_diffT_cut", "hmatch_diffT_cut", 200, -100, 100);
 
+
+         hTimeSeedcal_hodohit = new TH1D("hTimeSeedcal_hodohit", "hTimeSeedcal_hodohit", 600, -300, 300);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -567,8 +570,16 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 	// STUDIO per match con HODO
 
-
+   int j=0;
 	for (auto cluster : clusters) {
+		if(j==0){
+			auto seed_cal_time = cluster->getHit(0)->getHitTime();
+			for (auto hit_hodo : hits_hodo) {
+				hTimeSeedcal_hodohit->Fill(hit_hodo->getHitTime() - seed_cal_time) ;
+			}
+			j++;
+		}
+
   //    cout << "new clusters"<<endl;
 		for (auto hodoscope : clusters_hodo) {
 			auto diffX = (hodoscope->getX() - cluster->getX());
