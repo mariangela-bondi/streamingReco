@@ -584,7 +584,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	        cout << " HODO time clus" << hodoscope->getClusterTime()<< " "<< hodoscope->getHit(0)->getHitDx()<<" "<<hodoscope->getHit(0)->getHitDy()<<endl;
 	        cout << "DIFF T"<< difft<<endl;
 	        for(int i=0; i<hodoscope->getClusterSize(); i++){
-	        	 auto hit_hodo = cluster_hodo->getHit(i);
+	        	 auto hit_hodo = hodoscope->getHit(i);
 	        	cout<<hit_hodo->getHitEnergy()<<" "<<hit_hodo->getHitTime()<< " "<<hit_hodo->m_channel.layer<<" "<<hit_hodo->getHitDx()<<" "<<hit_hodo->getHitDy()<<endl;
 	        }
 	       hmatch_diffT_cut->Fill(difft);
