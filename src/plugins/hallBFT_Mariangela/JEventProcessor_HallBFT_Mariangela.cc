@@ -569,7 +569,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 	for (auto cluster : clusters) {
-      cout << "new clusters"<<endl;
+  //    cout << "new clusters"<<endl;
 		for (auto hodoscope : clusters_hodo) {
 			auto diffX = (hodoscope->getX() - cluster->getX());
 			auto diffY = (hodoscope->getY() - cluster->getY());
@@ -580,13 +580,15 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	        hmatch_diffT->Fill(difft);
 	        hmatch_diffX_diffY->Fill(diffX,diffY);
 	        if(fabs(diffX)<=30 && fabs(diffY)<=30) {
-	        cout <<  "ECAL time clus "<< cluster->getClusterTime()<< " time seed "<< cluster->getHit(0)->getHitTime()<< " Time seed no corr "<< cluster->getHit(0)->getHitTime() -cluster->getHit(0)->getTimeWalkCorrection()<<endl;
-	        cout << " HODO time clus" << hodoscope->getClusterTime()<< " "<< hodoscope->getHit(0)->getHitDx()<<" "<<hodoscope->getHit(0)->getHitDy()<<endl;
-	        cout << "DIFF T"<< difft<<endl;
-	        for(int i=0; i<hodoscope->getClusterSize(); i++){
+	//        cout <<  "ECAL time clus "<< cluster->getClusterTime()<< " time seed "<< cluster->getHit(0)->getHitTime()<< " Time seed no corr "<< cluster->getHit(0)->getHitTime() -cluster->getHit(0)->getTimeWalkCorrection()<<endl;
+	 //       cout << " HODO time clus" << hodoscope->getClusterTime()<< " "<< hodoscope->getHit(0)->getHitDx()<<" "<<hodoscope->getHit(0)->getHitDy()<<endl;
+	  //      cout << "DIFF T"<< difft<<endl;
+	    /*
+	        	for(int i=0; i<hodoscope->getClusterSize(); i++){
 	        	 auto hit_hodo = hodoscope->getHit(i);
 	        	cout<<hit_hodo->getHitEnergy()<<" "<<hit_hodo->getHitTime()<< " "<<hit_hodo->m_channel.layer<<" "<<hit_hodo->getHitDx()<<" "<<hit_hodo->getHitDy()<<endl;
 	        }
+	        */
 	       hmatch_diffT_cut->Fill(difft);
 	        }
 		}
