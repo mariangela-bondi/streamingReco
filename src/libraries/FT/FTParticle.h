@@ -12,6 +12,7 @@
 #include <JANA/JFactory.h>
 #include "FTCalCluster_factory.h"
 #include "FTHodoCluster_factory.h"
+#include "TVector3.h"
 
 // #include "TT/TranslationTable.h"      I think don't needed.
 // #include "DAQ/chronoTypeDef.h"        I think don't needed.
@@ -53,6 +54,10 @@ public:
 
 	void setParticleDz(double value);
 
+	void setCentroid(TVector3 value);
+
+	TVector3 getCentroid() const;
+
 // 	TranslationTable::FTHODO_Index_t m_channel;   I think don't needed.
 
 protected:
@@ -66,6 +71,7 @@ private:
 	int hodo_index;
 	int clus_index;
 	int charge;
+	TVector3 centroid_particle;
 };
 
 #endif /* SRC_LIBRARIES_FT_FTPARTICLE_H_ */

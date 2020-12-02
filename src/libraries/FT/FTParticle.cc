@@ -29,6 +29,7 @@ FTParticle::FTParticle() {
 	hodo_index = -1;
 	charge = 0;
 	clus_index = -1;
+	centroid_particle.SetXYZ(0, 0, 0);
 }
 
 FTParticle::~FTParticle() {
@@ -98,3 +99,15 @@ double FTParticle::getParticleDz() const {
 void FTParticle::setParticleDz(double value) {
 	particleZ = value;
 }
+
+void FTParticle::setCentroid(TVector3 value){
+	centroid_particle = value;
+}
+
+TVector3 FTParticle::getCentroid() const {
+	return centroid_particle;
+}
+
+
+
+

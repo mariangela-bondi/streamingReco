@@ -196,6 +196,8 @@ static TH1D *hmatch_diffT=0;
 static TH2D *hmatch_diffX_diffY=0;
 static TH1D *hmatch_diffT_cut=0;
 static TH1D *hTimeSeedcal_hodohit=0;
+static TH2D *hNclustervsNgamma=0;
+static TH1D *hpi0=0;
 
 
 
@@ -384,6 +386,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 
          hTimeSeedcal_hodohit = new TH1D("hTimeSeedcal_hodohit", "hTimeSeedcal_hodohit", 600, -300, 300);
+         hNclustervsNgamma = new TH2D("hNclustervsNgamma","hNclustervsNgamma", 10, 0, 10, 10, 0, 10);
+         hpi0 = new TH1D("hpi0", "hpi0", 500, 0, 500);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -607,6 +611,32 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 	}
 
+
+	// Using particle
+	int Ngamma =0;
+
+	vector<FTParticle*> gammas;
+
+	for (auto particle:particles){
+		if(particle->getParticleCharge() ==0) gammas.push_back(particle);
+	}
+
+	hNclustervsNgamma->Fill(clusters.size(), gammas.size());
+
+	if(gammas.size()>=2){
+
+		for(int j=0; j<gammas.size(); j++){
+          auto gamma1 = gammas[j];
+          for(int k=1; k<gammas.size(); k++){
+        	  auto gamma2 = gammas[j];
+  			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
+  			double M01 = sqrt(2 * gamma1->getParticleEnergy() * gamma2->getParticleEnergy() * (1 - z01));
+  			hpi0->Fill(M01);
+          }
+
+		}
+
+	}
 
 
 

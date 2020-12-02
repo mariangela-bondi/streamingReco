@@ -14,9 +14,9 @@
 #include <functional>
 using namespace std;
 //Parameter for acceptable hodoscope and cluster association.
-double deltaX = 1;
-double deltaY = 1;
-double deltat = 1;
+double deltaX = 30;
+double deltaY = 30;
+double deltat = 15;
 
 FTParticle_factory::FTParticle_factory() {
 	// TODO Auto-generated constructor stub
@@ -49,6 +49,7 @@ void FTParticle_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 		particle->setParticleDx(cluster->getX());
 		particle->setParticleDy(cluster->getY());
 		particle->setParticleDz(cluster->getZ());
+		particle->setCentroid(cluster->getCentroid());
 		particle->setParticleClusIndex(cluster->getClusterId());
 		//cout << "cluster Cal E: "<< cluster->getClusterEnergy()<< " T:"<< cluster->getClusterTime()<< " X:"<<cluster->getX()<< " Y:"<<cluster->getY()<<endl;
 		//Electrical charge is automatically assigned 0.
