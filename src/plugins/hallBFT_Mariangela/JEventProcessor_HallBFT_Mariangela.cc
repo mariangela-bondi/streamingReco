@@ -620,7 +620,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	for (auto particle:particles){
 		if(particle->getParticleCharge() ==0) gammas.push_back(particle);
 	}
-
+     cout << clusters.size()<< " "<< gammas.size()<<endl;
 	hNclustervsNgamma->Fill(clusters.size(), gammas.size());
 
 	if(gammas.size()>=2){
@@ -629,9 +629,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
           auto gamma1 = gammas[j];
           for(int k=1; k<gammas.size(); k++){
         	  auto gamma2 = gammas[j];
+        	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<5){
   			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
   			double M01 = sqrt(2 * gamma1->getParticleEnergy() * gamma2->getParticleEnergy() * (1 - z01));
   			hpi0->Fill(M01);
+        	  }
           }
 
 		}
