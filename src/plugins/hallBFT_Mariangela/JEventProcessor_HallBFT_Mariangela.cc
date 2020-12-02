@@ -623,16 +623,14 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			gammas.push_back(particle);
 		}
 	}
-     cout << clusters.size()<< " "<< gammas.size()<<" "<< Ngamma<<endl;
-
-     if(clusters.size()<gammas.size()) cout<<"**** "<<particles.size()<<endl;
+   //  cout << clusters.size()<< " "<< gammas.size()<<" "<< Ngamma<<endl;
 	hNclustervsNgamma->Fill(clusters.size(), Ngamma);
 
 	if(gammas.size()>=2){
 
 		for(int j=0; j<gammas.size(); j++){
           auto gamma1 = gammas[j];
-          for(int k=1; k<gammas.size(); k++){
+          for(int k=j+1; k<gammas.size(); k++){
         	  auto gamma2 = gammas[j];
         	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<5){
   			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
