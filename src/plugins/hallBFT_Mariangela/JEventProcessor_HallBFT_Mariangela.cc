@@ -569,7 +569,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 
 	for (auto cluster : clusters) {
-
+      cout << "new clusters"<<endl;
 		for (auto hodoscope : clusters_hodo) {
 			auto diffX = (hodoscope->getX() - cluster->getX());
 			auto diffY = (hodoscope->getY() - cluster->getY());
@@ -579,7 +579,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	        hmatch_diffY->Fill(diffY);
 	        hmatch_diffT->Fill(difft);
 	        hmatch_diffX_diffY->Fill(diffX,diffY);
-	        if(fabs(diffX)<=30 && fabs(diffY)<=30) hmatch_diffT_cut->Fill(difft);
+	        if(fabs(diffX)<=30 && fabs(diffY)<=30) {
+	        cout <<  "ECAL time clus "<< cluster->getClusterTime()<< " time seed "<< cluster->getHit(0)->getHitTime()<< " Time seed no corr "<< cluster->getHit(0)->getHitTime() -cluster->getHit(0)->getTimeWalkCorrection()<<endl;
+	        cout << " HODO time clus" << codoscope->getClusterTime()<<endl;
+	       hmatch_diffT_cut->Fill(difft);
+	        }
 		}
 
 
