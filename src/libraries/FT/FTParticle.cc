@@ -5,7 +5,7 @@
  *      Author: svallarino
  */
 #include "FTParticle.h"
-#include "FTCalCluster_factory.h"
+#include "FTCalCluster_factory_EneCorr.h"
 #include "FTHodoCluster_factory.h"
 
 #include <cmath>

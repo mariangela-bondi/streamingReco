@@ -10,7 +10,7 @@
 
 #include <JANA/JObject.h>
 #include <JANA/JFactory.h>
-#include "FTCalCluster_factory.h"
+#include "FTCalCluster_factory_EneCorr.h"
 #include "FTHodoCluster_factory.h"
 #include "TVector3.h"
 

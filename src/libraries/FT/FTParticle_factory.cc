@@ -36,7 +36,7 @@ void FTParticle_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEvent) 
 }
 void FTParticle_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
-	std::vector<const FTCalCluster*> clusters = aEvent->Get<const FTCalCluster>();
+	std::vector<const FTCalCluster*> clusters = aEvent->Get<const FTCalCluster>("EneCorr");
 	std::vector<const FTHodoCluster*> hodoscopes = aEvent->Get<const FTHodoCluster>();
 
 //  cout << "cluster size Cal "<< clusters.size()<<endl;
