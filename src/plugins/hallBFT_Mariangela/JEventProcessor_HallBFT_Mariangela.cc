@@ -581,7 +581,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	        hmatch_diffX_diffY->Fill(diffX,diffY);
 	        if(fabs(diffX)<=30 && fabs(diffY)<=30) {
 	        cout <<  "ECAL time clus "<< cluster->getClusterTime()<< " time seed "<< cluster->getHit(0)->getHitTime()<< " Time seed no corr "<< cluster->getHit(0)->getHitTime() -cluster->getHit(0)->getTimeWalkCorrection()<<endl;
-	        cout << " HODO time clus" << hodoscope->getClusterTime()<<endl;
+	        cout << " HODO time clus" << hodoscope->getClusterTime()<< " "<< hodoscope->getHit(0)->getHitDx()<<" "<<hodoscope->getHit(0)->getHitDy()<<endl;
+	        cout << "DIFF T"<< difft<<endl;
 	       hmatch_diffT_cut->Fill(difft);
 	        }
 		}
