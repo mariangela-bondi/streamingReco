@@ -618,10 +618,13 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	vector<const FTParticle*> gammas;
 
 	for (auto particle:particles){
-		if(particle->getParticleCharge() ==0) gammas.push_back(particle);
+		if(particle->getParticleCharge() ==0){
+			Ngamma = Ngamma+1;
+			gammas.push_back(particle);
+		}
 	}
-     cout << clusters.size()<< " "<< gammas.size()<<endl;
-	hNclustervsNgamma->Fill(clusters.size(), gammas.size());
+     cout << clusters.size()<< " "<< gammas.size()<<" "<< Ngamma<<endl;
+	hNclustervsNgamma->Fill(clusters.size(), Ngamma);
 
 	if(gammas.size()>=2){
 
