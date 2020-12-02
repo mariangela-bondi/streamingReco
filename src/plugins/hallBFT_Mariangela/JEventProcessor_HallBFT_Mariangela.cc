@@ -615,7 +615,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	// Using particle
 	int Ngamma =0;
 
-	vector<FTParticle*> gammas;
+	vector<const FTParticle*> gammas;
 
 	for (auto particle:particles){
 		if(particle->getParticleCharge() ==0) gammas.push_back(particle);
