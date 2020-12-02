@@ -631,7 +631,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		for(int j=0; j<gammas.size(); j++){
           auto gamma1 = gammas[j];
           for(int k=j+1; k<gammas.size(); k++){
-        	  auto gamma2 = gammas[j];
+        	  auto gamma2 = gammas[k];
         	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<5){
              cout<< gamma1->getParticleEnergy()<< " "<<gamma2->getParticleEnergy()<<endl;
   			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
