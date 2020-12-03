@@ -641,8 +641,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
         		  }
   */
   			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
+  			 cout << "gamma energy "<<gamma1->getParticleEnergy()<< " "<< gamma2->getParticleEnergy()<<endl;
 
   			double M01 = sqrt(2 * gamma1->getParticleEnergy() * gamma2->getParticleEnergy() * (1 - z01));
+
+  			cout << z01<< " "<<M01<<endl;
   			hpi0->Fill(M01);
         	  }
           }
