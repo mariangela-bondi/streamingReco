@@ -44,7 +44,7 @@ void FTParticle_factory::Process(const std::shared_ptr<const JEvent> &aEvent) {
 
 	for (auto cluster : clusters) {
 		FTParticle* particle = new FTParticle();
-		particle->setParticleEnergy(cluster->getClusterEnergy());
+		particle->setParticleEnergy(cluster->setClusterFullEnergy());
 		particle->setParticleTime(cluster->getClusterTime());
 		particle->setParticleDx(cluster->getX());
 		particle->setParticleDy(cluster->getY());

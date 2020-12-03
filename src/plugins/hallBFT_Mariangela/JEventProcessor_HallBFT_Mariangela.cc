@@ -633,12 +633,13 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
           for(int k=j+1; k<gammas.size(); k++){
         	  auto gamma2 = gammas[k];
         	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<5){
-
+/*
         		  cout << "gamma energy "<<gamma1->getParticleEnergy()<< " "<< gamma2->getParticleEnergy()<<endl;
         		cout << "clusters energy:"<<endl;
         		  for(auto cluster: clusters){
         			  cout << cluster->getClusterFullEnergy()<<endl;
         		  }
+  */
   			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
 
   			double M01 = sqrt(2 * gamma1->getParticleEnergy() * gamma2->getParticleEnergy() * (1 - z01));
