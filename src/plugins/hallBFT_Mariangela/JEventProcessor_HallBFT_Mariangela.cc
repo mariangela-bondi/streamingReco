@@ -632,7 +632,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
           auto gamma1 = gammas[j];
           for(int k=j+1; k<gammas.size(); k++){
         	  auto gamma2 = gammas[k];
-        	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<5){
+        	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<2){
 /*
         		  cout << "gamma energy "<<gamma1->getParticleEnergy()<< " "<< gamma2->getParticleEnergy()<<endl;
         		cout << "clusters energy:"<<endl;
