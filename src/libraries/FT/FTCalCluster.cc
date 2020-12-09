@@ -46,7 +46,7 @@
 int minClusterSize = 3; //Need size >= to min for accept cluster.
 //double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
 //double minSeedEnergy = 10;
-double minClusterEnergy = 60; //Need size > to min for accept cluster. Not >=.
+double minClusterEnergy = 200; //Need size > to min for accept cluster. Not >=.
 double minSeedEnergy = 50;
 int time_window = 50; //ns
 //int time_max= 30; //Temporary modify of cluster definition.
@@ -164,7 +164,7 @@ void FTCalCluster::setCluster(int size, float energy, \
  _clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.X()) * (180. / M_PI); //
 
  //if (_clusSize >= minClusterSize && _clusEnergy > minClusterEnergy && tmp_radius> 85. && tmp_radius < 160. && _clusDt<50.)//&& _clusDt<50.////&& tmp_radius> 85. && tmp_radius < 160.
- if (_clusSize >= minClusterSize && _clusEnergy >= minClusterEnergy && _clusSeedEnergy >= minSeedEnergy)
+ if (_clusSize > minClusterSize && _clusEnergy > minClusterEnergy && _clusSeedEnergy > minSeedEnergy)
 	 _goodCluster = true;
  else
 	 _goodCluster = false;
