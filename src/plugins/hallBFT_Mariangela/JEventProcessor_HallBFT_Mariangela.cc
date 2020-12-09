@@ -648,7 +648,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
   			double M01 = sqrt(2 * gamma1->getParticleEnergy() * gamma2->getParticleEnergy() * (1 - z01));
 
-  			cout << z01<< " "<<M01<<endl;
+  		//	cout << z01<< " "<<M01<<endl;
   			hpi0->Fill(M01);
         	  }
           }
@@ -714,7 +714,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
-/*
+
+        cout << seed0/cluster0->getClusterFullEnergy()<< " "<< seed1/cluster1->getClusterFullEnergy()<<endl;
+		cout << cluster0->getX() - cluster1->getX()<<endl;
+		cout << cluster0->getY() - cluster1->getY()<<endl;
+		/*
 		if(clusters_noCorr.size() ==1){
 
 			for (auto hit : hits) {
