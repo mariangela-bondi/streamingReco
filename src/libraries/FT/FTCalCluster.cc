@@ -255,7 +255,7 @@ void FTCalCluster::computeCluster() {
 	//Cluster phi
 	_clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.Y()) * (180. / M_PI); //
 
-	if (_clusSize >= minClusterSize && _clusEnergy >= minClusterEnergy && _clusSeedEnergy >= minSeedEnergy)
+	 if (_clusSize > minClusterSize && _clusEnergy > minClusterEnergy && _clusSeedEnergy > minSeedEnergy)
 		_goodCluster = true;
 	else
 		_goodCluster = false;
