@@ -715,7 +715,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 
-        cout << seed0/cluster0->getClusterFullEnergy()<< " "<< seed1/cluster1->getClusterFullEnergy()<<endl;
+        cout << seed0->getHitEnergy()/cluster0->getClusterFullEnergy()<< " "<< seed1->getHitEnergy()/cluster1->getClusterFullEnergy()<<endl;
 		cout << cluster0->getX() - cluster1->getX()<<endl;
 		cout << cluster0->getY() - cluster1->getY()<<endl;
 		/*
