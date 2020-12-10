@@ -687,7 +687,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed = cluster->getHit(0);
 		hSCHitsMolt->Fill(cluster->getClusterSize());
 		hSCHitsEnergy->Fill(seed->getHitEnergy());
-
+       cout << "***** size cluster: "<<cluster->getClusterSize()<<endl;
 		if (cluster->getClusterSize()> 10){
 			for (int i = 1; i < cluster->getClusterSize(); i++) {
 				auto hit = cluster->getHit(i);
