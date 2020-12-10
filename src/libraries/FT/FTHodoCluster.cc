@@ -170,10 +170,13 @@ void FTHodoCluster::computeCluster() {
 
 	bool layer1 = false;
 	bool layer2 = false;
+	double maxEne_layer1 = 0.3;
+	double maxEne_layer2 = 0.7;
 	//Cluster contain layer 1 and layer 2 hit?
 	for (auto hit : hits) {
-		if (hit->m_channel.layer == 1) layer1 = true;
-		if (hit->m_channel.layer == 2) layer2 = true;
+
+		if (hit->m_channel.layer == 1 && hit->getHitEnergy()>=maxEne_layer1) layer1 = true;
+		if (hit->m_channel.layer == 2 && hit->getHitEnergy()>=maxEne_layer2) layer2 = true;
 	}
 
 	if (_clusSize >= minClusterSize_hodo && _clusEnergy >= minClusterEnergy_hodo && layer1 == true && layer2 == true)
