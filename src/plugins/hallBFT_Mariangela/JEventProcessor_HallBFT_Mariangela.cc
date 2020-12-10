@@ -679,12 +679,23 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	//cout << "before"<< Nclusters<<endl;
 
 	//cout << "after"<< Nclusters<<endl;
+
+
 	if (clusters.size() == 1) {
 
 		auto cluster = clusters[0];
 		auto seed = cluster->getHit(0);
 		hSCHitsMolt->Fill(cluster->getClusterSize());
 		hSCHitsEnergy->Fill(seed->getHitEnergy());
+
+		if (cluster->getClusterSize()> 10){
+			for (int i = 1; i < cluster->getClusterSize(); i++) {
+				auto hit = cluster->getHit(i);
+			cout << "X Y: "<< hit-> getHitIX()<< " "<< hit-> getHitIY()<<endl;
+			}
+
+		}
+
 		for (int i = 1; i < cluster->getClusterSize(); i++) {
 			auto hit = cluster->getHit(i);
 			hSCDelayFromSeed->Fill(hit->getHitTime() - seed->getHitTime());
