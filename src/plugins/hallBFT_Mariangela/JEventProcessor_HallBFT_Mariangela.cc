@@ -724,6 +724,21 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		auto distance_seed = sqrt(pow((seed0->getHitX() - seed1->getHitX()),2)+pow((seed0->getHitY() - seed1->getHitY()),2));
 		hDCdistance_seed->Fill(distance_seed);
+
+		if(distance_seed<40){
+			cout<< " cluster 0 "<< cluster0->getClusterSize()<<" "<<cluster0->getClusterFullEnergy()<< endl;
+			for(int i=0; i<cluster0->getClusterSize(); i++ ){
+				auto hit = cluster0->getHit(i);
+				cout << hit->getHitX()<< " "<< hit->getHitY()<<endl;
+			}
+			cout<< " cluster 1 "<< cluster1->getClusterSize()<<" "<<cluster1->getClusterFullEnergy()<< endl;
+			for(int i=0; i<cluster1->getClusterSize(); i++ ){
+				auto hit = cluster1->getHit(i);
+				cout << hit->getHitX()<< " "<< hit->getHitY()<<endl;
+			}
+
+		}
+
      // cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
 	//	cout << "distance "<<distance_seed<<endl;
 
