@@ -119,6 +119,7 @@ static TH2D *hDCSmallClusterEnergyVsSeedEnergy = 0;
 static TH2D *hDCClusterEnergyVsSeedEnergy = 0;
 static TH1D *hDCInvariantMass = 0;
 static TH1D *hDCSelectedInvariantMass = 0;
+static TH1D *hDCdistance_seed = 0;
 
 //Analisi eventi a tre cluster
 static TH2D *hTCClustersDeltaTime = 0;
@@ -276,6 +277,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCClusterEnergyVsSeedEnergy = new TH2D("hDCClusterEnergyVsSeedEnergy", "hDCClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1500, 0, 15000);
 	hDCInvariantMass = new TH1D("hDCInvariantMass", "hDCInvariantMass", 500, 0, 500);
 	hInVMass_angle = new TH2D("hInVMass_angle", "hInVMass_angle", 500, 0, 500, 200, 0., 20.);
+
+	hDCdistance_seed = new TH1D("hDCdistance_seed", "hDCdistance_seed", 500, 0, 500);
 	//	hDCSelectedInvariantMass = new TH1D("hDCSelectedInvariantMass", "hDCSelectedInvariantMass", 500, 0, 500);
 
 	//Triple clusters events
@@ -687,7 +690,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed = cluster->getHit(0);
 		hSCHitsMolt->Fill(cluster->getClusterSize());
 		hSCHitsEnergy->Fill(seed->getHitEnergy());
-       cout << "***** size cluster: "<<cluster->getClusterSize()<<endl;
+   //    cout << "***** size cluster: "<<cluster->getClusterSize()<<endl;
 
 		for (int i = 1; i < cluster->getClusterSize(); i++) {
 			auto hit = cluster->getHit(i);
@@ -720,8 +723,9 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
 
 		auto distance_seed = sqrt(pow((seed0->getHitX() - seed1->getHitX()),2)+pow((seed0->getHitY() - seed1->getHitY()),2));
-      cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
-		cout << "distance "<<distance_seed<<endl;
+		hDCdistance_seed->Fill(distance_seed);
+     // cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
+	//	cout << "distance "<<distance_seed<<endl;
 
 		/*
         cout << seed0->getHitEnergy()/cluster0->getClusterFullEnergy()<< " "<< seed1->getHitEnergy()/cluster1->getClusterFullEnergy()<<endl;
