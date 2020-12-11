@@ -144,7 +144,10 @@ static TH1D *hDT_Hit_seed_fake2Cluster=0;
 static TH2D *hDT_Hit_seed_Vs_component_fake2Cluster=0;
 
 static TH2D *hInVMass_angle=0;
-
+static vector<TH2D*> XYDCPosClus0_dis40;
+static vector<TH2D*> XYDCPosClus0_dis40_60;
+static vector<TH2D*> XYDCPosClus1_dis40;
+static vector<TH2D*> XYDCPosClus1_dis40_60;
 
 //static vector<TH2D*> XYDCPosClus1_DT;
 //static vector<TH2D*> XYDCPosClus0_DT;
@@ -202,7 +205,8 @@ static TH1D *hTimeSeedcal_hodohit=0;
 static TH2D *hNclustervsNgamma=0;
 static TH1D *hpi0=0;
 
-
+int pp=0;
+int qq=0;
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -281,6 +285,9 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCdistance_seed = new TH1D("hDCdistance_seed", "hDCdistance_seed", 500, 0, 500);
 	//	hDCSelectedInvariantMass = new TH1D("hDCSelectedInvariantMass", "hDCSelectedInvariantMass", 500, 0, 500);
 
+
+
+
 	//Triple clusters events
 	hTCClustersDeltaTime = new TH2D("hTCClustersDeltaTime", "hTCClustersDeltaTime", 201, -0.5, 200.5, 201, -0.5, 200.5);
 	hTCInvariantMass = new TH1D("hTCInvariantMass", "hTCInvariantMass", 500, 0, 500);
@@ -306,13 +313,26 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 	hDCEClus1vsEseedClus1_DT = new TH2D("hDCEClus1vsEseedClus1_DT", "hDCEClus1vsEseedClus1_DT", 3000, 0, 15000, 3000, 0, 15000);
 	hDCEClus1vsEseedClus1 = new TH2D("hDCEClus1vsEseedClus1", "hDCEClus1vsEseedClus1", 3000, 0, 15000, 3000, 0, 15000);
-	for (int j = 0; j < 30; j++) {
+	for (int j = 0; j < 100; j++) {
 
 	//	TH2D *hXYDCClus1 = new TH2D(Form("hXYDCClus1%d", j), Form("hXYDCClus1%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 	//	XYDCPosClus1_DT.push_back(hXYDCClus1);
 
 	//	TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 	//	XYDCPosClus0_DT.push_back(hXYDCClus0);
+
+		TH2D *hXYDCPosClus0_dis40 = new TH2D(Form("hXYDCPosClus0_dis40_%d", j), Form("hXYDCPosClus0_dis40_%d", j), 200, -200, 200, 200, -200, 200);
+		XYDCPosClus0_dis40.push_back(hXYDCPosClus0_dis40);
+
+		TH2D *hXYDCPosClus1_dis40 = new TH2D(Form("hXYDCPosClus1_dis40_%d", j), Form("hXYDCPosClus1_dis40_%d", j), 200, -200, 200, 200, -200, 200);
+		XYDCPosClus1_dis40.push_back(hXYDCPosClus1_dis40);
+
+		TH2D *hXYDCPosClus0_dis40_60 = new TH2D(Form("hXYDCPosClus0_dis40_60_%d", j), Form("hXYDCPosClus0_dis40_60_%d", j), 200, -200, 200, 200, -200, 200);
+		XYDCPosClus0_dis40_60.push_back(hXYDCPosClus0_dis40_60);
+
+		TH2D *hXYDCPosClus1_dis40_60 = new TH2D(Form("hXYDCPosClus1_dis40_60_%d", j), Form("hXYDCPosClus1_dis40_60_%d", j), 200, -200, 200, 200, -200, 200);
+		XYDCPosClus1_dis40_60.push_back(hXYDCPosClus1_dis40_60);
+
 	}
 
 	hHitsHODOPosition = new TH2D("hHitsHODOPosition", "hHitsHODOPosition", 200, -200, 200, 200, -200, 200);
@@ -708,6 +728,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 	}
 
+
 	if (clusters.size() == 2) {
 		//NOTA: il cluster 0 viene sempre scelto come il più energetico
 		auto cluster0 = clusters[0];
@@ -725,19 +746,28 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto distance_seed = sqrt(pow((seed0->getHitX() - seed1->getHitX()),2)+pow((seed0->getHitY() - seed1->getHitY()),2));
 		hDCdistance_seed->Fill(distance_seed);
 
-		if(distance_seed<40){
-			cout<< " cluster 0 "<< cluster0->getClusterSize()<<" "<<cluster0->getClusterFullEnergy()<< endl;
+		if(distance_seed<=40) pp++;
+		if(distance_seed>40 && distance_seed<=60 ) qq++;
+
 			for(int i=0; i<cluster0->getClusterSize(); i++ ){
 				auto hit = cluster0->getHit(i);
-				cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
-			}
-			cout<< " cluster 1 "<< cluster1->getClusterSize()<<" "<<cluster1->getClusterFullEnergy()<< endl;
-			for(int i=0; i<cluster1->getClusterSize(); i++ ){
-				auto hit = cluster1->getHit(i);
-	   cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
+				if(distance_seed<=40 && pp<100) XYDCPosClus0_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
+				if(distance_seed>40 && distance_seed<=60 && qq<100 )XYDCPosClus0_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
+			//	cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
 			}
 
-		}
+			for(int i=0; i<cluster1->getClusterSize(); i++ ){
+				auto hit = cluster1->getHit(i);
+				if(distance_seed<=40 && pp<100) XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
+				if(distance_seed>40 && distance_seed<=60 && qq<100 )XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
+				// cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
+			}
+
+
+		static vector<TH2D*> XYDCPosClus0_dis40;
+		static vector<TH2D*> XYDCPosClus0_dis40_60;
+		static vector<TH2D*> XYDCPosClus1_dis40;
+		static vector<TH2D*> XYDCPosClus1_dis40_60;
 
      // cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
 	//	cout << "distance "<<distance_seed<<endl;
