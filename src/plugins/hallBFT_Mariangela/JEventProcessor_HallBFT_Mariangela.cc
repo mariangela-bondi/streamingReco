@@ -144,9 +144,12 @@ static TH1D *hDT_Hit_seed_fake2Cluster=0;
 static TH2D *hDT_Hit_seed_Vs_component_fake2Cluster=0;
 
 static TH2D *hInVMass_angle=0;
+static vector<TH2D*> XYDCPosClusColz_dis40;
 static vector<TH2D*> XYDCPosClus0_dis40;
-static vector<TH2D*> XYDCPosClus0_dis40_60;
 static vector<TH2D*> XYDCPosClus1_dis40;
+
+static vector<TH2D*> XYDCPosClusColz_dis40_60;
+static vector<TH2D*> XYDCPosClus0_dis40_60;
 static vector<TH2D*> XYDCPosClus1_dis40_60;
 
 //static vector<TH2D*> XYDCPosClus1_DT;
@@ -321,17 +324,27 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	//	TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 	//	XYDCPosClus0_DT.push_back(hXYDCClus0);
 
+		TH2D *hXYDCPosClusColz_dis40 = new TH2D(Form("hXYDCPosClusColz_dis40_%d", j), Form("hXYDCPosClusColz_dis40_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
+		XYDCPosClusColz_dis40.push_back(hXYDCPosClusColz_dis40);
+
 		TH2D *hXYDCPosClus0_dis40 = new TH2D(Form("hXYDCPosClus0_dis40_%d", j), Form("hXYDCPosClus0_dis40_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus0_dis40.push_back(hXYDCPosClus0_dis40);
 
 		TH2D *hXYDCPosClus1_dis40 = new TH2D(Form("hXYDCPosClus1_dis40_%d", j), Form("hXYDCPosClus1_dis40_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus1_dis40.push_back(hXYDCPosClus1_dis40);
 
+		TH2D *hXYDCPosClusColz_dis40_60 = new TH2D(Form("hXYDCPosClusColz_dis40_60_%d", j), Form("hXYDCPosClusColz_dis40_60_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
+		XYDCPosClusColz_dis40_60.push_back(hXYDCPosClusColz_dis40_60);
+
 		TH2D *hXYDCPosClus0_dis40_60 = new TH2D(Form("hXYDCPosClus0_dis40_60_%d", j), Form("hXYDCPosClus0_dis40_60_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus0_dis40_60.push_back(hXYDCPosClus0_dis40_60);
 
 		TH2D *hXYDCPosClus1_dis40_60 = new TH2D(Form("hXYDCPosClus1_dis40_60_%d", j), Form("hXYDCPosClus1_dis40_60_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus1_dis40_60.push_back(hXYDCPosClus1_dis40_60);
+
+
+
+
 
 	}
 
@@ -751,15 +764,27 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 			for(int i=0; i<cluster0->getClusterSize(); i++ ){
 				auto hit = cluster0->getHit(i);
-				if(distance_seed<=40 && pp<100) XYDCPosClus0_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
-				if(distance_seed>40 && distance_seed<=60 && qq<100 )XYDCPosClus0_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
+				if(distance_seed<=40 && pp<100) {
+					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
+					XYDCPosClus0_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
+				}
+				if(distance_seed>40 && distance_seed<=60 && qq<100 ){
+					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
+					XYDCPosClus0_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
+				}
 			//	cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
 			}
 
 			for(int i=0; i<cluster1->getClusterSize(); i++ ){
 				auto hit = cluster1->getHit(i);
-				if(distance_seed<=40 && pp<100) XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
-				if(distance_seed>40 && distance_seed<=60 && qq<100 )XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
+				if(distance_seed<=40 && pp<100) {
+					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
+					XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
+				}
+				if(distance_seed>40 && distance_seed<=60 && qq<100 ){
+					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
+					XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
+				}
 				// cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
 			}
 
