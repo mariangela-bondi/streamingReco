@@ -688,13 +688,6 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hSCHitsMolt->Fill(cluster->getClusterSize());
 		hSCHitsEnergy->Fill(seed->getHitEnergy());
        cout << "***** size cluster: "<<cluster->getClusterSize()<<endl;
-		if (cluster->getClusterSize()> 10){
-			for (int i = 1; i < cluster->getClusterSize(); i++) {
-				auto hit = cluster->getHit(i);
-			cout << "X Y: "<< hit-> getHitIX()<< " "<< hit-> getHitIY()<<endl;
-			}
-
-		}
 
 		for (int i = 1; i < cluster->getClusterSize(); i++) {
 			auto hit = cluster->getHit(i);
@@ -725,7 +718,12 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		auto seed1 = cluster1->getHit(0);
 		hDCClustersDeltaTime->Fill(cluster0->getClusterTime() - cluster1->getClusterTime());
 		hDCEneClus0vsEneClus1->Fill(cluster0->getClusterFullEnergy(),cluster1->getClusterFullEnergy() );
-/*
+
+		auto distance_seed = sqrt(pow((seed0->getHitX() - seed1->getHitX()),2)+pow((seed0->getHitY() - seed1->getHitY()),2));
+      cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
+		cout << "distance "<<distance_seed<<endl;
+
+		/*
         cout << seed0->getHitEnergy()/cluster0->getClusterFullEnergy()<< " "<< seed1->getHitEnergy()/cluster1->getClusterFullEnergy()<<endl;
 		cout << cluster0->getX() - cluster1->getX()<<endl;
 		cout << cluster0->getY() - cluster1->getY()<<endl;
