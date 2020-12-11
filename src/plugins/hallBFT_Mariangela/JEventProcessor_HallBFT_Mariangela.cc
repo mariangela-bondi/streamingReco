@@ -734,7 +734,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			cout<< " cluster 1 "<< cluster1->getClusterSize()<<" "<<cluster1->getClusterFullEnergy()<< endl;
 			for(int i=0; i<cluster1->getClusterSize(); i++ ){
 				auto hit = cluster1->getHit(i);
-				cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getClusterFullEnergy()<<endl;
+	   cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getClusterFullEnergy()<<endl;
 			}
 
 		}
