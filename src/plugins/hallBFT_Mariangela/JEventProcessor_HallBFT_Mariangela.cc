@@ -321,16 +321,16 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	//	TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 	//	XYDCPosClus0_DT.push_back(hXYDCClus0);
 
-		TH2D *hXYDCPosClus0_dis40 = new TH2D(Form("hXYDCPosClus0_dis40_%d", j), Form("hXYDCPosClus0_dis40_%d", j),  40, -200, 200, 40, -200, 200);
+		TH2D *hXYDCPosClus0_dis40 = new TH2D(Form("hXYDCPosClus0_dis40_%d", j), Form("hXYDCPosClus0_dis40_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus0_dis40.push_back(hXYDCPosClus0_dis40);
 
-		TH2D *hXYDCPosClus1_dis40 = new TH2D(Form("hXYDCPosClus1_dis40_%d", j), Form("hXYDCPosClus1_dis40_%d", j), 40, -200, 200, 40, -200, 200);
+		TH2D *hXYDCPosClus1_dis40 = new TH2D(Form("hXYDCPosClus1_dis40_%d", j), Form("hXYDCPosClus1_dis40_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus1_dis40.push_back(hXYDCPosClus1_dis40);
 
-		TH2D *hXYDCPosClus0_dis40_60 = new TH2D(Form("hXYDCPosClus0_dis40_60_%d", j), Form("hXYDCPosClus0_dis40_60_%d", j), 40, -200, 200, 40, -200, 200);
+		TH2D *hXYDCPosClus0_dis40_60 = new TH2D(Form("hXYDCPosClus0_dis40_60_%d", j), Form("hXYDCPosClus0_dis40_60_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus0_dis40_60.push_back(hXYDCPosClus0_dis40_60);
 
-		TH2D *hXYDCPosClus1_dis40_60 = new TH2D(Form("hXYDCPosClus1_dis40_60_%d", j), Form("hXYDCPosClus1_dis40_60_%d", j), 40, -200, 200, 40, -200, 200);
+		TH2D *hXYDCPosClus1_dis40_60 = new TH2D(Form("hXYDCPosClus1_dis40_60_%d", j), Form("hXYDCPosClus1_dis40_60_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
 		XYDCPosClus1_dis40_60.push_back(hXYDCPosClus1_dis40_60);
 
 	}
