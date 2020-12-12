@@ -94,17 +94,36 @@ void FTCalCluster_factory_EneCorr::Process(const std::shared_ptr<const JEvent> &
 	std::sort(hits.begin(), hits.end(), FTCalCluster_factory_EneCorr::compareHits);
 	std::vector<FTCalCluster*> clusters;
 
+
 	for (auto hit : hits) {
+		std::vector<std::pair<int, float>> distance_seed_hit;
 		bool flag = false;
 		if (flag == false) {
 			for (int j = 0; j < clusters.size(); j++) {
 				FTCalCluster* cluster = clusters[j];
 				if (cluster->containsHit(hit, time_min_EneCorr, time_max_EneCorr)) {
-					cluster->push_hit(hit);
+				//	cluster->push_hit(hit);
 					flag = true;
-					break;
+				//	break;
+					std::pair<int, float> distance;
+					distance.first = j;
+					distance.second = sqrt(pow((cluster->getHit(0)->getHitX() - hit->getHitX()),2)+pow((cluster->getHit(0)->getHitY() - hit->getHitY()),2));
+					distance_seed_hit.push_back(distance);
 				}
 			}
+			if(distance_seed_hit.size()>1){
+				auto min_value = 1000;
+				auto idx_min = 0;
+				for(int v=0; v<distance_seed_hit.size(); v++){
+					if(distance_seed_hit[v].second<min_value) {
+						idx_min = distance_seed_hit[v].first;
+					    min_value = distance_seed_hit[v].second;
+					}
+				}
+				clusters[idx_min]->push_hit(hit);
+			}
+			if(distance_seed_hit.size()==1) clusters[distance_seed_hit[0].first]->push_hit(hit);
+
 		}
 		if (flag == false) {
 			FTCalCluster *cluster = new FTCalCluster(clusters.size());
