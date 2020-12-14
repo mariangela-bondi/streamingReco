@@ -830,14 +830,14 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
        if(distance_seed<40) {
        hDCClusterEnergy_0_40->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
        hDCClusterMolt_0_40->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
-       if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
+       if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5 && cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500) {
            hDCClusterEnergy_0_40_angle->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
            hDCClusterMolt_0_40_angle->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
        }
        }else{
     	   hDCClusterEnergy_40->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
     	   hDCClusterMolt_40->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
-    	   if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5){
+    	   if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5 && cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500){
         	   hDCClusterEnergy_40_angle->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
         	   hDCClusterMolt_40_angle->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
 
