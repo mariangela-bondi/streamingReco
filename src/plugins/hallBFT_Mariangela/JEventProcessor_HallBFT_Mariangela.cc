@@ -885,7 +885,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500&&cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5){
 		if(distance_seed<=40) pp++;
-		if(distance_seed>40 && distance_seed<=60 ) qq++;
+		if(distance_seed>40 ) qq++;
 
 			for(int i=0; i<cluster0->getClusterSize(); i++ ){
 				auto hit = cluster0->getHit(i);
@@ -893,7 +893,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus0_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
 				}
-				if(distance_seed>40 && distance_seed<=60 && qq<100){
+				if(distance_seed>40 && qq<100){
 					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus0_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
 				}
@@ -906,7 +906,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
 				}
-				if(distance_seed>40 && distance_seed<=60 && qq<100){
+				if(distance_seed>40&& qq<100){
 					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
 				}
