@@ -880,7 +880,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 				 if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_40_angle->Fill(M);
 			 }
 
-		}
+
 
 
 		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500&&cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5){
@@ -913,7 +913,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 				// cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
 			}
 		}
-
+		}
      // cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
 	//	cout << "distance "<<distance_seed<<endl;
 
