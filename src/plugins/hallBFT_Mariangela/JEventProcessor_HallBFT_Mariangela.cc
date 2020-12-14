@@ -866,6 +866,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCInvariantMass->Fill(M);
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
 			if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_angle->Fill(M);
+
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
 		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500){
 		hDCInvariantMass_Raffa->Fill(M);
@@ -901,11 +902,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 			for(int i=0; i<cluster1->getClusterSize(); i++ ){
 				auto hit = cluster1->getHit(i);
-				if(distance_seed<=40 && pp<100 && cluster1->getClusterSize()<5) {
+				if(distance_seed<=40 && pp<100 ) {
 					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
 				}
-				if(distance_seed>40 && distance_seed<=60 && qq<100 && cluster1->getClusterSize()<5 ){
+				if(distance_seed>40 && distance_seed<=60 && qq<100){
 					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
 				}
