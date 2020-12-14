@@ -140,6 +140,8 @@ static TH1D *hDCInvariantMass_40 = 0;
 static TH1D *hDCInvariantMass_0_40_angle = 0;
 static TH1D *hDCInvariantMass_40_angle = 0;
 static TH1D *hDCInvariantMass_angle = 0;
+static TH1D *hDCInvariantMass_Raffa = 0;
+
 
 //Analisi eventi a tre cluster
 static TH2D *hTCClustersDeltaTime = 0;
@@ -308,6 +310,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCInvariantMass_0_40_angle = new TH1D("hDCInvariantMass_0_40_angle", "hDCInvariantMass_0_40_angle", 500, 0, 500);
 	hDCInvariantMass_40_angle = new TH1D("hDCInvariantMass_40_angle", "hDCInvariantMass_40_angle", 500, 0, 500);
 	hDCInvariantMass_angle = new TH1D("hDCInvariantMass_angle", "hDCInvariantMass_angle", 500, 0, 500);
+	hDCInvariantMass_Raffa = new TH1D("hDCInvariantMass_Raffa", "hDCInvariantMass_Raffa", 500, 0, 500);
+
 
 	hDCClustersDeltaTime = new TH1D("hDCClustersDeltaTime", "hDCClustersDeltaTime", 400, -200, 200);
 	hDCBigClusterMolt = new TH1D("hDCBigClusterMolt", "hDCBigClusterMolt", 16, -.5, 15.5);
@@ -841,6 +845,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCInvariantMass->Fill(M);
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
 			if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_angle->Fill(M);
+	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
+		if(cluster0->getClusterFullEnergy()>0.5 && cluster1->getClusterFullEnergy()>0.5){
+		hDCInvariantMass_Raffa->Fill(M);
+		}
+		}
 			 if(distance_seed<40){
 				 hDCInvariantMass_0_40->Fill(M);
 				 if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_0_40_angle->Fill(M);
