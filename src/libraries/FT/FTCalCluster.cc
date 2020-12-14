@@ -46,7 +46,7 @@
 int minClusterSize = 3; //Need size >= to min for accept cluster.
 //double minClusterEnergy = 30; //Need size > to min for accept cluster. Not >=.
 //double minSeedEnergy = 10;
-double minClusterEnergy = 200; //Need size > to min for accept cluster. Not >=.
+double minClusterEnergy = 300; //Need size > to min for accept cluster. Not >=.
 double minSeedEnergy = 50;
 int time_window = 50; //ns
 //int time_max= 30; //Temporary modify of cluster definition.
