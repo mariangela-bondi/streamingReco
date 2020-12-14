@@ -867,7 +867,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
 			if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_angle->Fill(M);
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
-		if(cluster0->getClusterFullEnergy()>0.5 && cluster1->getClusterFullEnergy()>0.5){
+		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500){
 		hDCInvariantMass_Raffa->Fill(M);
 		}
 		}
@@ -882,7 +882,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		}
 
 
-		if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5){
+		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500&&cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5){
 		if(distance_seed<=40 && cluster1->getClusterSize()<5) pp++;
 		if(distance_seed>40 && distance_seed<=60 && cluster1->getClusterSize()<5 ) qq++;
 
