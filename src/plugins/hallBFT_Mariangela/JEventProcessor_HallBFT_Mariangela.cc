@@ -861,17 +861,17 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		}
 
 
-		/*
-		if(distance_seed<=40) pp++;
-		if(distance_seed>40 && distance_seed<=60 ) qq++;
+
+		if(distance_seed<=40 && cluster1->getClusterSize()<5) pp++;
+		if(distance_seed>40 && distance_seed<=60 && cluster1->getClusterSize()<5 ) qq++;
 
 			for(int i=0; i<cluster0->getClusterSize(); i++ ){
 				auto hit = cluster0->getHit(i);
-				if(distance_seed<=40 && pp<100) {
+				if(distance_seed<=40 && pp<100 && cluster1->getClusterSize()<5 ) {
 					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus0_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
 				}
-				if(distance_seed>40 && distance_seed<=60 && qq<100 ){
+				if(distance_seed>40 && distance_seed<=60 && qq<100 && cluster1->getClusterSize()<5 ){
 					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus0_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
 				}
@@ -880,18 +880,18 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 			for(int i=0; i<cluster1->getClusterSize(); i++ ){
 				auto hit = cluster1->getHit(i);
-				if(distance_seed<=40 && pp<100) {
+				if(distance_seed<=40 && pp<100 && cluster1->getClusterSize()<5) {
 					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
 				}
-				if(distance_seed>40 && distance_seed<=60 && qq<100 ){
+				if(distance_seed>40 && distance_seed<=60 && qq<100 && cluster1->getClusterSize()<5 ){
 					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
 					XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
 				}
 				// cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
 			}
 
-*/
+
      // cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
 	//	cout << "distance "<<distance_seed<<endl;
 
