@@ -121,9 +121,10 @@ static TH2D *hDCClusterEnergyVsSeedEnergy = 0;
 static TH1D *hDCInvariantMass = 0;
 static TH1D *hDCSelectedInvariantMass = 0;
 static TH1D *hDCdistance_seed = 0;
+static TH2D *hDCSeedEnergy1VsSeedEnergy2 = 0;
 
-
-
+static TH2D *hDCSeedEnergy1VsSeedEnergy2_0_40 = 0;
+static TH2D *hDCSeedEnergy1VsSeedEnergy2_40 = 0;
 static TH1D *hDCtheta =0;
 static TH2D *hDCtheta_0_40=0;
 static TH2D *hDCtheta_40=0;
@@ -324,6 +325,11 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCInvariantMass_angle = new TH1D("hDCInvariantMass_angle", "hDCInvariantMass_angle", 500, 0, 500);
 	hDCInvariantMass_Raffa = new TH1D("hDCInvariantMass_Raffa", "hDCInvariantMass_Raffa", 500, 0, 500);
 
+	hDCSeedEnergy1VsSeedEnergy2 =  new TH2D("hDCSeedEnergy1VsSeedEnergy2", "hDCSeedEnergy1VsSeedEnergy2", 1500, 0, 15000, 1500, 0, 15000);
+
+
+	static TH2D *hDCSeedEnergy1VsSeedEnergy2_0_40 = new TH2D("hDCSeedEnergy1VsSeedEnergy2_0_40", "hDCSeedEnergy1VsSeedEnergy2_0_40", 1500, 0, 15000, 1500, 0, 15000);
+	static TH2D *hDCSeedEnergy1VsSeedEnergy2_40 = new TH2D("hDCSeedEnergy1VsSeedEnergy2_40", "hDCSeedEnergy1VsSeedEnergy2_40", 1500, 0, 15000, 1500, 0, 15000);
 
 	hDCClustersDeltaTime = new TH1D("hDCClustersDeltaTime", "hDCClustersDeltaTime", 400, -200, 200);
 	hDCBigClusterMolt = new TH1D("hDCBigClusterMolt", "hDCBigClusterMolt", 16, -.5, 15.5);
@@ -820,10 +826,13 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hDCdistance_seed->Fill(distance_seed);
 
 		if (abs(cluster0->getClusterTime() - cluster1->getClusterTime()) < 2) {
+			hDCSeedEnergy1VsSeedEnergy2->Fill(seed0->getHitEnergy(), seed1->getHitEnergy());
 		 if(distance_seed<40) {
 			 hDCtheta_0_40->Fill(cluster0->getTheta(), cluster1->getTheta());
+			 hDCSeedEnergy1VsSeedEnergy2_0_40->Fill(seed0->getHitEnergy(), seed1->getHitEnergy());
 		 }else{
 			 hDCtheta_40->Fill(cluster0->getTheta(), cluster1->getTheta());
+			 hDCSeedEnergy1VsSeedEnergy2_40->Fill(seed0->getHitEnergy(), seed1->getHitEnergy());
 		 }
 
 
