@@ -328,8 +328,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCSeedEnergy1VsSeedEnergy2 =  new TH2D("hDCSeedEnergy1VsSeedEnergy2", "hDCSeedEnergy1VsSeedEnergy2", 1500, 0, 15000, 1500, 0, 15000);
 
 
-	static TH2D *hDCSeedEnergy1VsSeedEnergy2_0_40 = new TH2D("hDCSeedEnergy1VsSeedEnergy2_0_40", "hDCSeedEnergy1VsSeedEnergy2_0_40", 1500, 0, 15000, 1500, 0, 15000);
-	static TH2D *hDCSeedEnergy1VsSeedEnergy2_40 = new TH2D("hDCSeedEnergy1VsSeedEnergy2_40", "hDCSeedEnergy1VsSeedEnergy2_40", 1500, 0, 15000, 1500, 0, 15000);
+    hDCSeedEnergy1VsSeedEnergy2_0_40 = new TH2D("hDCSeedEnergy1VsSeedEnergy2_0_40", "hDCSeedEnergy1VsSeedEnergy2_0_40", 1500, 0, 15000, 1500, 0, 15000);
+	hDCSeedEnergy1VsSeedEnergy2_40 = new TH2D("hDCSeedEnergy1VsSeedEnergy2_40", "hDCSeedEnergy1VsSeedEnergy2_40", 1500, 0, 15000, 1500, 0, 15000);
 
 	hDCClustersDeltaTime = new TH1D("hDCClustersDeltaTime", "hDCClustersDeltaTime", 400, -200, 200);
 	hDCBigClusterMolt = new TH1D("hDCBigClusterMolt", "hDCBigClusterMolt", 16, -.5, 15.5);
