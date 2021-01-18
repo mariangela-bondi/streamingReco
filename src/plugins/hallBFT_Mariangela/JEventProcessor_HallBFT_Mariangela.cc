@@ -126,26 +126,8 @@ static TH2D *hDCSeedEnergy1VsSeedEnergy2 = 0;
 static TH2D *hDCSeedEnergy1VsSeedEnergy2_0_40 = 0;
 static TH2D *hDCSeedEnergy1VsSeedEnergy2_40 = 0;
 static TH1D *hDCtheta =0;
-static TH2D *hDCtheta_0_40=0;
-static TH2D *hDCtheta_40=0;
 
-static TH2D *hDCClusterMolt_0_40 = 0;
-static TH2D *hDCClusterMolt_40= 0;
 
-static TH2D *hDCClusterEnergy_0_40 = 0;
-static TH2D *hDCClusterEnergy_40 = 0;
-
-static TH2D *hDCClusterMolt_0_40_angle = 0;
-static TH2D *hDCClusterMolt_40_angle= 0;
-
-static TH2D *hDCClusterEnergy_0_40_angle = 0;
-static TH2D *hDCClusterEnergy_40_angle = 0;
-
-static TH1D *hDCInvariantMass_0_40 = 0;
-static TH1D *hDCInvariantMass_40 = 0;
-
-static TH1D *hDCInvariantMass_0_40_angle = 0;
-static TH1D *hDCInvariantMass_40_angle = 0;
 static TH1D *hDCInvariantMass_angle = 0;
 static TH1D *hDCInvariantMass_Raffa = 0;
 
@@ -173,13 +155,7 @@ static TH1D *hDT_Hit_seed_fake2Cluster=0;
 static TH2D *hDT_Hit_seed_Vs_component_fake2Cluster=0;
 
 static TH2D *hInVMass_angle=0;
-static vector<TH2D*> XYDCPosClusColz_dis40;
-static vector<TH2D*> XYDCPosClus0_dis40;
-static vector<TH2D*> XYDCPosClus1_dis40;
 
-static vector<TH2D*> XYDCPosClusColz_dis40_60;
-static vector<TH2D*> XYDCPosClus0_dis40_60;
-static vector<TH2D*> XYDCPosClus1_dis40_60;
 
 //static vector<TH2D*> XYDCPosClus1_DT;
 //static vector<TH2D*> XYDCPosClus0_DT;
@@ -302,26 +278,6 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 	//Double clusters events
 	hDCtheta = new TH1D("hDCtheta", "hDCtheta", 20, 0, 10.);
-	hDCtheta_0_40 = new TH2D("hDCtheta_0_40", "hDCtheta_0_40", 20, 0, 10., 20, 0, 10.);
-	hDCtheta_40 = new TH2D("hDCtheta_40", "hDCtheta_40", 20, 0, 10., 20, 0, 10.);
-
-	hDCClusterMolt_0_40 = new TH2D("hDCClusterMolt_0_40", "hDCClusterMolt_0_40", 16, -.5, 15.5, 16, -.5, 15.5);
-	hDCClusterMolt_40 = new TH2D("hDCClusterMolt_40", "hDCClusterMolt_40", 16, -.5, 15.5, 16, -.5, 15.5);
-
-	hDCClusterEnergy_0_40 = new TH2D("hDCClusterEnergy_0_40", "hDCClusterEnergy_0_40", 1500, 0, 15000, 1500, 0, 15000);
-	hDCClusterEnergy_40 = new TH2D("hDCClusterEnergy_40", "hDCClusterEnergy_40", 1500, 0, 15000, 1500, 0, 15000);
-
-	hDCClusterMolt_0_40_angle = new TH2D("hDCClusterMolt_0_40_angle", "hDCClusterMolt_0_40_angle", 16, -.5, 15.5, 16, -.5, 15.5);
-	hDCClusterMolt_40_angle = new TH2D("hDCClusterMolt_40_angle", "hDCClusterMolt_40_angle", 16, -.5, 15.5, 16, -.5, 15.5);
-
-	hDCClusterEnergy_0_40_angle = new TH2D("hDCClusterEnergy_0_40_angle", "hDCClusterEnergy_0_40_angle", 1500, 0, 15000, 1500, 0, 15000);
-	hDCClusterEnergy_40_angle = new TH2D("hDCClusterEnergy_40_angle", "hDCClusterEnergy_40_angle", 1500, 0, 15000, 1500, 0, 15000);
-
-	hDCInvariantMass_0_40 = new TH1D("hDCInvariantMass_0_40", "hDCInvariantMass_0_40", 500, 0, 500);
-	hDCInvariantMass_40 = new TH1D("hDCInvariantMass_40", "hDCInvariantMass_40", 500, 0, 500);
-
-	hDCInvariantMass_0_40_angle = new TH1D("hDCInvariantMass_0_40_angle", "hDCInvariantMass_0_40_angle", 500, 0, 500);
-	hDCInvariantMass_40_angle = new TH1D("hDCInvariantMass_40_angle", "hDCInvariantMass_40_angle", 500, 0, 500);
 	hDCInvariantMass_angle = new TH1D("hDCInvariantMass_angle", "hDCInvariantMass_angle", 500, 0, 500);
 	hDCInvariantMass_Raffa = new TH1D("hDCInvariantMass_Raffa", "hDCInvariantMass_Raffa", 500, 0, 500);
 
@@ -384,27 +340,6 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 	//	TH2D *hXYDCClus0 = new TH2D(Form("hXYDCClus0%d", j), Form("hXYDCClus0%d", j), 25, -.5, 24.5, 25, -0.5, 24.5);
 	//	XYDCPosClus0_DT.push_back(hXYDCClus0);
-
-		TH2D *hXYDCPosClusColz_dis40 = new TH2D(Form("hXYDCPosClusColz_dis40_%d", j), Form("hXYDCPosClusColz_dis40_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
-		XYDCPosClusColz_dis40.push_back(hXYDCPosClusColz_dis40);
-
-		TH2D *hXYDCPosClus0_dis40 = new TH2D(Form("hXYDCPosClus0_dis40_%d", j), Form("hXYDCPosClus0_dis40_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
-		XYDCPosClus0_dis40.push_back(hXYDCPosClus0_dis40);
-
-		TH2D *hXYDCPosClus1_dis40 = new TH2D(Form("hXYDCPosClus1_dis40_%d", j), Form("hXYDCPosClus1_dis40_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
-		XYDCPosClus1_dis40.push_back(hXYDCPosClus1_dis40);
-
-		TH2D *hXYDCPosClusColz_dis40_60 = new TH2D(Form("hXYDCPosClusColz_dis40_60_%d", j), Form("hXYDCPosClusColz_dis40_60_%d", j),  40, -299.5, 299.5, 40, -299.5, 299.5);
-		XYDCPosClusColz_dis40_60.push_back(hXYDCPosClusColz_dis40_60);
-
-		TH2D *hXYDCPosClus0_dis40_60 = new TH2D(Form("hXYDCPosClus0_dis40_60_%d", j), Form("hXYDCPosClus0_dis40_60_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
-		XYDCPosClus0_dis40_60.push_back(hXYDCPosClus0_dis40_60);
-
-		TH2D *hXYDCPosClus1_dis40_60 = new TH2D(Form("hXYDCPosClus1_dis40_60_%d", j), Form("hXYDCPosClus1_dis40_60_%d", j), 40, -299.5, 299.5, 40, -299.5, 299.5);
-		XYDCPosClus1_dis40_60.push_back(hXYDCPosClus1_dis40_60);
-
-
-
 
 
 	}
@@ -827,31 +762,6 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		if (abs(cluster0->getClusterTime() - cluster1->getClusterTime()) < 2) {
 			hDCSeedEnergy1VsSeedEnergy2->Fill(seed0->getHitEnergy(), seed1->getHitEnergy());
-		 if(distance_seed<40) {
-			 hDCtheta_0_40->Fill(cluster0->getTheta(), cluster1->getTheta());
-			 hDCSeedEnergy1VsSeedEnergy2_0_40->Fill(seed0->getHitEnergy(), seed1->getHitEnergy());
-		 }else{
-			 hDCtheta_40->Fill(cluster0->getTheta(), cluster1->getTheta());
-			 hDCSeedEnergy1VsSeedEnergy2_40->Fill(seed0->getHitEnergy(), seed1->getHitEnergy());
-		 }
-
-
-       if(distance_seed<40) {
-       hDCClusterEnergy_0_40->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
-       hDCClusterMolt_0_40->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
-       if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5 && cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500) {
-           hDCClusterEnergy_0_40_angle->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
-           hDCClusterMolt_0_40_angle->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
-       }
-       }else{
-    	   hDCClusterEnergy_40->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
-    	   hDCClusterMolt_40->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
-    	   if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5 && cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500){
-        	   hDCClusterEnergy_40_angle->Fill(cluster0->getClusterFullEnergy(), cluster1->getClusterFullEnergy());
-        	   hDCClusterMolt_40_angle->Fill(cluster0->getClusterSize(), cluster1->getClusterSize());
-
-    	   }
-       }
 
 
 			hDCBigClusterMolt->Fill(cluster0->getClusterSize());
