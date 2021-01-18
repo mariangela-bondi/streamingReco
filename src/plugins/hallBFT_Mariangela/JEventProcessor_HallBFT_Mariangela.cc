@@ -874,53 +874,12 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			double M = sqrt(2 * cluster0->getClusterFullEnergy() * cluster1->getClusterFullEnergy() * (1 - z));
 			hDCInvariantMass->Fill(M);
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
-			if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_angle->Fill(M);
+			if(acos(z)>0.035) hDCInvariantMass_angle->Fill(M);
 
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
-		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500){
+		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500 && acos(z)>0.035){   //0.035 rad = 2 deg
 		hDCInvariantMass_Raffa->Fill(M);
 		}
-		}
-			 if(distance_seed<40){
-				 hDCInvariantMass_0_40->Fill(M);
-				 if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_0_40_angle->Fill(M);
-			 }else{
-				 hDCInvariantMass_40->Fill(M);
-				 if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 ) hDCInvariantMass_40_angle->Fill(M);
-			 }
-
-
-
-
-		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500&&cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5){
-		if(distance_seed<=40) pp++;
-		if(distance_seed>40 ) qq++;
-
-			for(int i=0; i<cluster0->getClusterSize(); i++ ){
-				auto hit = cluster0->getHit(i);
-				if(distance_seed<=40 && pp<100 ) {
-					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
-					XYDCPosClus0_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
-				}
-				if(distance_seed>40 && qq<100){
-					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
-					XYDCPosClus0_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
-				}
-			//	cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
-			}
-
-			for(int i=0; i<cluster1->getClusterSize(); i++ ){
-				auto hit = cluster1->getHit(i);
-				if(distance_seed<=40 && pp<100 ) {
-					XYDCPosClusColz_dis40[pp]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
-					XYDCPosClus1_dis40[pp]->Fill(hit->getHitX(), hit->getHitY());
-				}
-				if(distance_seed>40&& qq<100){
-					XYDCPosClusColz_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY(),hit->getHitEnergy());
-					XYDCPosClus1_dis40_60[qq]->Fill(hit->getHitX(), hit->getHitY());
-				}
-				// cout <<hit->m_channel.component<<" "<< hit->getHitX()<< " "<< hit->getHitY()<<" "<<hit->getHitTime()<<" "<<hit->getHitEnergy()<<endl;
-			}
 		}
 		}
      // cout << "Eseed0 "<< seed0->getHitEnergy()<< " Eseed1 "<<seed1->getHitEnergy()<<endl;
