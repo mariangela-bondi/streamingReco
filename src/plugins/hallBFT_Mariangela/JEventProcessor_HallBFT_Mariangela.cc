@@ -800,7 +800,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hSCClusterPosition->Fill(cluster->getX(), cluster->getY());
 		hSCEnergyPosition->Fill(cluster->getX(), cluster->getY(), cluster->getClusterFullEnergy());
 		hSCClusterEnergyVsSeedEnergy->Fill(seed->getHitEnergy(), cluster->getClusterFullEnergy());
-
+         cout << "cluster Z in plugin: "<< cluster->getZ()<<endl;
 
 	}
 

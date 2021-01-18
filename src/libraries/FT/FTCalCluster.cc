@@ -138,6 +138,8 @@ void FTCalCluster::setCluster(int size, float energy, \
  _clusYY = Y2;
  _clusDt = Dt;
 
+ cout << "set cluster "<< CRYS_ZPOS+depth_z<<endl;
+
  //std::cout<<" _clusDt: "<< _clusDt<<std::endl;
 
  //Cluster sigmaX
@@ -225,7 +227,7 @@ void FTCalCluster::computeCluster() {
 	_clusCenter.SetX(x / w_tot);
 	_clusCenter.SetY(y / w_tot);
 	_clusCenter.SetZ(z / w_tot + depth_z);
-//	cout << "z / w_tot " << z / w_tot << endl;
+	cout << " compute cluster z / w_tot " << z / w_tot + + depth_z << endl;
 //	_clusCenter.SetZ(CRYS_ZPOS + depth_z);
 
 	_clusXX /= w_tot;
