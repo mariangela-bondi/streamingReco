@@ -75,7 +75,7 @@ FTCalCluster::FTCalCluster() {
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
 //	CRYS_ZPOS = 1798;
-	depth_z = 45; //ok, this was not hard-coded BUT it is a single number in CCDB
+	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
 
 	hCLUS = 0;
 }
@@ -100,7 +100,7 @@ FTCalCluster::FTCalCluster(int clusid) {
 	//Geometry, this is hard-coded in CLAS12 java
 	CRYS_ZPOS = 1898;
 	//	CRYS_ZPOS = 1628;
-	depth_z = 45; //ok, this was not hard-coded BUT it is a single number in CCDB
+	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
 
 	hCLUS = 0;
 }
@@ -138,7 +138,7 @@ void FTCalCluster::setCluster(int size, float energy, \
  _clusYY = Y2;
  _clusDt = Dt;
 
- cout << "set cluster "<< CRYS_ZPOS+depth_z<<endl;
+
 
  //std::cout<<" _clusDt: "<< _clusDt<<std::endl;
 
@@ -173,7 +173,7 @@ void FTCalCluster::setCluster(int size, float energy, \
 
  if(_clusSeedEnergy==1.) _goodCluster = false;
 
- //cout<<"...seed energy: "<< _clusSeedEnergy <<endl;
+
 
 
 }
@@ -227,7 +227,7 @@ void FTCalCluster::computeCluster() {
 	_clusCenter.SetX(x / w_tot);
 	_clusCenter.SetY(y / w_tot);
 	_clusCenter.SetZ(z / w_tot + depth_z);
-	cout << " compute cluster z / w_tot " << z / w_tot + + depth_z << endl;
+
 //	_clusCenter.SetZ(CRYS_ZPOS + depth_z);
 
 	_clusXX /= w_tot;
