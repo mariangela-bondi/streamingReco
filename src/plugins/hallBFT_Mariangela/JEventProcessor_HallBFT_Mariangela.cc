@@ -212,7 +212,8 @@ static TH1D *hmatch_diffT_cut=0;
 static TH1D *hTimeSeedcal_hodohit=0;
 static TH2D *hNclustervsNgamma=0;
 static TH1D *hpi0=0;
-
+static TH1D *hpi0_raffa=0;
+static TH1D *hpi0_angle=0;
 int pp=0;
 int qq=0;
 
@@ -423,6 +424,9 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hTimeSeedcal_hodohit = new TH1D("hTimeSeedcal_hodohit", "hTimeSeedcal_hodohit", 600, -300, 300);
          hNclustervsNgamma = new TH2D("hNclustervsNgamma","hNclustervsNgamma", 10, 0, 10, 10, 0, 10);
          hpi0 = new TH1D("hpi0", "hpi0", 500, 0, 500);
+         hpi0_raffa = new TH1D("hpi0_raffa", "hpi0_raffa", 500, 0, 500);
+         hpi0_angle = new TH1D("hpi0_angle", "hpi0_angle", 500, 0, 500);
+
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -682,6 +686,15 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
   		//	cout << z01<< " "<<M01<<endl;
   			hpi0->Fill(M01);
+  	  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)>0.035){
+  	  			hpi0_angle->Fill(M01);
+  	  		}
+  if(gamma1->getTheta()<4.5 && gamma2->getTheta()<4.5 && gamma1->getTheta()>2.5 && gamma2->getTheta()>2.5) {
+  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)>0.035){
+  			hpi0_raffa->Fill(M01);
+  		}
+  }
+
         	  }
           }
 
