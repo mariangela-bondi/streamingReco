@@ -669,8 +669,10 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		for(int j=0; j<gammas.size(); j++){
           auto gamma1 = gammas[j];
+          auto theta_gamma1 = (std::atan((std::sqrt(std::pow(gamma1->getParticleDx(), 2.) + std::pow(gamma1->getParticleDy(), 2.))) /gamma1->getParticleDz())) * (180. / M_PI);
           for(int k=j+1; k<gammas.size(); k++){
         	  auto gamma2 = gammas[k];
+        	  auto theta_gamma2 = (std::atan((std::sqrt(std::pow(gamma2->getParticleDx(), 2.) + std::pow(gamma2->getParticleDy(), 2.))) /gamma2->getParticleDz())) * (180. / M_PI);
         	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<2){
 /*
         		  cout << "gamma energy "<<gamma1->getParticleEnergy()<< " "<< gamma2->getParticleEnergy()<<endl;
@@ -689,8 +691,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
   	  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)>0.035){
   	  			hpi0_angle->Fill(M01);
   	  		}
-  if(gamma1->getTheta()<4.5 && gamma2->getTheta()<4.5 && gamma1->getTheta()>2.5 && gamma2->getTheta()>2.5) {
-  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)>0.035){
+  if(theta_gamma1<4.5 && theta_gamma2<4.5 && theta_gamma1>2.5 && theta_gamma2>2.5) {
+  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)*(180. / M_PI)>2.){
   			hpi0_raffa->Fill(M01);
   		}
   }
