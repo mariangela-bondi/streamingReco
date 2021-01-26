@@ -803,7 +803,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCInvariantMass->Fill(M);
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
 			hInVMass_distance->Fill(M, distance_seed);
-			hangle_distance->Fill(angle, distance_seed);
+			hangle_distance->Fill(acos(z)*180/3.1415, distance_seed);
 			if(acos(z)>0.035) hDCInvariantMass_angle->Fill(M);
 
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
