@@ -155,8 +155,8 @@ static TH1D *hDT_Hit_seed_fake2Cluster=0;
 static TH2D *hDT_Hit_seed_Vs_component_fake2Cluster=0;
 
 static TH2D *hInVMass_angle=0;
-
-
+static TH2D *hInVMass_distance=0;
+static TH2D *hangle_distance=0;
 //static vector<TH2D*> XYDCPosClus1_DT;
 //static vector<TH2D*> XYDCPosClus0_DT;
 int j=0;
@@ -302,6 +302,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCClusterEnergyVsSeedEnergy = new TH2D("hDCClusterEnergyVsSeedEnergy", "hDCClusterEnergyVsSeedEnergy", 1500, 0, 15000, 1500, 0, 15000);
 	hDCInvariantMass = new TH1D("hDCInvariantMass", "hDCInvariantMass", 500, 0, 500);
 	hInVMass_angle = new TH2D("hInVMass_angle", "hInVMass_angle", 500, 0, 500, 200, 0., 20.);
+	hInVMass_distance = new TH2D("hInVMass_distance", "hInVMass_distance", 500, 0, 500, 400, 0., 400.);
+	hangle_distance = new TH2D("hangle_distance", "hangle_distance", 150, 0, 15., 400, 0., 400.);
 
 	hDCdistance_seed = new TH1D("hDCdistance_seed", "hDCdistance_seed", 500, 0, 500);
 	//	hDCSelectedInvariantMass = new TH1D("hDCSelectedInvariantMass", "hDCSelectedInvariantMass", 500, 0, 500);
@@ -796,15 +798,12 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCEnergyPosition->Fill(cluster1->getX(), cluster1->getY(), cluster1->getClusterFullEnergy());
 
 			double z = cos(cluster0->getCentroid().Angle(cluster1->getCentroid()));
-			cout << z <<" "<< distance_seed<<endl;
-			if (distance_seed>200 ){
-				cout <<"*******"<< z <<" "<< distance_seed<<endl;
-			    cout << cluster0->getX()<<" "<<cluster0->getY()<< " "<< cluster0->getZ()<<endl;
-			    cout << cluster1->getX()<<" "<<cluster1->getY()<< " "<< cluster1->getZ()<<endl;
-			}
+
 			double M = sqrt(2 * cluster0->getClusterFullEnergy() * cluster1->getClusterFullEnergy() * (1 - z));
 			hDCInvariantMass->Fill(M);
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
+			hInVMass_distance->Fill(M, distance_seed);
+			hangle_distance->Fill(angle, distance_seed);
 			if(acos(z)>0.035) hDCInvariantMass_angle->Fill(M);
 
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
