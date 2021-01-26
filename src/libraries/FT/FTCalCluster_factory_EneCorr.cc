@@ -126,9 +126,9 @@ void FTCalCluster_factory_EneCorr::Process(const std::shared_ptr<const JEvent> &
 				clusters[idx_min]->push_hit(hit);
 			}
 			if(distance_seed_hit.size()==1) clusters[distance_seed_hit[0].first]->push_hit(hit);
-
+*/
 		}
-		*/
+
 		if (flag == false) {
 			FTCalCluster *cluster = new FTCalCluster(clusters.size());
 			cluster->push_hit(hit);
