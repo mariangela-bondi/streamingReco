@@ -796,6 +796,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCEnergyPosition->Fill(cluster1->getX(), cluster1->getY(), cluster1->getClusterFullEnergy());
 
 			double z = cos(cluster0->getCentroid().Angle(cluster1->getCentroid()));
+			cout << z <" "<< distance_seed<<endl;
 			double M = sqrt(2 * cluster0->getClusterFullEnergy() * cluster1->getClusterFullEnergy() * (1 - z));
 			hDCInvariantMass->Fill(M);
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
