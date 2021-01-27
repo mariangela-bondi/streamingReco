@@ -690,11 +690,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
   		//	cout << z01<< " "<<M01<<endl;
   			hpi0->Fill(M01);
-  	  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)*(180. / M_PI)>3.){
+  	  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)*(180. / M_PI)>2.5){
   	  			hpi0_angle->Fill(M01);
   	  		}
   if(theta_gamma1<4.5 && theta_gamma2<4.5 && theta_gamma1>2.5 && theta_gamma2>2.5) {
-  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)*(180. / M_PI)>3.){
+  		if(gamma1->getParticleEnergy()>500 && gamma2->getParticleEnergy()>500 && acos(z01)*(180. / M_PI)>2.5){
   			hpi0_raffa->Fill(M01);
   		}
   }
@@ -804,10 +804,10 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hInVMass_angle->Fill(M, acos(z)*180/3.1415);
 			hInVMass_distance->Fill(M, distance_seed);
 			hangle_distance->Fill(acos(z)*180/3.1415, distance_seed);
-			if(acos(z)*(180. / M_PI)>3.) hDCInvariantMass_angle->Fill(M);
+			if(acos(z)*(180. / M_PI)>2.5) hDCInvariantMass_angle->Fill(M);
 
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
-		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500 && acos(z)*(180. / M_PI)>3.){   //0.035 rad = 2 deg
+		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500 && acos(z)*(180. / M_PI)>2.5){   //0.035 rad = 2 deg
 		hDCInvariantMass_Raffa->Fill(M);
 		}
 		}
