@@ -807,7 +807,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			if(acos(z)>0.035) hDCInvariantMass_angle->Fill(M);
 
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
-		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500 && acos(z)>0.035){   //0.035 rad = 2 deg
+		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500 && acos(z)>0.04){   //0.035 rad = 2 deg
 		hDCInvariantMass_Raffa->Fill(M);
 		}
 		}
