@@ -667,7 +667,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
    //  cout << clusters.size()<< " "<< gammas.size()<<" "<< Ngamma<<endl;
 	hNclustervsNgamma->Fill(clusters.size(), Ngamma);
 
-	if(gammas.size()==2){
+	if(gammas.size()>=2){
 
 		for(int j=0; j<gammas.size(); j++){
           auto gamma1 = gammas[j];
