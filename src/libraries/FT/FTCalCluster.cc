@@ -73,7 +73,7 @@ FTCalCluster::FTCalCluster() {
 	_clusCenter.SetXYZ(0, 0, 0);
 
 	//Geometry, this is hard-coded in CLAS12 java
-	CRYS_ZPOS = 1898;
+	CRYS_ZPOS = 1923;
 //	CRYS_ZPOS = 1798;
 	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
 
@@ -98,7 +98,7 @@ FTCalCluster::FTCalCluster(int clusid) {
 	_clusCenter.SetXYZ(0, 0, 0);
 
 	//Geometry, this is hard-coded in CLAS12 java
-	CRYS_ZPOS = 1898;
+	CRYS_ZPOS = 1923;
 	//	CRYS_ZPOS = 1628;
 	depth_z = 65; //ok, this was not hard-coded BUT it is a single number in CCDB
 
