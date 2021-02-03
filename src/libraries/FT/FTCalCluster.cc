@@ -167,13 +167,14 @@ void FTCalCluster::setCluster(int size, float energy, \
  _clusPhi = std::atan2(_clusCenter.Y(), _clusCenter.X()) * (180. / M_PI); //
 
  //if (_clusSize >= minClusterSize && _clusEnergy > minClusterEnergy && tmp_radius> 85. && tmp_radius < 160. && _clusDt<50.)//&& _clusDt<50.////&& tmp_radius> 85. && tmp_radius < 160.
+ /*
  if (_clusSize > minClusterSize && _clusEnergy > minClusterEnergy && _clusSeedEnergy > minSeedEnergy)
 	 _goodCluster = true;
  else
 	 _goodCluster = false;
 
  if(_clusSeedEnergy==1.) _goodCluster = false;
-
+*/
 
 
 
