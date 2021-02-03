@@ -21,9 +21,9 @@
 double time_min_EneCorr = -6;
 double time_max_EneCorr = 6;
 
-int minClusterSize = 3; //Need size >= to min for accept cluster.
-double minClusterEnergy = 300; //Need size > to min for accept cluster. Not >=.
-double minSeedEnergy = 50;
+int minClusterSize_EneCorr = 3; //Need size >= to min for accept cluster.
+double minClusterEnergy_EneCorr = 300; //Need size > to min for accept cluster. Not >=.
+double minSeedEnergy_EneCorr = 50;
 
 //this will set the hits in DESCENDING order wrt energy
 bool FTCalCluster_factory_EneCorr::compareHits(const FTCalHit* a, const FTCalHit* b) {
@@ -144,7 +144,7 @@ void FTCalCluster_factory_EneCorr::Process(const std::shared_ptr<const JEvent> &
 		//Idea: since this factory is responsible for creating the FTCalClusters,
 		//we do once the calculation of ALL quantities of interest here,
 		//then the "get" methods just return the computed values.
-		clusters[i]->computeCluster(minClusterSize, minClusterEnergy,minSeedEnergy );
+		clusters[i]->computeCluster(minClusterSize_EneCorr, minClusterEnergy_EneCorr,minSeedEnergy_EneCorr );
 		this->CorrectClusterEnergy(clusters[i]);
 		//std::cout <<"Is good cluster? " <<clusters[i]->isGoodCluster() <<" cluster size is " <<clusters[i]->getClusterSize() <<std::endl;
 		if (clusters[i]->isGoodCluster() == true) {
