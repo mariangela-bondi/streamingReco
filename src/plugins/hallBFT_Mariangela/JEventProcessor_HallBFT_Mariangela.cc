@@ -482,7 +482,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //lock
 	m_root_lock->acquire_write_lock();
 
-	cout << "New event"<<end;
+	cout << "New event"<<endl;
 	int i=0;
 	for(auto trig_word:tridas_event->triggerWords){
 		cout<<i<<" "<< trig_word<<endl;
