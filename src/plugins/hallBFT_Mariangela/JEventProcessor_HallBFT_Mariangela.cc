@@ -496,7 +496,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
         auto jana_id = trig_word >>16;
 		auto trig_decision = (trig_word & 0xFFFF);
 		cout << i<< " "<< trig_decision<<endl;
-	     i = i+1;
+	    if(i==7)  jana_cluster = trig_decision;
+	    if(i==8)  jana_scaler = trig_decision;
+	    if(i==11)  tridas_scaler = trig_decision;
+		i = i+1;
+
 
 	}
     if(jana_cluster==1 && jana_scaler==0 && tridas_scaler==0) htrigger->Fill(1);
