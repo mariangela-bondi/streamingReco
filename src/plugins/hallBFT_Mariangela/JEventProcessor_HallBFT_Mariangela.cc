@@ -498,9 +498,13 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	     i = i+1;
 	     cout << i<< " "<< trig_decision<<endl;
 	}
-
-
-
+    if(jana_cluster==1 && jana_scaler==0 && tridas_scaler==0) htrigger->Fill(1);
+    if(jana_cluster==0 && jana_scaler==1 && tridas_scaler==0) htrigger->Fill(2);
+    if(jana_cluster==0 && jana_scaler==0 && tridas_scaler==1) htrigger->Fill(3);
+    if(jana_cluster==1 && jana_scaler==1 && tridas_scaler==0) htrigger->Fill(4);
+    if(jana_cluster==1 && jana_scaler==0 && tridas_scaler==1) htrigger->Fill(5);
+    if(jana_cluster==0 && jana_scaler==1 && tridas_scaler==1) htrigger->Fill(6);
+    if(jana_cluster==1 && jana_scaler==1 && tridas_scaler==1) htrigger->Fill(7);
 	/*	double dist_min = 1000000; //mm
 	 double dist_fid = 2. * 15. * sqrt(2.); //fiducial cut //mm
 	 double dist_thr = 100;
