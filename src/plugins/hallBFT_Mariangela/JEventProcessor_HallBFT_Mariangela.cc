@@ -217,6 +217,8 @@ static TH1D *hpi0_angle=0;
 int pp=0;
 int qq=0;
 
+static TH1D *htrigger=0;
+
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
 //---------------------------------
@@ -429,6 +431,9 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
          hpi0_raffa = new TH1D("hpi0_raffa", "hpi0_raffa", 500, 0, 500);
          hpi0_angle = new TH1D("hpi0_angle", "hpi0_angle", 500, 0, 500);
 
+
+
+         htrigger = new TH1D("htrigger", "htrigger", 10, -0.5, 9.5);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -483,11 +488,15 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	m_root_lock->acquire_write_lock();
 
 	cout << "New event"<<endl;
+	auto jana_cluster =0;
+	auto jana_scaler=0;
+	auto tridas_scaler=0;
 	int i=0;
 	for(auto trig_word:tridas_event->triggerWords){
-		cout<<i<<" "<< trig_word<<endl;
-		i=i+1;
 
+		auto trig_decision = (trig_word & 0xFFFF);
+	     i = i+1;
+	     cout << i<< " "<< trig_decision;
 	}
 
 
