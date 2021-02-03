@@ -496,7 +496,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 		auto trig_decision = (trig_word & 0xFFFF);
 	     i = i+1;
-	     cout << i<< " "<< trig_decision;
+	     cout << i<< " "<< trig_decision<<endl;
 	}
 
 
