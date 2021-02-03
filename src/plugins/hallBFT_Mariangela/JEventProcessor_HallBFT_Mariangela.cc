@@ -487,7 +487,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 //lock
 	m_root_lock->acquire_write_lock();
 
-	cout << "New event"<<endl;
+	//cout << "New event"<<endl;
 	auto jana_cluster =0;
 	auto jana_scaler=0;
 	auto tridas_scaler=0;
