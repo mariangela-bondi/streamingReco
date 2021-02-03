@@ -67,7 +67,7 @@ public:
 		float , double , double , double , \
 		double , double , double);
 
-	void computeCluster();
+	void computeCluster(int, double, double);
 
 	int getClusterId() const;
 
