@@ -268,7 +268,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hClustersMolt = new TH1D("hClustersMolt", "hClustersMolt", 11, -.5, 10.5);
 	hClustersMolt_TrigCLus = new TH1D("hClustersMolt_TrigCLus", "hClustersMolt_TrigCLus", 11, -.5, 10.5);
 	hClustersMolt_noCorr = new TH1D("hClustersMolt_noCorr", "hClustersMolt_noCorr", 11, -.5, 10.5);
-	hClustersMolt_Corr_noCorr = new TH1D("hClustersMolt_Corr_noCorr", "hClustersMolt_Corr_noCorr", 11, -.5, 10.5, 11, -.5, 10.5);
+	hClustersMolt_Corr_noCorr = new TH2D("hClustersMolt_Corr_noCorr", "hClustersMolt_Corr_noCorr", 11, -.5, 10.5, 11, -.5, 10.5);
 	//Single cluster events
 	hSCDelayFromSeed = new TH1D("hSCDelayFromSeed", "hSCDelayFromSeed", 51, -.5, 50.5);
 	hSCHitsMolt = new TH1D("hSCHitsMolt", "hSCHitsMolt", 31, -.5, 30.5);
