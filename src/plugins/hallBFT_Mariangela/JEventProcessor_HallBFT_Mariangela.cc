@@ -93,7 +93,7 @@ static TH2D *hHitsPosition = 0;
 static TH2D *hHitsEnergyPosition = 0;
 static TH1D *hHitsMolt = 0;
 static TH1D *hClustersMolt = 0;
-
+static TH1D *hClustersMolt_TrigCLus = 0;
 //Analisi eventi a singolo cluster
 static TH1D *hSCDelayFromSeed = 0;
 static TH1D *hSCHitsMolt = 0;
@@ -130,7 +130,7 @@ static TH1D *hDCtheta =0;
 
 static TH1D *hDCInvariantMass_angle = 0;
 static TH1D *hDCInvariantMass_Raffa = 0;
-
+static TH1D *hDCInvariantMass_Raffa_triggerClus = 0;
 
 //Analisi eventi a tre cluster
 static TH2D *hTCClustersDeltaTime = 0;
@@ -264,7 +264,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hHitsEnergyPosition = new TH2D("hHitsEnergyPOsition", "hHitsEnergyPosition", 25, -.5, 24.5, 25, -.5, 24.5);
 	hHitsMolt = new TH1D("hHitsMolt", "hHitsMolt", 31, -.5, 30.5);
 	hClustersMolt = new TH1D("hClustersMolt", "hClustersMolt", 11, -.5, 10.5);
-
+	hClustersMolt_TrigCLus = new TH1D("hClustersMolt_TrigCLus", "hClustersMolt_TrigCLus", 11, -.5, 10.5);
 	//Single cluster events
 	hSCDelayFromSeed = new TH1D("hSCDelayFromSeed", "hSCDelayFromSeed", 51, -.5, 50.5);
 	hSCHitsMolt = new TH1D("hSCHitsMolt", "hSCHitsMolt", 31, -.5, 30.5);
@@ -283,7 +283,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hDCtheta = new TH1D("hDCtheta", "hDCtheta", 20, 0, 10.);
 	hDCInvariantMass_angle = new TH1D("hDCInvariantMass_angle", "hDCInvariantMass_angle", 500, 0, 500);
 	hDCInvariantMass_Raffa = new TH1D("hDCInvariantMass_Raffa", "hDCInvariantMass_Raffa", 500, 0, 500);
-
+	hDCInvariantMass_Raffa_triggerClus = new TH1D("hDCInvariantMass_Raffa_triggerClus", "hDCInvariantMass_Raffa_triggerClus", 500, 0, 500);
 	hDCSeedEnergy1VsSeedEnergy2 =  new TH2D("hDCSeedEnergy1VsSeedEnergy2", "hDCSeedEnergy1VsSeedEnergy2", 1500, 0, 15000, 1500, 0, 15000);
 
 
@@ -738,6 +738,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	double eventSeedTime = 1e20;
 	hHitsMolt->Fill(hits.size());
 	hClustersMolt->Fill(clusters.size());
+	if(jana_cluster==1)hClustersMolt_TrigCLus->Fill(clusters.size());
 	for (auto hit : hits) {
 		if (hit->getHitEnergy() > 2000 && hit->getHitTime() < eventSeedTime) {
 			eventSeedTime = hit->getHitTime();
@@ -835,6 +836,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	if(cluster0->getTheta()<4.5 && cluster1->getTheta()<4.5 && cluster0->getTheta()>2.5 && cluster1->getTheta()>2.5) {
 		if(cluster0->getClusterFullEnergy()>500 && cluster1->getClusterFullEnergy()>500 && acos(z)*(180. / M_PI)>2.5){   //0.035 rad = 2 deg
 		hDCInvariantMass_Raffa->Fill(M);
+		if(jana_cluster==1)hDCInvariantMass_Raffa_triggerClus->Fill(M);
 		}
 		}
 		}
