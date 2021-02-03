@@ -94,6 +94,7 @@ static TH2D *hHitsEnergyPosition = 0;
 static TH1D *hHitsMolt = 0;
 static TH1D *hClustersMolt = 0;
 static TH1D *hClustersMolt_TrigCLus = 0;
+static TH1D *hClustersMolt_noCorr =0;
 //Analisi eventi a singolo cluster
 static TH1D *hSCDelayFromSeed = 0;
 static TH1D *hSCHitsMolt = 0;
@@ -265,6 +266,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hHitsMolt = new TH1D("hHitsMolt", "hHitsMolt", 31, -.5, 30.5);
 	hClustersMolt = new TH1D("hClustersMolt", "hClustersMolt", 11, -.5, 10.5);
 	hClustersMolt_TrigCLus = new TH1D("hClustersMolt_TrigCLus", "hClustersMolt_TrigCLus", 11, -.5, 10.5);
+	hClustersMolt_noCorr = new TH1D("hClustersMolt_noCorr", "hClustersMolt_noCorr", 11, -.5, 10.5);
 	//Single cluster events
 	hSCDelayFromSeed = new TH1D("hSCDelayFromSeed", "hSCDelayFromSeed", 51, -.5, 50.5);
 	hSCHitsMolt = new TH1D("hSCHitsMolt", "hSCHitsMolt", 31, -.5, 30.5);
@@ -738,6 +740,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	double eventSeedTime = 1e20;
 	hHitsMolt->Fill(hits.size());
 	hClustersMolt->Fill(clusters.size());
+	hClustersMolt_noCorr->Fill(clusters_noCorr.size());
 	if(jana_cluster==1)hClustersMolt_TrigCLus->Fill(clusters.size());
 	for (auto hit : hits) {
 		if (hit->getHitEnergy() > 2000 && hit->getHitTime() < eventSeedTime) {
