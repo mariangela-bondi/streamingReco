@@ -22,8 +22,7 @@ FTCalHit_factory::FTCalHit_factory() {
 	CRYS_WIDTH = 15.3;													  // crystal width in mm
 	CRYS_LENGTH = 200.;													  // crystal length in mm
 //	CRYS_ZPOS = 1898.;
-	CRYS_ZPOS = 1923.; //Test 25 cm
-	CRYS_ZPOS = 1919.; //Test 21 cm
+	CRYS_ZPOS = 1919.; //Test 21 mm
 }
 
 FTCalHit_factory::~FTCalHit_factory() {
