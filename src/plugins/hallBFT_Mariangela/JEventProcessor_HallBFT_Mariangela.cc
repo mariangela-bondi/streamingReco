@@ -830,6 +830,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 			hDCEnergyPosition->Fill(cluster0->getX(), cluster0->getY(), cluster0->getClusterFullEnergy());
 			hDCEnergyPosition->Fill(cluster1->getX(), cluster1->getY(), cluster1->getClusterFullEnergy());
 
+			cout << cluster0->getX() << " "<<cluster0->getY()<<" "<< cluster0->getZ()<<endl;
+
 			double z = cos(cluster0->getCentroid().Angle(cluster1->getCentroid()));
 
 			double M = sqrt(2 * cluster0->getClusterFullEnergy() * cluster1->getClusterFullEnergy() * (1 - z));
