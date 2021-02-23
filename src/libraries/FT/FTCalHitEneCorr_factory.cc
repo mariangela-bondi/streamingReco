@@ -5123,7 +5123,7 @@ void FTCalHitEneCorr_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEv
 			auto layer = int(row[1]);
 			auto component = int(row[2]);
 			mips_charge[component] = row[3];
-			cout << sector<< " "<<layer<<" "<<" "<<layer<<" "<<mips_charge[component]<<endl;
+			cout << sector<< " "<<component<<" "<<" "<<layer<<" "<<mips_charge[component]<<endl;
 		}
 
 		daq_gain[0][3][0] = 0.118104;
