@@ -5118,7 +5118,7 @@ void FTCalHitEneCorr_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEv
 		jcalib->Get("/calibration/ft/ftcal/charge_to_energy", data);
 
 		for (auto row : data) {
-			sector - layer - component - mips_charge - mips_energy - fadc_to_charge - preamp_gain - apd_gain
+			//sector - layer - component - mips_charge - mips_energy - fadc_to_charge - preamp_gain - apd_gain
 			auto sector = int(row[0]);
 			auto layer = int(row[1]);
 			auto component = int(row[2]);
