@@ -96,6 +96,9 @@ static TH1D *hClustersMolt = 0;
 static TH2D *hClustersMolt_Corr_noCorr = 0;
 static TH1D *hClustersMolt_TrigCLus = 0;
 static TH1D *hClustersMolt_noCorr =0;
+
+static vector<TH1D *> EneCrystal;
+
 //Analisi eventi a singolo cluster
 static TH1D *hSCDelayFromSeed = 0;
 static TH1D *hSCHitsMolt = 0;
@@ -321,7 +324,12 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hTCClustersDeltaTime = new TH2D("hTCClustersDeltaTime", "hTCClustersDeltaTime", 201, -0.5, 200.5, 201, -0.5, 200.5);
 	hTCInvariantMass = new TH1D("hTCInvariantMass", "hTCInvariantMass", 500, 0, 500);
 	hTCSelectedInvariantMass = new TH1D("hTCSelectedInvariantMass", "hTCSelectedInvariantMass", 500, 0, 500);
-/*
+
+	for (int j = 0; j < 500; j++) {
+		TH1D *hCrystalEnergy = new TH1D(Form("hCrystalEnergy%d", j), Form("hCrystalEnergy%d", j), 200, -30, 30);
+		EneCrystal.push_back(hCrystalEnergy);
+	}
+	/*
 	for (int j = 0; j < 500; j++) {
 	 TH2D *hCorrectionCurve = new TH2D(Form("hCorrectionCurve%d", j), Form("hCorrectionCurve%d", j), 1000, 0, 10000, 60, -5.5, 54.5);
 		CorrectionCurve.push_back(hCorrectionCurve);
@@ -514,48 +522,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     if(jana_cluster==1 && jana_scaler==0 && tridas_scaler==1) htrigger->Fill(5);
     if(jana_cluster==0 && jana_scaler==1 && tridas_scaler==1) htrigger->Fill(6);
     if(jana_cluster==1 && jana_scaler==1 && tridas_scaler==1) htrigger->Fill(7);
-	/*	double dist_min = 1000000; //mm
-	 double dist_fid = 2. * 15. * sqrt(2.); //fiducial cut //mm
-	 double dist_thr = 100;
-	 double twindow = 12;
-	 TLorentzVector P4_gamma1, P4_gamma2, P4_pi0;
-	 TLorentzVector X4_gamma1, X4_gamma2;
-	 double t_ene, t_phi, t_theta, t_X, t_Y, t_Z, t_time, max_extra_ene(-9.);
-	 double deltat, tmp_dist, deltaphi;
-	 bool good_event = false;
-	 for (int i = 0; i < clusters_EneCorr.size(); i++) {
-	 auto cluster1 = clusters_EneCorr[i];
-	 t_ene = cluster1->getClusterEnergy();
-	 t_phi = cluster1->getPhi() * M_PI / 180.;
-	 t_theta = cluster1->getTheta() * M_PI / 180.;
-	 t_time = cluster1->getClusterTime();
-	 t_X = cluster1->getX();
-	 t_Y = cluster1->getY();
-	 t_Z = cluster1->getZ();
-	 P4_gamma1.SetPxPyPzE(t_ene * sin(t_theta) * cos(t_phi), t_ene * sin(t_theta) * sin(t_phi), t_ene * cos(t_theta), t_ene);
-	 X4_gamma1.SetXYZT(t_X, t_Y, t_Z, t_time);
-	 for (int j = i + 1; j < clusters_EneCorr.size(); j++) {
-	 auto cluster2 = clusters_EneCorr[j];
-	 t_ene = cluster2->getClusterEnergy();
-	 t_phi = cluster2->getPhi() * M_PI / 180.;
-	 t_theta = cluster2->getTheta() * M_PI / 180.;
-	 t_time = cluster2->getClusterTime();
-	 t_X = cluster2->getX();
-	 t_Y = cluster2->getY();
-	 t_Z = cluster2->getZ();
-	 P4_gamma2.SetPxPyPzE(t_ene * sin(t_theta) * cos(t_phi), t_ene * sin(t_theta) * sin(t_phi), t_ene * cos(t_theta), t_ene);
-	 X4_gamma2.SetXYZT(t_X, t_Y, t_Z, t_time);
-	 P4_pi0 = P4_gamma1 + P4_gamma2;
-	 deltat = abs(X4_gamma1.T() - X4_gamma2.T());
-	 tmp_dist = (cluster2->getCentroid() - cluster1->getCentroid()).Mag(); //TVector3
-	 if (tmp_dist > dist_fid && deltat < twindow)
-	 good_event = true;
-	 h_minv_nocuts->Fill(P4_pi0.M());
-	 if (good_event)
-	 h_minv->Fill(P4_pi0.M());
-	 h_tcoinc_combo->Fill(X4_gamma1.T() - X4_gamma2.T());
-	 } //-------photon2
-	 } //------photon1*/
+
 
 
 	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
@@ -752,6 +719,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 		hHitsEnergy->Fill(hit->getHitEnergy());
 		hHitsPosition->Fill(hit->getHitIX(), hit->getHitIY());
 		hHitsEnergyPosition->Fill(hit->getHitIX(), hit->getHitIY(), hit->getHitEnergy());
+		EneCrystal[hit->m_channel.component]->Fill(hit->getHitEnergy());
 	}
 
 	for (auto hit : hits) {
