@@ -5110,8 +5110,10 @@ void FTCalHitEneCorr_factory::ChangeRun(const std::shared_ptr<const JEvent> &aEv
 	static int hasLoaded = 0;
 	if (hasLoaded == 0) {
 		auto jcalib_manager = japp->GetService<JCalibrationManager>();
-		static int runN = 13000;
-		auto jcalib = jcalib_manager->GetJCalibration(13000);
+	//	static int runN = 13000;
+	//	auto jcalib = jcalib_manager->GetJCalibration(13000);
+		static int runN = 11561;
+			auto jcalib = jcalib_manager->GetJCalibration(11561);
 
 		//Load FT-HODO
 		std::vector<std::vector<double>> data;
