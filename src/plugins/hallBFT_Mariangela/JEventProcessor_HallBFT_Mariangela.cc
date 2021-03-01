@@ -326,7 +326,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 	hTCSelectedInvariantMass = new TH1D("hTCSelectedInvariantMass", "hTCSelectedInvariantMass", 500, 0, 500);
 
 	for (int j = 0; j < 500; j++) {
-		TH1D *hCrystalEnergy = new TH1D(Form("hCrystalEnergy%d", j), Form("hCrystalEnergy%d", j), 200, -30, 30);
+		TH1D *hCrystalEnergy = new TH1D(Form("hCrystalEnergy%d", j), Form("hCrystalEnergy%d", j), 100, 0., 200.);
 		EneCrystal.push_back(hCrystalEnergy);
 	}
 	/*
