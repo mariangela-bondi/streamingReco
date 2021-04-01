@@ -537,7 +537,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
     if(clusters_noCorr.size()==1){
 
-    	cout<< clusters_noCorr[0].size()<<endl;
+    	cout<< clusters_noCorr[0]->getClusterSize()<<endl;
     	cout<< clusters_noCorr[0]->getClusterEnergy()<<endl;
     	cout<<clusters_noCorr[0]->getHit(0)->getHitEnergy()<<endl;
 
