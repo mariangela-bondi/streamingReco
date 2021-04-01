@@ -445,7 +445,7 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 
 
-         htrigger = new TH1D("htrigger", "htrigger", 10, -0.5, 9.5);
+         htrigger = new TH1D("htrigger", "htrigger", 20, -0.5, 19.5);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -522,6 +522,11 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     if(jana_cluster==1 && jana_scaler==0 && tridas_scaler==1) htrigger->Fill(5);
     if(jana_cluster==0 && jana_scaler==1 && tridas_scaler==1) htrigger->Fill(6);
     if(jana_cluster==1 && jana_scaler==1 && tridas_scaler==1) htrigger->Fill(7);
+    if(tridas_scaler==1 ) htrigger->Fill(9);
+    if(jana_scaler==1 ) htrigger->Fill(10);
+    if(jana_cluster==1 ) htrigger->Fill(11);
+    if(jana_cluster==1 && tridas_scaler==1) htrigger->Fill(12);
+
 
 
 
