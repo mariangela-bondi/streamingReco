@@ -544,7 +544,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     	cout<<hits_noCorr.size()<<endl;
 
     		for (auto hit_noCorr: hits_noCorr) {
-    			cout<< hit->m_channel.component<<" "<<hit->getHitEnergy()<<endl
+    			cout<< hit_noCorr->m_channel.component<<" "<<hit_noCorr->getHitEnergy()<<endl
     		}
 
 
