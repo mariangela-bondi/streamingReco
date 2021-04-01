@@ -359,7 +359,7 @@ bool FTCalCluster::containsHit(const FTCalHit* hit, double time_min, double time
 		auto yDiff = std::fabs(hit->getHitIY() - hit_conf->getHitIY());
 //		if (tDiff < time_window && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0) flag = true;
 	//	if (tDiff >= time_min && tDiff <= time_max && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0)
-		if (hitEne>50 && tDiff >= time_min && tDiff <= time_max && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0)
+		if (tDiff >= time_min && tDiff <= time_max && xDiff <= 1 && yDiff <= 1 && (xDiff + yDiff) > 0)
 			flag = true;
 	}
 	return flag;
