@@ -553,6 +553,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     				}
     			}
     		if (check==0)cout<< hit_noCorr->m_channel.component<<" "<<hit_noCorr->getHitEnergy()<<" "<<hit_noCorr->getHitTime()<<endl;
+    		check=0;
     		}
 
 
