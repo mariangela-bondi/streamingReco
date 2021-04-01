@@ -543,15 +543,16 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
     	cout << "hits info"<<endl;
     	cout<<hits_noCorr.size()<<endl;
-
+        int check =0;
 
     		for (auto hit_noCorr: hits_noCorr) {
     			for (int i=0; i<clusters_noCorr[0]->getClusterSize(); i++){
     				if(clusters_noCorr[0]->getHit(i) == hit_noCorr){
-    			cout<< hit_noCorr->m_channel.component<<" "<<hit_noCorr->getHitEnergy()<<" "<<hit_noCorr->getHitTime()<<endl;
+    			     check=1;
+    			     break;
     				}
     			}
-
+    		if (check==0)cout<< hit_noCorr->m_channel.component<<" "<<hit_noCorr->getHitEnergy()<<" "<<hit_noCorr->getHitTime()<<endl;
     		}
 
 
