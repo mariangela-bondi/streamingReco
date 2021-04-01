@@ -537,14 +537,21 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
     if(clusters_noCorr.size()==1){
 
-    	cout<< clusters_noCorr[0]->getClusterSize()<<endl;
-    	cout<< clusters_noCorr[0]->getClusterEnergy()<<endl;
-    	cout<<clusters_noCorr[0]->getHit(0)->getHitEnergy()<<endl;
+    	cout<<"clus size "<< clusters_noCorr[0]->getClusterSize()<<endl;
+    	cout<<"clus ene "<< clusters_noCorr[0]->getClusterEnergy()<<endl;
+    	cout<<"clus seed ene "<<clusters_noCorr[0]->getHit(0)->getHitEnergy()<<endl;
 
+    	cout << "hits info"<<endl;
     	cout<<hits_noCorr.size()<<endl;
 
+
     		for (auto hit_noCorr: hits_noCorr) {
-    			cout<< hit_noCorr->m_channel.component<<" "<<hit_noCorr->getHitEnergy()<<endl;
+    			for (int i=0; i<clusters_noCorr[0]->getClusterSize(); i++){
+    				if(clusters_noCorr[0]->getHit(i) == hit_noCorr){
+    			cout<< hit_noCorr->m_channel.component<<" "<<hit_noCorr->getHitEnergy()<<" "<<hit_noCorr->getHitTime()<<endl;
+    				}
+    			}
+
     		}
 
 
