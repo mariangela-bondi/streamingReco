@@ -539,8 +539,8 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
        if(clusters_noCorr.size()>=2){
     	   for(int i=0; i<clusters_noCorr.size(); i++){
     		   auto cluster_noCorr = clusters_noCorr[i];
-    		   if (jana_cluster==1) htrigger_2clusterJANA_ene->Fill(cluster_noCorr[i]->getClusterEnergy());
-    		   htrigger_2cluster_ene->Fill(cluster_noCorr[i]->getClusterEnergy());
+    		   if (jana_cluster==1) htrigger_2clusterJANA_ene->Fill(cluster_noCorr->getClusterEnergy());
+    		   htrigger_2cluster_ene->Fill(cluster_noCorr->getClusterEnergy());
     	   }
            }
 
