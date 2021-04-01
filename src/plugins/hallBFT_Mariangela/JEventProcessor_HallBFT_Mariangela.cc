@@ -476,7 +476,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	vector<uint32_t> word = tridas_event->triggerWords;
 
 //Hits dell'evento
-//	auto hits = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
+	auto hits_noCorr = aEvent->Get<FTCalHit>(); //vector degli hits dell'evento
 //	auto hits_EneCorr = aEvent->Get<FTCalHitEneCorr>();
 	auto hits = aEvent->Get<FTCalHitEneCorr>();
 //	auto hits_TimeCorr = aEvent->Get<FTCalHitTimeCorr>();
@@ -532,6 +532,24 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     if(jana_cluster==1 ) htrigger->Fill(11);
     if(jana_cluster==1 && tridas_scaler==1) htrigger->Fill(12);
 
+    if(jana_cluster==1){
+    	hClustersMolt_TrigCLus->Fill(clusters_noCorr.size());
+
+    if(clusters_noCorr.size()==1){
+
+    	cout<< clusters_noCorr[0].size()<<endl;
+    	cout<< clusters_noCorr[0]->getClusterEnergy()<<endl;
+    	cout<<clusters_noCorr[0]->getHit(0)->getHitEnergy()<<endl;
+
+    	cout<<hits_noCorr.size()<<endl;
+
+    		for (auto hit_noCorr: hits_noCorr) {
+    			cout<< hit->m_channel.component<<" "<<hit->getHitEnergy()<<endl
+    		}
+
+
+    }
+    }
 
 
 
@@ -731,7 +749,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	hClustersMolt->Fill(clusters.size());
 	hClustersMolt_noCorr->Fill(clusters_noCorr.size());
 	hClustersMolt_Corr_noCorr->Fill(clusters.size(),clusters_noCorr.size() );
-	if(jana_cluster==1)hClustersMolt_TrigCLus->Fill(clusters_noCorr.size());
+
 	for (auto hit : hits) {
 		if (hit->getHitEnergy() > 2000 && hit->getHitTime() < eventSeedTime) {
 			eventSeedTime = hit->getHitTime();
