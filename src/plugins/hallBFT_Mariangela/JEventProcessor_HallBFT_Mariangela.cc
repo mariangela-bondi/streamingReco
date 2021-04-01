@@ -223,6 +223,9 @@ int pp=0;
 int qq=0;
 
 static TH1D *htrigger=0;
+static TH1D *htrigger_2clusterJANA_ene =0;
+static TH1D *htrigger_2cluster_ene =0;
+
 
 //---------------------------------
 // JEventProcessor_HallBFT_Mariangela    (Constructor)
@@ -446,6 +449,8 @@ void JEventProcessor_HallBFT_Mariangela::Init(void) {
 
 
          htrigger = new TH1D("htrigger", "htrigger", 20, -0.5, 19.5);
+         htrigger_2clusterJANA_ene = new TH1D("htrigger_2clusterJANA_ene", "htrigger_2clusterJANA_ene",  1500, 0, 15000);
+         htrigger_2cluster_ene = new TH1D("htrigger_2cluster_ene", "htrigger_2cluster_ene",  1500, 0, 15000);
          gDirectory->cd();
 	m_root_lock->release_lock();
 
@@ -528,6 +533,16 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     if(jana_cluster==1 && tridas_scaler==1) htrigger->Fill(12);
 
 
+
+
+
+       if(clusters_noCorr.size()>=2){
+    	   for(int i=0; i<clusters_noCorr.size(); i++){
+    		   auto cluster_noCorr = clusters_noCorr[i];
+    		   if (jana_cluster==1) htrigger_2clusterJANA_ene->Fill(cluster_noCorr[i]->getClusterEnergy());
+    		   htrigger_2cluster_ene->Fill(cluster_noCorr[i]->getClusterEnergy());
+    	   }
+           }
 
 
 	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
@@ -716,7 +731,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	hClustersMolt->Fill(clusters.size());
 	hClustersMolt_noCorr->Fill(clusters_noCorr.size());
 	hClustersMolt_Corr_noCorr->Fill(clusters.size(),clusters_noCorr.size() );
-	if(jana_cluster==1)hClustersMolt_TrigCLus->Fill(clusters.size());
+	if(jana_cluster==1)hClustersMolt_TrigCLus->Fill(clusters_noCorr.size());
 	for (auto hit : hits) {
 		if (hit->getHitEnergy() > 2000 && hit->getHitTime() < eventSeedTime) {
 			eventSeedTime = hit->getHitTime();
