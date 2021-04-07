@@ -574,7 +574,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
     		   htrigger_2cluster_ene->Fill(cluster_noCorr->getClusterEnergy());
 
            }
-
+/*
 
 	std::sort(hits_hodo.begin(), hits_hodo.end(), compareHits);
 
@@ -687,12 +687,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 	//        cout <<  "ECAL time clus "<< cluster->getClusterTime()<< " time seed "<< cluster->getHit(0)->getHitTime()<< " Time seed no corr "<< cluster->getHit(0)->getHitTime() -cluster->getHit(0)->getTimeWalkCorrection()<<endl;
 	 //       cout << " HODO time clus" << hodoscope->getClusterTime()<< " "<< hodoscope->getHit(0)->getHitDx()<<" "<<hodoscope->getHit(0)->getHitDy()<<endl;
 	  //      cout << "DIFF T"<< difft<<endl;
-	    /*
-	        	for(int i=0; i<hodoscope->getClusterSize(); i++){
-	        	 auto hit_hodo = hodoscope->getHit(i);
-	        	cout<<hit_hodo->getHitEnergy()<<" "<<hit_hodo->getHitTime()<< " "<<hit_hodo->m_channel.layer<<" "<<hit_hodo->getHitDx()<<" "<<hit_hodo->getHitDy()<<endl;
-	        }
-	        */
+
 	       hmatch_diffT_cut->Fill(difft);
 	        }
 		}
@@ -724,13 +719,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
         	  auto gamma2 = gammas[k];
         	  auto theta_gamma2 = (std::atan((std::sqrt(std::pow(gamma2->getParticleDx(), 2.) + std::pow(gamma2->getParticleDy(), 2.))) /gamma2->getParticleDz())) * (180. / M_PI);
         	  if(fabs(gamma1->getParticleTime()-gamma2->getParticleTime())<2){
-/*
-        		  cout << "gamma energy "<<gamma1->getParticleEnergy()<< " "<< gamma2->getParticleEnergy()<<endl;
-        		cout << "clusters energy:"<<endl;
-        		  for(auto cluster: clusters){
-        			  cout << cluster->getClusterFullEnergy()<<endl;
-        		  }
-  */
+
   			auto z01 = cos(gamma1->getCentroid().Angle(gamma2->getCentroid()));
   		//	 cout << "gamma energy "<<gamma1->getParticleEnergy()<< " "<< gamma2->getParticleEnergy()<<endl;
 
@@ -754,7 +743,7 @@ void JEventProcessor_HallBFT_Mariangela::Process(const std::shared_ptr<const JEv
 
 	}
 
-
+*/
 
 	//Analisi sull'evento
 	double eventSeedTime = 1e20;
